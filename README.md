@@ -10,11 +10,19 @@ SmartTravel is a full-stack, AI-powered travel planning web application built sp
 
 ---
 
-## Application Interface Screenshot
+## Application Interface Screenshots
 
-Below is the user interface of the SmartTravel platform homepage:
-
+### Homepage Dashboard
+Defines the landing dashboard where travelers can register, authenticate, and explore custom recommendations.
 ![SmartTravel Frontend Homepage](docs/diagrams/frontend_home.png)
+
+### Itinerary Planner Wizard
+The multi-step interactive wizard where users customize destinations, travel length, companion counts, and categories.
+![SmartTravel Planner Wizard](docs/diagrams/frontend_planner.png)
+
+### Destinations Explorer
+Allows travelers to search, browse, and filter tourist spots by region, category, rating, and crowd levels.
+![SmartTravel Destinations Explorer](docs/diagrams/frontend_destinations.png)
 
 ---
 
@@ -59,7 +67,8 @@ SmartTravel/
 
 SmartTravel follows a standard 3-Tier Architecture that enforces clean separation of concerns between client views, logical controllers/services, and databases.
 
-### System Architecture Flow
+### 3-Tier System Architecture Flow
+Defines the connection paths between client presentation layer, Spring Boot logic layer, MySQL storage, and external OpenRouter API:
 ![System Architecture Flow](docs/diagrams/svg/system_architecture.svg)
 
 ---
@@ -79,6 +88,14 @@ Outlines the logic from user preferences selection down to RAG database candidat
 ### Session Authentication Sequence
 Details the stateful credentials verification loop and session cookie validation checks:
 ![Session Authentication Sequence](docs/diagrams/svg/authentication_flow.svg)
+
+### RAG Itinerary Call Flow
+Details the client REST query, database filter steps, OpenRouter RAG context enrichment, and payload return sequence:
+![RAG Itinerary Sequence](docs/diagrams/svg/api_flow.svg)
+
+### Core JPA Entity Class Model
+Specifies database entities mappings, variables attributes, collection elements mapping, and relationships:
+![Core JPA Entity Class Model](docs/diagrams/svg/class_diagram.svg)
 
 ---
 
