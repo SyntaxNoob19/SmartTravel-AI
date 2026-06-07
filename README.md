@@ -173,8 +173,3 @@ Technical design documents and guides are structured inside the docs/ directory:
 *   **[REST API Specification](docs/API.md):** Request/Response payloads, schemas, and authentication filters.
 *   **[Deployment & Setup Specification](docs/DEPLOYMENT.md):** Detailed environment configurations, database seeding methods, and deployment instructions.
 
----
-
-## License
-This project is licensed under the MIT License. See the LICENSE file for details.
-#
