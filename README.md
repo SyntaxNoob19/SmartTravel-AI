@@ -24,6 +24,10 @@ The multi-step interactive wizard where users customize destinations, travel len
 Allows travelers to search, browse, and filter tourist spots by region, category, rating, and crowd levels.
 ![SmartTravel Destinations Explorer](docs/diagrams/frontend_destinations.png)
 
+### Generated Travel Itinerary
+Displays the detailed daily schedule containing curated spots, tips, duration suggestions, and companion splits.
+![SmartTravel Generated Itinerary](docs/diagrams/frontend_itinerary.png)
+
 ---
 
 ## Key Features
