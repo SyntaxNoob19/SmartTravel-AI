@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: smarttravel-api
+    runtime: java
+    rootDir: Backend
+
+    buildCommand: chmod +x mvnw && ./mvnw clean package
+
+    startCommand: java -jar target/*.jar
+
+    plan: free
