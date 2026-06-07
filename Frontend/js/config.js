@@ -1,7 +1,7 @@
 // ========== SMART TRAVEL - BACKEND CONFIG ==========
 // Change this ONE value if your backend port changes.
 window.SMARTTRAVEL_API_BASE = (() => {
-  const origin = window.location.origin;
+  const origin = ;
   // If the page is served directly from the backend (port 9090 or 9090), use same-origin
   if (origin.includes(':9090') || origin.includes(':9090')) return '/api';
   // Otherwise point to the backend explicitly — change port here if needed
