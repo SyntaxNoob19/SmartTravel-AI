@@ -1,0 +1,14 @@
+graph TD
+    Landing["index.html (Home Screen)"] --> Explore["destinations.html (Explore Screen)"]
+    Landing --> Planner["planner.html (Planner Screen)"]
+    Landing --> Login["login.html (Authentication Screen)"]
+    Landing --> Register["register.html (Register Screen)"]
+    
+    Planner --> Itinerary["itinerary.html (Itinerary Screen)"]
+    Itinerary --> |Save Trip| SaveRedirect{"Is Authenticated?"}
+    
+    SaveRedirect --> |Yes| Dashboard["profile.html (User Profile Screen)"]
+    SaveRedirect --> |No| Login
+    
+    Dashboard --> Detail["trip-detail.html (Trip Details Screen)"]
+    Dashboard --> Budget["group.html (Shared Budgets Splitting Screen)"]

@@ -1,0 +1,13 @@
+graph TD
+    SmartTravel["SmartTravel (Root)"] --> Backend["Backend/ (Spring Boot JAR source)"]
+    SmartTravel --> Frontend["Frontend/ (Vanilla HTML/CSS/JS)"]
+    SmartTravel --> docs["docs/ (Engineering Specifications & Diagrams)"]
+    SmartTravel --> datasets["datasets/ (india_travel_dataset_cleaned_v2.csv)"]
+    SmartTravel --> scripts["scripts/ (import_csv.py DB seed tool)"]
+    SmartTravel --> Env[".env.example"]
+    SmartTravel --> GitIgnore[".gitignore"]
+    SmartTravel --> Readme["README.md"]
+    
+    docs --> DocsDiagrams["docs/diagrams/ (.mmd UML models)"]
+    docs --> DocsMermaid["docs/mermaid/ (.mmd flow charts)"]
+    DocsDiagrams --> DocsSvg["docs/diagrams/svg/ (.svg rendered diagrams)"]

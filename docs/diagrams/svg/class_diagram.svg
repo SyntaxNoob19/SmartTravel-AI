@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 650" width="800" height="650">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 2 L 10 5 L 0 8 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#f8fafc" rx="12"/>
+  <text x="400" y="35" font-family="'Inter', sans-serif" font-size="20" font-weight="bold" fill="#0f172a" text-anchor="middle">SmartTravel - Core JPA Entity Class Model</text>
+  
+  <!-- Class UserAccount -->
+  <rect x="50" y="80" width="200" height="130" rx="6" fill="#ffffff" stroke="#475569" stroke-width="1.5"/>
+  <rect x="50" y="80" width="200" height="30" rx="6" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/>
+  <text x="150" y="100" font-family="'Inter', sans-serif" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">UserAccount</text>
+  <text x="60" y="130" font-family="'Inter', sans-serif" font-size="10" fill="#334155">+ Long id</text>
+  <text x="60" y="155" font-family="'Inter', sans-serif" font-size="10" fill="#334155">+ String email</text>
+  <text x="60" y="180" font-family="'Inter', sans-serif" font-size="10" fill="#334155">+ String passwordHash</text>
+  
+  <!-- Class SavedTrip -->
+  <rect x="50" y="270" width="200" height="150" rx="6" fill="#ffffff" stroke="#475569" stroke-width="1.5"/>
+  <rect x="50" y="270" width="200" height="30" rx="6" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/>
+  <text x="150" y="290" font-family="'Inter', sans-serif" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">SavedTrip</text>
+  <text x="60" y="320" font-family="'Inter', sans-serif" font-size="10" fill="#334155">+ Long id</text>
+  <text x="60" y="340" font-family="'Inter', sans-serif" font-size="10" fill="#334155">+ String tripName</text>
+  <text x="60" y="360" font-family="'Inter', sans-serif" font-size="10" fill="#334155">+ String destination</text>
+  <text x="60" y="380" font-family="'Inter', sans-serif" font-size="10" fill="#334155">+ String plannerResponseJson</text>
+
+  <!-- Class BudgetPlan -->
+  <rect x="300" y="80" width="200" height="150" rx="6" fill="#ffffff" stroke="#475569" stroke-width="1.5"/>
+  <rect x="300" y="80" width="200" height="30" rx="6" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/>
+  <text x="400" y="100" font-family="'Inter', sans-serif" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">BudgetPlan</text>
+  <text x="310" y="130" font-family="'Inter', sans-serif" font-size="10" fill="#334155">+ Long id</text>
+  <text x="310" y="150" font-family="'Inter', sans-serif" font-size="10" fill="#334155">+ Double totalAmount</text>
+  <text x="310" y="170" font-family="'Inter', sans-serif" font-size="10" fill="#334155">+ List&lt;String&gt; memberNames</text>
+  <text x="310" y="190" font-family="'Inter', sans-serif" font-size="10" fill="#334155">+ List&lt;Expense&gt; expenses</text>
+
+  <!-- Class Expense -->
+  <rect x="550" y="80" width="200" height="130" rx="6" fill="#ffffff" stroke="#475569" stroke-width="1.5"/>
+  <rect x="550" y="80" width="200" height="30" rx="6" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/>
+  <text x="650" y="100" font-family="'Inter', sans-serif" font-size="12" font-weight="bold" fill="#0f172a" text-anchor="middle">Expense (Embeddable)</text>
+  <text x="560" y="130" font-family="'Inter', sans-serif" font-size="10" fill="#334155">+ String name (paidBy)</text>
+  <text x="560" y="155" font-family="'Inter', sans-serif" font-size="10" fill="#334155">+ Double amount</text>
+  <text x="560" y="180" font-family="'Inter', sans-serif" font-size="10" fill="#334155">+ String description</text>
+
+  <!-- Services -->
+  <rect x="300" y="270" width="450" height="150" rx="6" fill="#f0fdfa" stroke="#2d8a83" stroke-width="1.5"/>
+  <rect x="300" y="270" width="450" height="30" rx="6" fill="#ccfbf1" stroke="#2d8a83" stroke-width="1.5"/>
+  <text x="525" y="290" font-family="'Inter', sans-serif" font-size="12" font-weight="bold" fill="#1f635e" text-anchor="middle">PlannerService &amp; PlannerAiService Components</text>
+  <text x="310" y="320" font-family="'Inter', sans-serif" font-size="11" fill="#0f172a">PlannerService.generate(PlannerRequest) : PlannerResponseDto</text>
+  <text x="310" y="345" font-family="'Inter', sans-serif" font-size="11" fill="#0f172a">PlannerAiService.generateFallbackItinerary(...) : AiFallbackResult</text>
+  <text x="310" y="370" font-family="'Inter', sans-serif" font-size="11" fill="#0f172a">PlannerAiService.enhanceItinerary(...) : Optional&lt;AiEnhancementDto&gt;</text>
+
+  <!-- Links -->
+  <path d="M 150 210 L 150 270" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+  <path d="M 250 145 L 300 145" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+  <path d="M 500 145 L 550 145" stroke="#475569" stroke-width="1.5" fill="none"/>
+</svg>

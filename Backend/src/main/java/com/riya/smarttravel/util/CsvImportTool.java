@@ -145,6 +145,8 @@ public final class CsvImportTool {
 
         candidates.add(Paths.get("india_travel_dataset_cleaned_v2.csv"));
         candidates.add(Paths.get("..", "india_travel_dataset_cleaned_v2.csv"));
+        candidates.add(Paths.get("datasets", "india_travel_dataset_cleaned_v2.csv"));
+        candidates.add(Paths.get("..", "datasets", "india_travel_dataset_cleaned_v2.csv"));
         candidates.add(Paths.get("C:\\Users\\Riya\\Downloads\\india_travel_dataset_cleaned_v2.csv"));
 
         for (Path candidate : candidates) {

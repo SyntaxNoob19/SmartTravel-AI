@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 2 L 10 5 L 0 8 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#fafafa" rx="12"/>
+  
+  <text x="400" y="35" font-family="'Inter', sans-serif" font-size="18" font-weight="bold" fill="#0f172a" text-anchor="middle">SmartTravel - Logical Components Diagram</text>
+  
+  <!-- Frontend -->
+  <rect x="50" y="80" width="300" height="320" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="70" y="110" font-family="'Inter', sans-serif" font-size="13" font-weight="bold" fill="#334155">Frontend Application Views</text>
+  
+  <rect x="80" y="140" width="240" height="60" rx="4" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="200" y="165" font-family="'Inter', sans-serif" font-size="11" font-weight="bold" fill="#0f172a" text-anchor="middle">HTML/CSS Page layouts</text>
+  <text x="200" y="185" font-family="'Inter', sans-serif" font-size="10" fill="#475569" text-anchor="middle">index.html, pages/*, design-tokens.css</text>
+  
+  <rect x="80" y="240" width="240" height="60" rx="4" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="200" y="265" font-family="'Inter', sans-serif" font-size="11" font-weight="bold" fill="#0f172a" text-anchor="middle">JS Page Controllers</text>
+  <text x="200" y="285" font-family="'Inter', sans-serif" font-size="10" fill="#475569" text-anchor="middle">planner.js, itinerary.js, auth.js</text>
+
+  <!-- Backend -->
+  <rect x="450" y="80" width="300" height="320" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="470" y="110" font-family="'Inter', sans-serif" font-size="13" font-weight="bold" fill="#334155">Spring Boot Services</text>
+  
+  <rect x="480" y="140" width="240" height="60" rx="4" fill="#e8f4f3" stroke="#2d8a83" stroke-width="1"/>
+  <text x="600" y="165" font-family="'Inter', sans-serif" font-size="11" font-weight="bold" fill="#1f635e" text-anchor="middle">REST API Endpoints</text>
+  <text x="600" y="185" font-family="'Inter', sans-serif" font-size="10" fill="#115e59" text-anchor="middle">AuthController, PlannerController</text>
+  
+  <rect x="480" y="240" width="240" height="60" rx="4" fill="#e8f4f3" stroke="#2d8a83" stroke-width="1"/>
+  <text x="600" y="265" font-family="'Inter', sans-serif" font-size="11" font-weight="bold" fill="#1f635e" text-anchor="middle">Core Services Layer</text>
+  <text x="600" y="285" font-family="'Inter', sans-serif" font-size="10" fill="#115e59" text-anchor="middle">PlannerService, SavedTripService</text>
+
+  <!-- Connectors -->
+  <path d="M 320 270 L 480 270" stroke="#2d8a83" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 320 170 L 480 170" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)" stroke-dasharray="3"/>
+</svg>

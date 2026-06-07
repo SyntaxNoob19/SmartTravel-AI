@@ -1,0 +1,67 @@
+classDiagram
+    class UserAccount {
+        +Long id
+        +String name
+        +String email
+        +String passwordHash
+        +LocalDateTime createdAt
+        +toDto() AuthUserDto
+    }
+
+    class SavedTrip {
+        +Long id
+        +Long userId
+        +String userEmail
+        +String tripName
+        +String destination
+        +String plannerRequestJson
+        +String plannerResponseJson
+        +LocalDateTime createdAt
+        +LocalDateTime updatedAt
+    }
+
+    class BudgetPlan {
+        +Long id
+        +UserAccount user
+        +Double totalAmount
+        +Integer participants
+        +List~String~ memberNames
+        +List~Expense~ expenses
+        +LocalDateTime createdAt
+        +LocalDateTime updatedAt
+    }
+
+    class Expense {
+        +Long id
+        +String name
+        +Double amount
+        +String date
+        +String description
+    }
+
+    class PlannerService {
+        -PlaceRepository placeRepository
+        -PlannerAiService plannerAiService
+        +generate(PlannerRequest) PlannerResponseDto
+    }
+
+    class PlannerAiService {
+        -OkHttpClient httpClient
+        -ObjectMapper objectMapper
+        +generateFallbackItinerary(PlannerRequest, String, int, double, String) AiFallbackResult
+        +enhanceItinerary(PlannerResponseDto, String, String, String) Optional~AiEnhancementDto~
+    }
+
+    class SavedTripService {
+        -SavedTripRepository tripRepository
+        -UserAccountRepository userRepository
+        +saveTrip(String, SavedTripCreateRequest) SavedTripDto
+        +listTrips(String) List
+        +deleteTrip(Long, String) void
+    }
+
+    UserAccount "1" --> "0..*" SavedTrip : owns
+    UserAccount "1" --> "0..*" BudgetPlan : manages
+    BudgetPlan "1" *-- "0..*" Expense : tracks
+    SavedTripService ..> SavedTrip : persists
+    PlannerService --> PlannerAiService : delegates

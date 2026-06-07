@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 2 L 10 5 L 0 8 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#f8fafc" rx="12"/>
+  <text x="400" y="35" font-family="'Inter', sans-serif" font-size="20" font-weight="bold" fill="#0f172a" text-anchor="middle">SmartTravel - Deployment Model &amp; Interfaces</text>
+  
+  <!-- Nodes -->
+  <rect x="50" y="90" width="200" height="100" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="150" y="120" font-family="'Inter', sans-serif" font-size="13" font-weight="bold" fill="#0f172a" text-anchor="middle">User Client Machine</text>
+  <rect x="70" y="135" width="160" height="40" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="150" y="160" font-family="'Inter', sans-serif" font-size="11" fill="#334155" text-anchor="middle">Browser (Chrome/Firefox)</text>
+  
+  <rect x="300" y="90" width="220" height="180" rx="8" fill="#ffffff" stroke="#2d8a83" stroke-width="1.5"/>
+  <text x="410" y="120" font-family="'Inter', sans-serif" font-size="13" font-weight="bold" fill="#1f635e" text-anchor="middle">JVM Runtime Host (JRE 17)</text>
+  <rect x="320" y="135" width="180" height="50" rx="4" fill="#e8f4f3" stroke="#2d8a83"/>
+  <text x="410" y="165" font-family="'Inter', sans-serif" font-size="11" font-weight="bold" fill="#1f635e" text-anchor="middle">Spring Boot JAR App</text>
+  
+  <rect x="320" y="200" width="180" height="50" rx="4" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="410" y="230" font-family="'Inter', sans-serif" font-size="11" fill="#334155" text-anchor="middle">india_travel_dataset.csv</text>
+  
+  <rect x="560" y="90" width="200" height="100" rx="8" fill="#ffffff" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="660" y="120" font-family="'Inter', sans-serif" font-size="13" font-weight="bold" fill="#7e22ce" text-anchor="middle">MySQL Database</text>
+  <rect x="580" y="135" width="160" height="40" rx="4" fill="#faf5ff" stroke="#d8b4fe"/>
+  <text x="660" y="160" font-family="'Inter', sans-serif" font-size="11" fill="#7e22ce" text-anchor="middle">MySQL DBMS 8.0+ (Port 3306)</text>
+  
+  <rect x="430" y="320" width="200" height="80" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/>
+  <text x="530" y="350" font-family="'Inter', sans-serif" font-size="13" font-weight="bold" fill="#0f172a" text-anchor="middle">OpenRouter Cloud</text>
+  <text x="530" y="375" font-family="'Inter', sans-serif" font-size="11" fill="#475569" text-anchor="middle">LLM API Router (HTTPS)</text>
+
+  <!-- Connectors -->
+  <path d="M 250 140 L 300 140" stroke="#2d8a83" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 500 140 L 560 140" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <path d="M 410 270 L 410 320" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)"/>
+</svg>

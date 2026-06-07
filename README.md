@@ -1,193 +1,124 @@
-# SmartTravel
+# ✈️ SmartTravel — AI-Powered Smart Travel Planner
 
-SmartTravel is an AI-powered full-stack travel planning application focused on Indian destinations. The platform helps users generate personalized itineraries, explore destination details, estimate travel budgets, view live weather insights, and save trips in one place.
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.0-brightgreen.svg)](https://spring.io/projects/spring-boot)
+[![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0-blue.svg)](https://www.mysql.com/)
+[![OpenRouter AI](https://img.shields.io/badge/OpenRouter%20AI-Integration-blueviolet.svg)](https://openrouter.ai/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-The project combines a responsive frontend with a Spring Boot backend and MySQL database to create a complete travel planning experience without relying on multiple disconnected platforms.
-
----
-
-## Project Goals
-
-* Simplify travel planning through a single unified platform
-* Generate personalized itineraries using AI-assisted planning
-* Provide contextual travel information including budgets, maps, weather, and destination insights
-* Build a beginner-friendly full-stack project demonstrating frontend, backend, database, and AI integration
+SmartTravel is a modern, full-stack, AI-powered travel planning web application built specifically for discovering and exploring beautiful destinations in India. It leverages a custom RAG (Retrieval-Augmented Generation) design to search a local MySQL database of curated destinations and merges it with generative intelligence via the OpenRouter (LLM) API to generate daily, optimized travel itineraries.
 
 ---
 
-## Features
+## 🌟 Key Features
 
-* AI-powered itinerary generation
-* User authentication (register & login)
-* Personalized saved trips
-* Budget estimation
-* Integrated maps
-* Real-time weather insights
-* Destination overviews
-* Responsive UI
-* MySQL persistence
-* Basic RAG-inspired itinerary generation using contextual travel datasets
+*   🤖 **Dual-Engine Travel Planner:** Generates multi-day travel plans using high-quality generative AI. If the external AI service is unavailable or key credentials are not provided, it seamlessly activates a **deterministic, rule-based database fallback algorithm** that groups local destinations geographically.
+*   🔐 **Secure Session Authentication:** Stateful, secure cookie-based login (`JSESSIONID`) with BCrypt password hashing.
+*   📂 **My Trips Dashboard:** Saves and manages customized itineraries dynamically tied to user profiles.
+*   👥 **Companion Split-Expense Calculator:** Built-in companion budgeting system to record expenses and dynamically compute who owes whom to simplify expense splits.
+*   ⛅ **Live Weather & Destination Insights:** Integrated weather profiles, photography spots, local tips, and nearest connectivity nodes (airports, railways).
+*   🗺️ **Interactive Maps Integration:** Renders map locations using destination coordinates.
 
 ---
 
-## Tech Stack
+## 🏗️ System Architecture
 
-### Frontend
+SmartTravel follows a robust **3-Tier Architecture** that enforces clean separation of concerns between client views, logical controllers/services, and databases.
 
-* HTML
-* CSS
-* Vanilla JavaScript
+### 🌐 System Architecture Flow
+![System Architecture Flow](docs/diagrams/svg/system_architecture.svg)
 
-### Backend
-
-* Spring Boot
-* Java 17
-* Maven
-
-### Database
-
-* MySQL 8+
-
-### AI Integration
-
-* OpenRouter API
-* Basic RAG-inspired itinerary generation using synthetic travel datasets
+### 📂 Repository Directory Layout
+![Repository Layout](docs/diagrams/svg/folder_structure.svg)
 
 ---
 
-## Project Structure
+## 🛠️ Technology Stack
 
-```text
-SmartTravel/
-├── Backend/
-├── Frontend/
-├── docs/
-│   ├── diagrams/
-│   ├── API_REFERENCE.md
-│   ├── ARCHITECTURE.md
-│   ├── FLOW_DIAGRAMS.md
-│   └── PROJECT_SETUP.md
-├── .env.example
-├── .gitignore
-├── import_csv.py
-├── README.md
-└── datasets/
-```
-
-Detailed documentation and architecture explanations are available inside the `docs/` folder.
+| Component | Technology | Description |
+|---|---|---|
+| **Frontend** | Vanilla HTML5 / CSS3 / ES6 Javascript | Clean, modern user interface utilizing HSL tailored colors, responsive CSS grids, and smooth micro-animations. |
+| **Backend** | Spring Boot 3.x, Java 17 | Core web controllers, REST APIs, JPA mapping, and internal service layers. |
+| **Database** | MySQL 8+ / Hibernate JPA | Relational tables mapping places, user sessions, saved trips, and group budgets. |
+| **API Integration** | OpenRouter AI / OkHttp client | Integrates with generative models (e.g. `gpt-4o-mini`) using structured JSON templates. |
+| **Data Processing** | Python, Commons CSV | Pre-processing scripts and loader tools to ingest dataset profiles. |
 
 ---
 
-## Quick Start
+## 🚀 Quick Start Guide
 
-### 1. Clone the Repository
+### 1. Prerequisites
+*   Java Development Kit (JDK) 17 or higher
+*   Maven 3.x (or use the included wrapper `./mvnw`)
+*   MySQL Server 8.x
+*   Python 3.x (for database seeding)
 
+### 2. Configure Database & Environment
+1.  Log into your MySQL terminal and create the schema:
+    ```sql
+    CREATE DATABASE smarttravel;
+    ```
+2.  Copy the example environment file and fill in your values (or configure system environment variables):
+    ```bash
+    cp .env.example .env
+    ```
+    Configure the following keys:
+    ```env
+    OPENROUTER_API_KEY=your_openrouter_api_key
+    MYSQL_DATABASE=smarttravel
+    MYSQL_USERNAME=root
+    MYSQL_PASSWORD=your_mysql_password
+    ```
+
+### 3. Seed the Database
+Run the Python CSV importer script to populate the local destinations database with the curated Indian dataset containing hundreds of scenic places:
 ```bash
-git clone <repository-url>
-cd SmartTravel
+python scripts/import_csv.py
 ```
 
-### 2. Configure Environment Variables
-
-Update backend configuration or create environment variables:
-
-```env
-OPENROUTER_API_KEY=your_api_key
-MYSQL_DATABASE=smarttravel
-MYSQL_USERNAME=root
-MYSQL_PASSWORD=your_password
-```
-
-### 3. Start MySQL
-
-Create the required database:
-
-```sql
-CREATE DATABASE smarttravel;
-```
-
-### 4. Run the Backend
-
+### 4. Build and Run the Backend Server
+Navigate into the `Backend/` directory and spin up the spring-boot server:
 ```powershell
 cd Backend
-
-Get-NetTCPConnection -LocalPort 9090 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }
-
 .\mvnw.cmd clean spring-boot:run
 ```
+The server will boot up and bind to port **`9090`**.
 
-### 5. Open the Application
-
+### 5. Access the Platform
+Open your browser and navigate to:
 ```text
 http://localhost:9090/
 ```
 
 ---
 
-## Documentation
+## 📖 Comprehensive Documentation
 
-Additional project documentation is available in the `docs/` directory:
+Rich technical writeups and guides are structured inside the [docs/](file:///d:/travel-planner/docs/) directory:
 
-* [Project Setup](docs/PROJECT_SETUP.md)
-* [Architecture](docs/ARCHITECTURE.md)
-* [API Reference](docs/API_REFERENCE.md)
-* [Flow Diagrams](docs/FLOW_DIAGRAMS.md)
-* [Frontend Improvements](docs/FRONTEND_IMPROVEMENTS.md) - Latest UI/UX enhancements
-
----
-
-## Recent Frontend Improvements (June 2025)
-
-### Budget Display Enhancements
-- **Prominent daily rate banner** at the top of budget section (36px font)
-- **Total budget moved to metadata strip** - visible without scrolling
-- **Simplified progress bars** - removed visual clutter, focus on amounts
-- **Exact category breakdown** - Hotel 40%, Food 18%, Transport 20%, Activities 22%
-
-### Day-by-Day Itinerary Improvements
-- **All places expanded by default** - no collapse/expand needed
-- **Complete place details** visible - description, tips, safety advice, duration
-- **Sequential numbering** - clear 1. 2. 3. ordering for activities
-- **Responsive grid layout** - clean presentation on all devices
-
-### Code Quality Improvements
-- **Removed raw JSON data exposure** - "View Full Itinerary Data" button removed
-- **Cleaner frontend UI** - technical details hidden from end users
-- **Mobile responsive design** - seamless experience on all screen sizes
-
-**For detailed information, see [Frontend Improvements Documentation](docs/FRONTEND_IMPROVEMENTS.md)**
+*   📘 **[Software Requirements Specification (SRS)](docs/SRS.md):** Detailed system objectives, personas, and use cases.
+*   📐 **[System & Component Architecture](docs/ARCHITECTURE.md):** In-depth structural model, packages, and design systems.
+*   🌐 **[API Endpoint Reference](docs/API_DOCUMENTATION.md):** Request/Response payloads, schemas, and auth filters.
+*   💾 **[Database Design Schema](docs/DATABASE_DESIGN.md):** Entity maps, relationships, and schema layouts.
+*   ✨ **[Frontend Design System](docs/FRONTEND_ARCHITECTURE.md):** Page layouts, design tokens, and CSS architecture.
+*   ⚙️ **[Backend Service Layout](docs/BACKEND_ARCHITECTURE.md):** Service logic, RAG retrieval details, and security handlers.
+*   🚀 **[Detailed Setup & Deployment Guide](docs/DEPLOYMENT_GUIDE.md):** Detailed environment configurations, system limits, and deployment instructions.
+*   🧹 **[Codebase Cleanup & Auditor Report](docs/CLEANUP_REPORT.md):** Refactoring logs, duplicate resolutions, and package hardening changes.
+*   ⚠️ **[Technical Debt & Future Backlog](docs/TECHNICAL_DEBT_REPORT.md):** Identified optimizations, performance improvements, and feature extensions.
+*   📝 **[Project Changelog](docs/CHANGELOG.md):** History of releases, features, and modifications.
 
 ---
 
-## Architecture Overview
+## 🎨 Visual Workflows & Lifecycles
+All source vector diagrams and Mermaid charts are archived under [docs/diagrams/](file:///d:/travel-planner/docs/diagrams/) and [docs/mermaid/](file:///d:/travel-planner/docs/mermaid/):
 
-SmartTravel follows a simple full-stack architecture:
-
-```text
-Frontend (HTML/CSS/JavaScript)
-            ↓
-Spring Boot Backend
-            ↓
-MySQL Database
-            ↓
-OpenRouter AI Integration
-```
-
-The backend retrieves contextual travel information from synthetic travel datasets and enriches itinerary generation before interacting with the AI layer.
+*   🧗 **[User Itinerary Lifecycle Activity](docs/diagrams/svg/activity.svg)**
+*   🔐 **[Session Authentication Sequence](docs/diagrams/svg/authentication_flow.svg)**
+*   💬 **[AI RAG Generation Sequence](docs/diagrams/svg/api_flow.svg)**
+*   🗺️ **[User Page Navigation Flow](docs/diagrams/svg/navigation_flow.svg)**
+*   📐 **[Core JPA Entity Class Model](docs/diagrams/svg/class_diagram.svg)**
 
 ---
 
-## Demo
-
-Screenshots and walkthrough videos will be added soon.
-
----
-
-## Future Improvements
-
-* Hotel and transport recommendations
-* Multi-user trip collaboration
-* Cloud deployment support
-* Enhanced AI recommendation system
-* Live pricing integrations
-* Personalized recommendation engine
+## 📄 License
+This project is licensed under the MIT License. See the LICENSE file for details.

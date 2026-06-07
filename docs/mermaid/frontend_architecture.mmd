@@ -1,0 +1,16 @@
+graph TD
+    HTML["HTML Templates (pages/*)"] --> |Include| Tokens["design-tokens.css"]
+    HTML --> |Reference| JS["Global Modules (js/*)"]
+    
+    subgraph JavaScriptModules ["JavaScript Application Core"]
+        JSAPI["api.js (fetch client wrapper)"]
+        JSAuth["auth.js (login/register/logout states)"]
+        JSPlanner["planner.js (multi-step wizard state logic)"]
+        JSItin["itinerary.js (itinerary builder and map view)"]
+        JSNavbar["navbar.js (asynchronous navbar load)"]
+    end
+    
+    JSItin --> |Fetches maps & weather| JSAPI
+    JSPlanner --> |Posts planner requests| JSAPI
+    JSAuth --> |Authenticates| JSAPI
+    JSNavbar --> |Fetches authentication state| JSAPI

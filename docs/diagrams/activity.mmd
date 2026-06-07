@@ -1,0 +1,25 @@
+stateDiagram-v2
+    [*] --> InputParameters : User inputs Destination, Days, Budget, Theme, Pace
+    InputParameters --> QueryLocalDataset : Backend matches queries in Local CSV
+    QueryLocalDataset --> EnrichPrompt : Backend builds contextual AI prompt with CSV rows
+    EnrichPrompt --> CallOpenRouter : Backend issues OkHttp call to OpenRouter API
+    
+    state AI_Check <<choice>>
+    CallOpenRouter --> AI_Check
+    
+    AI_Check --> RenderItinerary : Success (Return AI Plan)
+    AI_Check --> FallbackPlan : API Timeout / Failure (Build Local Fallback)
+    
+    FallbackPlan --> RenderItinerary : Return Fallback JSON
+    RenderItinerary --> FetchWeatherAlerts : Retrieve concurrent weather & crowd alerts
+    FetchWeatherAlerts --> DisplayToUser : Renders Plan, Weather, Budget, and Map View
+    
+    state Auth_Check <<choice>>
+    DisplayToUser --> SaveTripAction : User clicks "Save Itinerary"
+    SaveTripAction --> Auth_Check
+    
+    Auth_Check --> SaveToDatabase : Authenticated (POST to MySQL)
+    Auth_Check --> RedirectLogin : Unauthenticated (Navigate to login.html)
+    
+    RedirectLogin --> SaveToDatabase : Login Success
+    SaveToDatabase --> [*]

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 550" width="800" height="550">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 2 L 10 5 L 0 8 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#fafafa" rx="12"/>
+  <text x="400" y="35" font-family="'Inter', sans-serif" font-size="18" font-weight="bold" fill="#0f172a" text-anchor="middle">SmartTravel - Itinerary Generation Sequence View</text>
+  
+  <!-- Lifelines -->
+  <line x1="100" y1="80" x2="100" y2="500" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4"/>
+  <line x1="240" y1="80" x2="240" y2="500" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4"/>
+  <line x1="380" y1="80" x2="380" y2="500" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4"/>
+  <line x1="520" y1="80" x2="520" y2="500" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4"/>
+  <line x1="680" y1="80" x2="680" y2="500" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4"/>
+  
+  <rect x="60" y="50" width="80" height="30" rx="4" fill="#0f172a" stroke="#1e293b"/>
+  <text x="100" y="70" font-family="'Inter', sans-serif" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">Client JS</text>
+  
+  <rect x="190" y="50" width="100" height="30" rx="4" fill="#2d8a83" stroke="#1f635e"/>
+  <text x="240" y="70" font-family="'Inter', sans-serif" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">RestController</text>
+  
+  <rect x="330" y="50" width="100" height="30" rx="4" fill="#2d8a83" stroke="#1f635e"/>
+  <text x="380" y="70" font-family="'Inter', sans-serif" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">PlannerService</text>
+  
+  <rect x="470" y="50" width="100" height="30" rx="4" fill="#64748b" stroke="#475569"/>
+  <text x="520" y="70" font-family="'Inter', sans-serif" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">PlaceRepo</text>
+  
+  <rect x="630" y="50" width="100" height="30" rx="4" fill="#64748b" stroke="#475569"/>
+  <text x="680" y="70" font-family="'Inter', sans-serif" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">PlannerAiService</text>
+
+  <!-- Execution lines -->
+  <path d="M 100 120 L 240 120" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="170" y="115" font-family="'Inter', sans-serif" font-size="9" text-anchor="middle">1. POST generate</text>
+  
+  <path d="M 240 160 L 380 160" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="310" y="155" font-family="'Inter', sans-serif" font-size="9" text-anchor="middle">2. Invoke generate</text>
+  
+  <path d="M 380 200 L 520 200" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="450" y="195" font-family="'Inter', sans-serif" font-size="9" text-anchor="middle">3. smartFilter(city)</text>
+  
+  <path d="M 520 240 L 380 240" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)" stroke-dasharray="3"/>
+  <text x="450" y="235" font-family="'Inter', sans-serif" font-size="9" text-anchor="middle">4. Return Place rows</text>
+  
+  <path d="M 380 280 A 30 30 0 0 1 380 310" stroke="#2d8a83" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="420" y="300" font-family="'Inter', sans-serif" font-size="9" fill="#1f635e">5. Expand sparse candidates</text>
+  
+  <path d="M 380 340 L 680 340" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="530" y="335" font-family="'Inter', sans-serif" font-size="9" text-anchor="middle">6. generateFallbackItinerary(context)</text>
+  
+  <path d="M 680 380 L 380 380" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)" stroke-dasharray="3"/>
+  <text x="530" y="375" font-family="'Inter', sans-serif" font-size="9" text-anchor="middle">7. Return RAG generated JSON</text>
+  
+  <path d="M 380 430 L 240 430" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)" stroke-dasharray="3"/>
+  <text x="310" y="425" font-family="'Inter', sans-serif" font-size="9" text-anchor="middle">8. Return PlannerResponseDto</text>
+  
+  <path d="M 240 470 L 100 470" stroke="#475569" stroke-width="1.5" marker-end="url(#arrow)" stroke-dasharray="3"/>
+  <text x="170" y="465" font-family="'Inter', sans-serif" font-size="9" text-anchor="middle">9. Render trip plan</text>
+</svg>

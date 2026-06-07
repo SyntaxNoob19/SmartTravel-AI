@@ -1,0 +1,25 @@
+graph TD
+    subgraph FrontendComponents ["Frontend Application (Vanilla Client)"]
+        HTMLPages["HTML Views (pages/*)"]
+        ControllersJS["JS Controllers (js/*)"]
+        DynamicNav["navbar.js Module"]
+        StylesCSS["Vanilla Stylesheets (css/*)"]
+    end
+
+    subgraph BackendComponents ["Spring Boot Application (Server JAR)"]
+        ControllersREST["Rest Controllers (controller/*)"]
+        ServicesBiz["Business Services (service/*)"]
+        SecurityConfig["Security Configuration (security/*)"]
+        ReposJPA["JPA Repositories (repository/*)"]
+        UtilsCSV["CSV Parser & Sanitizers (util/*)"]
+    end
+
+    HTMLPages --> |Include| StylesCSS
+    HTMLPages --> |Reference| ControllersJS
+    DynamicNav --> |Dynamic Import| HTMLPages
+    
+    ControllersJS --> |REST / Session Cookies| ControllersREST
+    ControllersREST --> SecurityConfig
+    ControllersREST --> ServicesBiz
+    ServicesBiz --> ReposJPA
+    ServicesBiz --> UtilsCSV

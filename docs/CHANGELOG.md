@@ -2,6 +2,35 @@
 
 All notable changes to SmartTravel are documented in this file.
 
+## [June 7, 2026] - Architecture Cleanup, Parameterization & Documentation
+
+### Added
+- **Parameterizable Asset Routing:** Configured `app.frontend.path` to allow environment-independent runtime static assets mounting, solving path portability vulnerabilities.
+- **Portability-Optimized DB Seeding:** Added datasets candidate paths resolution logic in `CsvImportTool.java` and `import_csv.py` to allow dataset seeds imports in any runtime context.
+- **Master CSS Tokens:** Established `design-tokens.css` as the master design tokens stylesheet and pre-linked it in all views.
+- **SVG Vector Diagrams:** Rendered vector SVG UML and flow diagrams inside `docs/diagrams/svg/` for high-quality, lightweight GitHub rendering.
+- **Full Portfolio Documentation:** Generated structured markdown specifications inside `docs/` (SRS, database design, backend and frontend architectures, technical debt reports, and deployment guides).
+
+### Changed
+- **CORS Profiles Hardening:** Restrained allowed origin patterns from wildcard `*` to specific client paths matching `app.cors.allowed-origins`.
+- **Database Seeding Paths:** Relocated initial seed database file `india_travel_dataset_cleaned_v2.csv` to `datasets/` and utility loader scripts to `scripts/`.
+
+### Removed
+- **Unused Controller:** Deleted unreferenced `LandingController.java` to clean up servlet mapping handlers.
+- **Obsolete Packaging:** Purged empty package subdirectories from `cleanup/`.
+- **Unreferenced JS & CSS:** Purged dead scripts `trip-card.js` and styling sheets `trip-dashboard.css` from the client code.
+- **Scratch Files Purge:** Purged raw test logs and notes (`planner.json`, `request.json`, `test-output.txt`, `quick-commands.txt`) from the backend workspace root.
+
+### Fixed
+- **Mockito Test Suite Failures:** Resolved `UnnecessaryStubbingException` errors across multiple test files. Corrected Mockito matchers for null city values.
+
+### Version History Summary
+
+| Version | Date | Type | Summary |
+|---------|------|------|---------|
+| 1.1.0   | Jun 7, 2026 | Cleanup | Architecture Reorganization, CORS Hardening, and Portfolio Documentation |
+| 1.0.3   | Jun 6, 2025 | Enhancement | Frontend UX improvements - budget display & itinerary rendering |
+
 ## [June 6, 2025] - Frontend UX/UI Improvements
 
 ### Added

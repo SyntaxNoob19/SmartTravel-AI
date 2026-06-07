@@ -10,6 +10,7 @@ def resolve_csv_path() -> Path:
     candidates = [
         os.environ.get("SMARTTRAVEL_CSV_PATH"),
         Path.cwd() / "india_travel_dataset_cleaned_v2.csv",
+        Path(__file__).parent.parent / "datasets" / "india_travel_dataset_cleaned_v2.csv",
         Path(r"C:\Users\Riya\Downloads\india_travel_dataset_cleaned_v2.csv"),
     ]
     for candidate in candidates:

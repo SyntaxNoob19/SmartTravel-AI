@@ -1,0 +1,31 @@
+graph TD
+    subgraph Client ["Presentation Layer (Frontend)"]
+        UI["HTML / CSS / JS (Vanilla)"]
+    end
+    
+    subgraph Server ["Application Layer (Spring Boot Backend)"]
+        WebMVC["Spring Web MVC (Controllers)"]
+        AuthServ["Auth / User Services"]
+        TripServ["SavedTripService"]
+        Planner["PlannerService & AI RAG Service"]
+        CSV["CSV Core Parser (Commons-CSV)"]
+    end
+
+    subgraph Storage ["Data Layer"]
+        MySQL["MySQL Database"]
+        Dataset["india_travel_dataset_cleaned_v2.csv"]
+    end
+
+    subgraph External ["External Services"]
+        OpenRouter["OpenRouter AI API"]
+    end
+
+    UI <--> |REST API / JSON / Session Cookies| WebMVC
+    WebMVC --> AuthServ
+    WebMVC --> TripServ
+    WebMVC --> Planner
+    Planner --> CSV
+    CSV --> Dataset
+    AuthServ <--> |JPA / Hibernate| MySQL
+    TripServ <--> |JPA / Hibernate| MySQL
+    Planner <--> |HTTP Clients| OpenRouter

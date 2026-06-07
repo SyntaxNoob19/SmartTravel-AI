@@ -1,0 +1,12 @@
+sequenceDiagram
+    autonumber
+    Client ->> Backend: POST /api/auth/login (email, password)
+    Backend ->> Database: Find user by email
+    Database -->> Backend: Return UserAccount entity (with bcrypt hash)
+    Backend ->> Backend: Verify password matches bcrypt hash
+    alt Credentials Valid
+        Backend ->> Backend: Add email attribute to HttpSession
+        Backend -->> Client: Return 200 OK + Session Cookie (JSESSIONID)
+    else Credentials Invalid
+        Backend -->> Client: Return 401 Unauthorized
+    end
