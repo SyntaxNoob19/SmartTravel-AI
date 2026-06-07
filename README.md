@@ -177,5 +177,4 @@ Technical design documents and guides are structured inside the docs/ directory:
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
-#   S m a r t T r a v e l - A I  
- 
+#
