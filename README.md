@@ -1,4 +1,4 @@
-# ✈️ SmartTravel — AI-Powered Smart Travel Planner
+# SmartTravel - AI-Powered Travel Planner
 
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.0-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/)
@@ -6,57 +6,57 @@
 [![OpenRouter AI](https://img.shields.io/badge/OpenRouter%20AI-Integration-blueviolet.svg)](https://openrouter.ai/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-SmartTravel is a modern, full-stack, AI-powered travel planning web application built specifically for discovering and exploring beautiful destinations in India. It leverages a custom RAG (Retrieval-Augmented Generation) design to search a local MySQL database of curated destinations and merges it with generative intelligence via the OpenRouter (LLM) API to generate daily, optimized travel itineraries.
+SmartTravel is a full-stack, AI-powered travel planning web application built specifically for discovering and exploring travel destinations in India. It leverages a Retrieval-Augmented Generation (RAG) architecture to query a local MySQL database of curated destinations and merges it with generative intelligence via the OpenRouter (LLM) API to generate daily, optimized travel itineraries.
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
-*   🤖 **Dual-Engine Travel Planner:** Generates multi-day travel plans using high-quality generative AI. If the external AI service is unavailable or key credentials are not provided, it seamlessly activates a **deterministic, rule-based database fallback algorithm** that groups local destinations geographically.
-*   🔐 **Secure Session Authentication:** Stateful, secure cookie-based login (`JSESSIONID`) with BCrypt password hashing.
-*   📂 **My Trips Dashboard:** Saves and manages customized itineraries dynamically tied to user profiles.
-*   👥 **Companion Split-Expense Calculator:** Built-in companion budgeting system to record expenses and dynamically compute who owes whom to simplify expense splits.
-*   ⛅ **Live Weather & Destination Insights:** Integrated weather profiles, photography spots, local tips, and nearest connectivity nodes (airports, railways).
-*   🗺️ **Interactive Maps Integration:** Renders map locations using destination coordinates.
+*   **Dual-Engine Travel Planner:** Generates multi-day travel plans using generative AI. If the external AI service is unavailable or key credentials are not provided, it seamlessly activates a deterministic, proximity-based fallback clustering algorithm that groups local destinations geographically.
+*   **Secure Session Authentication:** Stateful, secure cookie-based login (JSESSIONID) with BCrypt password hashing.
+*   **My Trips Dashboard:** Saves and manages customized itineraries dynamically tied to user profiles.
+*   **Companion Split-Expense Calculator:** Built-in companion budgeting system to record expenses and dynamically compute split shares.
+*   **Live Weather & Destination Insights:** Integrated weather profiles, photography spots, local tips, and nearest connectivity nodes (airports, railways).
+*   **Interactive Maps Integration:** Renders map locations using destination coordinates.
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
-SmartTravel follows a robust **3-Tier Architecture** that enforces clean separation of concerns between client views, logical controllers/services, and databases.
+SmartTravel follows a standard 3-Tier Architecture that enforces clean separation of concerns between client views, logical controllers/services, and databases.
 
-### 🌐 System Architecture Flow
+### System Architecture Flow
 ![System Architecture Flow](docs/diagrams/svg/system_architecture.svg)
 
-### 📂 Repository Directory Layout
+### Repository Directory Layout
 ![Repository Layout](docs/diagrams/svg/folder_structure.svg)
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 | Component | Technology | Description |
 |---|---|---|
 | **Frontend** | Vanilla HTML5 / CSS3 / ES6 Javascript | Clean, modern user interface utilizing HSL tailored colors, responsive CSS grids, and smooth micro-animations. |
 | **Backend** | Spring Boot 3.x, Java 17 | Core web controllers, REST APIs, JPA mapping, and internal service layers. |
 | **Database** | MySQL 8+ / Hibernate JPA | Relational tables mapping places, user sessions, saved trips, and group budgets. |
-| **API Integration** | OpenRouter AI / OkHttp client | Integrates with generative models (e.g. `gpt-4o-mini`) using structured JSON templates. |
+| **AI Integration** | OpenRouter API / OkHttp client | Integrates with generative models (e.g. gpt-4o-mini) using structured JSON templates. |
 | **Data Processing** | Python, Commons CSV | Pre-processing scripts and loader tools to ingest dataset profiles. |
 
 ---
 
-## 🚀 Quick Start Guide
+## Quick Start Guide
 
 ### 1. Prerequisites
 *   Java Development Kit (JDK) 17 or higher
-*   Maven 3.x (or use the included wrapper `./mvnw`)
+*   Maven 3.x (or use the included wrapper ./mvnw)
 *   MySQL Server 8.x
 *   Python 3.x (for database seeding)
 
 ### 2. Configure Database & Environment
 1.  Log into your MySQL terminal and create the schema:
     ```sql
-    CREATE DATABASE smarttravel;
+    CREATE DATABASE smart_travel;
     ```
 2.  Copy the example environment file and fill in your values (or configure system environment variables):
     ```bash
@@ -64,25 +64,25 @@ SmartTravel follows a robust **3-Tier Architecture** that enforces clean separat
     ```
     Configure the following keys:
     ```env
-    OPENROUTER_API_KEY=your_openrouter_api_key
-    MYSQL_DATABASE=smarttravel
+    OPENROUTER_API_KEY=your_api_key
+    MYSQL_DATABASE=smart_travel
     MYSQL_USERNAME=root
-    MYSQL_PASSWORD=your_mysql_password
+    MYSQL_PASSWORD=your_password
     ```
 
 ### 3. Seed the Database
-Run the Python CSV importer script to populate the local destinations database with the curated Indian dataset containing hundreds of scenic places:
+Run the Python CSV importer script to populate the local destinations database with the curated Indian dataset containing tourist places:
 ```bash
 python scripts/import_csv.py
 ```
 
 ### 4. Build and Run the Backend Server
-Navigate into the `Backend/` directory and spin up the spring-boot server:
+Navigate into the Backend/ directory and spin up the spring-boot server:
 ```powershell
 cd Backend
 .\mvnw.cmd clean spring-boot:run
 ```
-The server will boot up and bind to port **`9090`**.
+The server will boot up and bind to port 9090.
 
 ### 5. Access the Platform
 Open your browser and navigate to:
@@ -92,33 +92,27 @@ http://localhost:9090/
 
 ---
 
-## 📖 Comprehensive Documentation
+## System Documentation
 
-Rich technical writeups and guides are structured inside the [docs/](file:///d:/travel-planner/docs/) directory:
+Technical design documents and guides are structured inside the docs/ directory:
 
-*   📘 **[Software Requirements Specification (SRS)](docs/SRS.md):** Detailed system objectives, personas, and use cases.
-*   📐 **[System & Component Architecture](docs/ARCHITECTURE.md):** In-depth structural model, packages, and design systems.
-*   🌐 **[API Endpoint Reference](docs/API_DOCUMENTATION.md):** Request/Response payloads, schemas, and auth filters.
-*   💾 **[Database Design Schema](docs/DATABASE_DESIGN.md):** Entity maps, relationships, and schema layouts.
-*   ✨ **[Frontend Design System](docs/FRONTEND_ARCHITECTURE.md):** Page layouts, design tokens, and CSS architecture.
-*   ⚙️ **[Backend Service Layout](docs/BACKEND_ARCHITECTURE.md):** Service logic, RAG retrieval details, and security handlers.
-*   🚀 **[Detailed Setup & Deployment Guide](docs/DEPLOYMENT_GUIDE.md):** Detailed environment configurations, system limits, and deployment instructions.
-*   🧹 **[Codebase Cleanup & Auditor Report](docs/CLEANUP_REPORT.md):** Refactoring logs, duplicate resolutions, and package hardening changes.
-*   ⚠️ **[Technical Debt & Future Backlog](docs/TECHNICAL_DEBT_REPORT.md):** Identified optimizations, performance improvements, and feature extensions.
-*   📝 **[Project Changelog](docs/CHANGELOG.md):** History of releases, features, and modifications.
+*   **[Software Requirements Specification (SRS)](docs/SRS.md):** Detailed system objectives, personas, and use cases.
+*   **[System Architecture Specification](docs/ARCHITECTURE.md):** In-depth structural model, packages, database design schemas, and technical debt log.
+*   **[REST API Specification](docs/API.md):** Request/Response payloads, schemas, and authentication filters.
+*   **[Deployment & Setup Specification](docs/DEPLOYMENT.md):** Detailed environment configurations, database seeding methods, and deployment instructions.
 
 ---
 
-## 🎨 Visual Workflows & Lifecycles
-All source vector diagrams and Mermaid charts are archived under [docs/diagrams/](file:///d:/travel-planner/docs/diagrams/) and [docs/mermaid/](file:///d:/travel-planner/docs/mermaid/):
+## Visual Workflows & Lifecycles
+All source diagrams and vector graphics are placed inside docs/diagrams/:
 
-*   🧗 **[User Itinerary Lifecycle Activity](docs/diagrams/svg/activity.svg)**
-*   🔐 **[Session Authentication Sequence](docs/diagrams/svg/authentication_flow.svg)**
-*   💬 **[AI RAG Generation Sequence](docs/diagrams/svg/api_flow.svg)**
-*   🗺️ **[User Page Navigation Flow](docs/diagrams/svg/navigation_flow.svg)**
-*   📐 **[Core JPA Entity Class Model](docs/diagrams/svg/class_diagram.svg)**
+*   [User Itinerary Lifecycle Activity](docs/diagrams/svg/activity.svg)
+*   [Session Authentication Sequence](docs/diagrams/svg/authentication_flow.svg)
+*   [AI RAG Generation Sequence](docs/diagrams/svg/api_flow.svg)
+*   [User Page Navigation Flow](docs/diagrams/svg/navigation_flow.svg)
+*   [Core JPA Entity Class Model](docs/diagrams/svg/class_diagram.svg)
 
 ---
 
-## 📄 License
+## License
 This project is licensed under the MIT License. See the LICENSE file for details.
