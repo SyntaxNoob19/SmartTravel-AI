@@ -75,14 +75,26 @@ Ensure you have the following environments configured on your system:
 
 ---
 
-## 5. Serving the Frontend
+## 5. Serving and Deploying the Frontend
 
-Since the frontend consists of pure, responsive HTML/CSS/JS, it is served directly by the Spring Boot JAR at the root URL `https://smarttravel-ai.onrender.com/` due to the dynamic `WebConfig` mapping.
+There are two primary methods to serve/deploy the static frontend:
 
-If you are a developer looking to serve the static frontend assets separately with hot-reloading or simple HTTP servers (e.g. VS Code Live Server):
-1. Serve the `Frontend/` folder using Python or npm:
+### Option A: Monolithic Serving via Spring Boot (Render)
+Since the frontend consists of pure HTML/CSS/JS, it can be served directly by the Spring Boot JAR at the root URL `https://smarttravel-ai.onrender.com/` due to the dynamic `WebConfig` mapping. The backend automatically forwards the root path to serve `index.html` from the static directory specified by `app.frontend.path`.
+
+### Option B: Decoupled Deployment (Netlify)
+You can deploy the `Frontend/` directory independently to static hosting services like Netlify (e.g., `https://smart-travel-planner-ai.netlify.app`).
+For this decoupled architecture:
+1. The frontend configuration (`Frontend/js/config.js`) dynamically detects the production hostname and routes API requests to the Render backend at `https://smarttravel-ai.onrender.com/api`.
+2. Ensure the backend CORS configuration `app.cors.allowed-origins` (or the `APP_CORS_ALLOWED_ORIGINS` environment variable on Render) includes `https://smart-travel-planner-ai.netlify.app` to authorize requests and cross-origin cookies.
+
+### Local Development / Decoupled Testing
+If you are running the frontend locally via an external HTTP server (e.g., VS Code Live Server):
+1. Serve the `Frontend/` folder:
    ```powershell
    cd Frontend
    python -m http.server 5500
    ```
-2. Open `https://smarttravel-ai.onrender.com:5500/index.html` in your web browser. Make sure your `app.cors.allowed-origins` config in the backend includes `https://smarttravel-ai.onrender.com:5500`.
+2. Open `http://localhost:5500/` or `http://127.0.0.1:5500/` in your browser.
+3. Ensure the backend CORS allowed origins includes your development port (e.g., `http://localhost:5500`).
+

@@ -4,6 +4,7 @@
 [![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue.svg)](https://www.mysql.com/)
 [![OpenRouter AI](https://img.shields.io/badge/OpenRouter%20AI-Integration-blueviolet.svg)](https://openrouter.ai/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 SmartTravel is a full-stack, AI-powered travel planning web application built specifically for discovering and exploring travel destinations in India. It leverages a Retrieval-Augmented Generation (RAG) architecture to query a local MySQL database of curated destinations and merges it with generative intelligence via the OpenRouter (LLM) API to generate daily, optimized travel itineraries.
 
@@ -11,9 +12,9 @@ SmartTravel is a full-stack, AI-powered travel planning web application built sp
 
 ## Project Overview
 
-SmartTravel is designed to simplify the complex process of planning multi-day trips. By combining a curated offline dataset of Indian tourist attractions with real-time generative language models, the application constructs personalized itineraries customized to user budget comfort levels, timeline constraints, travel styles, and mood preferences. 
+SmartTravel simplifies multi-day travel planning by integrating curated destination data with generative language modeling. The application structures customized itineraries based on user inputs such as budget constraints, duration parameters, group types, and mood preferences. 
 
-The application architecture prioritizes reliability by utilizing a local database fallback engine that dynamically clusters nearby locations using geocoordinates if external services time out or are unconfigured. The platform also offers secure session authentication and companion budget tools, resolving all core aspects of trip organization in a single dashboard.
+The application architecture includes a deterministic local fallback engine. If the generative AI service is unavailable or unconfigured, the system groups database records using geographic coordinates to construct a balanced travel schedule. Stateful session authentication, dynamic expense splitting, and weather summaries are unified in a single responsive web interface.
 
 ---
 
@@ -21,6 +22,7 @@ The application architecture prioritizes reliability by utilizing a local databa
 
 *   **Dual-Engine Travel Planner:** Generates multi-day travel plans using generative AI. If the external AI service is unavailable or key credentials are not provided, it seamlessly activates a deterministic, proximity-based fallback clustering algorithm that groups local destinations geographically.
 *   **Secure Session Authentication:** Stateful, secure cookie-based login (JSESSIONID) with BCrypt password hashing.
+*   **Default Account Seeding:** Automatically seeds a default demo user account on application bootstrap to allow immediate access and testing.
 *   **My Trips Dashboard:** Saves and manages customized itineraries dynamically tied to user profiles.
 *   **Companion Split-Expense Calculator:** Built-in companion budgeting system to record expenses and dynamically compute split shares.
 *   **Live Weather & Destination Insights:** Integrated weather profiles, photography spots, local tips, and nearest connectivity nodes (airports, railways).
@@ -34,7 +36,7 @@ The application architecture prioritizes reliability by utilizing a local databa
 |---|---|---|
 | **Frontend** | Vanilla HTML5 / CSS3 / ES6 JavaScript | Responsive user interface utilizing custom design tokens, CSS grids, and smooth micro-animations. |
 | **Backend** | Spring Boot 3.x, Java 17 | REST controller mappings, JPA transactions, security authorization filters, and core planner pipelines. |
-| **Database** | MySQL 8+ / Hibernate JPA | Transactional schemas for profiles, budget sheets, expense logs, and places. |
+| **Database** | MySQL 8+ / Hibernate JPA | Relational tables mapping places, user sessions, saved trips, and group budgets. |
 | **AI Integration** | OpenRouter API / OkHttp client | Prompt engineering templates connecting to gpt-4o-mini for structured itinerary outputs. |
 | **Data Processing** | Python, Commons CSV | Importer loaders to parse and seed dataset values into database schemas. |
 
@@ -67,32 +69,6 @@ Allows travelers to search, browse, and filter tourist spots by region, category
 ### Generated Travel Itinerary
 Displays the detailed daily schedule containing curated spots, tips, duration suggestions, and companion splits.
 ![SmartTravel Generated Itinerary](docs/diagrams/frontend_itinerary.png)
-
----
-
-## Project Structure
-
-Below is the repository directory structure showing the organization of both frontend, backend, dataset seeding tools, and system documentation:
-
-```text
-SmartTravel/
-├── Backend/                 # Spring Boot backend source code
-│   ├── src/                 # Java source packages and configuration properties
-│   └── pom.xml              # Maven dependencies configuration
-├── Frontend/                # Vanilla HTML5 / CSS3 / ES6 JavaScript client
-│   ├── css/                 # Styling components and custom design tokens
-│   ├── js/                  # Modular client-side page controllers and API wrappers
-│   ├── pages/               # Client sub-views (auth, planner, itinerary panels)
-│   └── index.html           # Application dashboard entry point
-├── datasets/                # Local dataset resources
-│   └── india_travel_dataset_cleaned_v2.csv
-├── docs/                    # Unified system documentation hub
-│   └── diagrams/            # Unified system diagrams, models, and screenshots
-│       └── svg/             # Rendered vector diagram assets
-└── scripts/                 # Importer utilities and compilation scripts
-    ├── generate_svgs.py     # Programmatic vector graphics renderer
-    └── import_csv.py        # Database loader utility
-```
 
 ---
 
@@ -131,11 +107,10 @@ cd Backend
 ```
 The server binds to local port `9090`.
 
-### 5. Open Application
-Navigate your browser to the local URL:
-```text
-http://localhost:9090/
-```
+### 5. Access and Test Login
+Open your browser and navigate to `http://localhost:9090/`. To test login immediately without registering, use the default seeded demo account credentials:
+*   **Email:** `demo@smarttravel.com`
+*   **Password:** `Demo@1234`
 
 ---
 
@@ -149,8 +124,34 @@ Configure the following variables in your `.env` file at the root of the project
 *   **`APP_CORS_ALLOWED_ORIGINS`**: Comma-separated list of origins permitted to call REST APIs.
 *   **`OPENROUTER_API_KEY`**: API credential key for the OpenRouter model.
 *   **`PLANNER_AI_MODEL`** (Default: `openai/gpt-4o-mini`): Generative AI model selection ID.
-*   **`PLANNER_AI_ENABLED`** (Default: `true`): Feature toggle to enable/disable generative AI planning.
-*   **`APP_FRONTEND_PATH`** (Default: `file:///d:/travel-planner/Frontend/`): Root file path mapping pointing to static frontend assets.
+*   **`PLANNER_AI_ENABLED`** (Default: `true`): Toggle to enable or disable generative AI planning.
+*   **`APP_FRONTEND_PATH`** (Default: empty): Root file path mapping pointing to static frontend assets. If left blank, assets are served dynamically from class resources.
+
+---
+
+## Project Structure
+
+Below is the repository directory structure showing the organization of both frontend, backend, dataset seeding tools, and system documentation:
+
+```text
+SmartTravel/
+├── Backend/                 # Spring Boot backend source code
+│   ├── src/                 # Java source packages and configuration properties
+│   └── pom.xml              # Maven dependencies configuration
+├── Frontend/                # Vanilla HTML5 / CSS3 / ES6 JavaScript client
+│   ├── css/                 # Styling components and custom design tokens
+│   ├── js/                  # Modular client-side page controllers and API wrappers
+│   ├── pages/               # Client sub-views (auth, planner, itinerary panels)
+│   └── index.html           # Application dashboard entry point
+├── datasets/                # Local dataset resources
+│   └── india_travel_dataset_cleaned_v2.csv
+├── docs/                    # Unified system documentation hub
+│   └── diagrams/            # Unified system diagrams, models, and screenshots
+│       └── svg/             # Rendered vector diagram assets
+└── scripts/                 # Importer utilities and compilation scripts
+    ├── generate_svgs.py     # Programmatic vector graphics renderer
+    └── import_csv.py        # Database loader utility
+```
 
 ---
 
@@ -172,3 +173,7 @@ Technical design documents and guides are structured inside the docs/ directory:
 *   **[REST API Specification](docs/API.md):** Request/Response payloads, schemas, and authentication filters.
 *   **[Deployment & Setup Specification](docs/DEPLOYMENT.md):** Detailed environment configurations, database seeding methods, and deployment instructions.
 
+---
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.

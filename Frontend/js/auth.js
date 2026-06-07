@@ -75,6 +75,11 @@ function updateNavbar() {
     if (nameEl)  nameEl.textContent  = currentUser.name  || 'User';
     if (emailEl) emailEl.textContent = currentUser.email || '';
     _loadRecentActivity(activityEl);
+    const btnLabel = document.querySelector('#account-btn span');
+    if (btnLabel) btnLabel.textContent = currentUser.name || 'User';
+  } else {
+    const btnLabel = document.querySelector('#account-btn span');
+    if (btnLabel) btnLabel.textContent = 'Account';
   }
 }
 

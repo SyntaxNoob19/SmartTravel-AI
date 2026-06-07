@@ -542,6 +542,11 @@ function renderItinerary(data) {
     const container = document.getElementById('itinerary-output');
     if (!container) return;
 
+    if (data && !data.plannerRequest) {
+        const storedPayload = getStoredTripPayload();
+        data.plannerRequest = storedPayload?.plannerRequest || JSON.parse(localStorage.getItem('plannerRequestData') || sessionStorage.getItem('plannerRequestData') || 'null') || {};
+    }
+
     const destinationContext = buildTripDestinationContext(data || {});
     data = destinationContext.sanitizedData;
 
@@ -638,8 +643,24 @@ function renderItinerary(data) {
         plannerRequest.region ? `Region: ${getPreferenceLabel(plannerRequest.region)}` : ''
     ].filter(Boolean);
 
+    // Determine number of travelers from plannerRequest (mirrors computeBudgetBreakdown logic)
+    let displayTravelerCount = null;
+    if (plannerRequest.groupSize && Number(plannerRequest.groupSize) > 0) {
+        displayTravelerCount = Number(plannerRequest.groupSize);
+    } else if (plannerRequest.travelers && Number(plannerRequest.travelers) > 0) {
+        displayTravelerCount = Number(plannerRequest.travelers);
+    } else {
+        const tType = String(plannerRequest.travellerType || data.travellerType || '').toLowerCase().trim();
+        if (tType === 'solo') displayTravelerCount = 1;
+        else if (tType === 'couple' || tType === 'romantic') displayTravelerCount = 2;
+        else if (tType === 'family') displayTravelerCount = 4;
+        else if (tType === 'friends' || tType === 'group') displayTravelerCount = 5;
+        else if (tType) displayTravelerCount = 1;
+    }
+
     const choiceRows = [
         ['Traveler', getPreferenceLabel(plannerRequest.travellerType || data.travellerType)],
+        ['No. of Travelers', displayTravelerCount ? `${displayTravelerCount} person${displayTravelerCount > 1 ? 's' : ''}` : null],
         ['Destination', tripCity],
         ['Duration', tripDays ? `${tripDays} days` : null],
         ['Budget Level', getPreferenceLabel(plannerRequest.budgetLevel)],
@@ -648,6 +669,7 @@ function renderItinerary(data) {
         ['AI Settings', plannerRequest.preferences ? plannerRequest.preferences.split(',').map(getPreferenceLabel).join(', ') : (plannerRequest.enhanceWithAi ? 'Enabled' : null)],
         ['Pace limit', plannerRequest.maxHoursPerDay ? `${Number(plannerRequest.maxHoursPerDay).toFixed(1)} hrs/day` : null]
     ].filter(([, value]) => value !== null && value !== undefined && String(value).trim() !== '');
+
 
     // Set dynamic hero background image if available
     const heroEl = document.querySelector('.itinerary-hero');
@@ -1210,9 +1232,7 @@ function renderBudgetPanel(budget) {
     const breakdownSum = breakdown.hotel + breakdown.food + breakdown.transport + breakdown.activities;
     const budgetDisplayAmount = breakdownSum > 0 ? breakdownSum : totalAmount;
 
-    const budgetBasis = budget?.tierLabel
-        ? `${budget.tierLabel} • ${budget.destination || 'Destination'} • ₹${formatRupees(perPersonPerDay)}/traveler/day`
-        : `${days} day(s) • ${travellers} traveller(s)`;
+    const tierLabel = budget?.tierLabel || 'Estimated';
 
     const breakdownItems = [
         { label: 'Hotel', value: breakdown.hotel, icon: 'fa-building', modifier: 'budget-breakdown-hotel' },
@@ -1226,42 +1246,43 @@ function renderBudgetPanel(budget) {
 
     return `
         <div class="trip-budget-shell">
-            <!-- Daily rate - Large and prominent at the top -->
-            <div class="trip-budget-daily-rate-banner">
-                <span class="trip-budget-daily-rate-label">Daily rate per traveler</span>
-                <div class="trip-budget-daily-rate-value">₹${formatRupees(perPersonPerDay)}</div>
-            </div>
-
-            <!-- Metadata strip with total budget -->
-            <div class="trip-budget-meta-strip">
-                <div class="trip-budget-meta-item">
-                    <span class="trip-budget-meta-icon"><i class="fas fa-calendar-check"></i></span>
-                    <div>
-                        <small>Duration</small>
-                        <strong>${escapeHtml(String(days))} Days</strong>
-                    </div>
+            <!-- Budget tier banner -->
+            <div class="trip-budget-daily-rate-banner" style="background: linear-gradient(135deg, #0a3d62 0%, #1b7e71 100%); color: #fff; border-radius: 12px; padding: 16px 20px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.75;">${escapeHtml(tierLabel)} Plan</span>
+                    <div style="font-size: 28px; font-weight: 900; margin-top: 2px;">₹${formatRupees(perPersonPerDay)}<span style="font-size: 13px; font-weight: 500; opacity: 0.8;">/person/day</span></div>
                 </div>
-                <div class="trip-budget-meta-divider" aria-hidden="true"></div>
-                <div class="trip-budget-meta-item">
-                    <span class="trip-budget-meta-icon"><i class="fas fa-users"></i></span>
-                    <div>
-                        <small>Travelers</small>
-                        <strong>${escapeHtml(String(travellers))} Traveler${travellers > 1 ? 's' : ''}</strong>
-                    </div>
-                </div>
-                <div class="trip-budget-meta-divider" aria-hidden="true"></div>
-                <div class="trip-budget-meta-item">
-                    <span class="trip-budget-meta-icon"><i class="fas fa-sack-dollar"></i></span>
-                    <div>
-                        <small>Estimated Total</small>
-                        <strong style="font-size: 18px; color: #1b7e71;">₹${formatRupees(budgetDisplayAmount)}</strong>
-                    </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 11px; opacity: 0.75; font-weight: 600;">Grand Total</div>
+                    <div style="font-size: 22px; font-weight: 900; color: #81ecec;">₹${formatRupees(budgetDisplayAmount)}</div>
                 </div>
             </div>
 
-            <div class="trip-budget-overview-title">Budget Breakdown</div>
+            <!-- Trip parameters strip: travelers × days -->
+            <div style="background: #f0f9ff; border: 1px solid #bde8f7; border-radius: 10px; padding: 14px 16px; margin-bottom: 14px;">
+                <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #0369a1; margin-bottom: 10px;">Trip Parameters</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                    <div style="text-align: center; background: #fff; border-radius: 8px; padding: 10px 6px; border: 1px solid #e0f2fe;">
+                        <div style="font-size: 20px; font-weight: 800; color: #0a3d62;">${escapeHtml(String(travellers))}</div>
+                        <div style="font-size: 11px; color: #64748b; font-weight: 600; margin-top: 2px;"><i class="fas fa-users" style="margin-right: 3px; color: #0ea5e9;"></i>Traveler${travellers > 1 ? 's' : ''}</div>
+                    </div>
+                    <div style="text-align: center; background: #fff; border-radius: 8px; padding: 10px 6px; border: 1px solid #e0f2fe;">
+                        <div style="font-size: 20px; font-weight: 800; color: #0a3d62;">${escapeHtml(String(days))}</div>
+                        <div style="font-size: 11px; color: #64748b; font-weight: 600; margin-top: 2px;"><i class="fas fa-calendar-days" style="margin-right: 3px; color: #0ea5e9;"></i>Days</div>
+                    </div>
+                    <div style="text-align: center; background: #fff; border-radius: 8px; padding: 10px 6px; border: 1px solid #e0f2fe;">
+                        <div style="font-size: 14px; font-weight: 800; color: #1b7e71;">₹${formatRupees(totalPerDay)}</div>
+                        <div style="font-size: 11px; color: #64748b; font-weight: 600; margin-top: 2px;"><i class="fas fa-wallet" style="margin-right: 3px; color: #1b7e71;"></i>/Day Total</div>
+                    </div>
+                </div>
+                <!-- Formula row -->
+                <div style="margin-top: 10px; padding: 8px 12px; background: #e0f2fe; border-radius: 6px; font-size: 12px; color: #0369a1; text-align: center; font-weight: 600;">
+                    ₹${formatRupees(perPersonPerDay)}/person/day × ${escapeHtml(String(travellers))} traveler${travellers > 1 ? 's' : ''} × ${escapeHtml(String(days))} days = <strong style="color: #0a3d62; font-size: 13px;">₹${formatRupees(budgetDisplayAmount)}</strong>
+                </div>
+            </div>
+
+            <div class="trip-budget-overview-title" style="font-size: 13px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">Category Breakdown <span style="font-weight: 400; text-transform: none; font-size: 12px;">(for all travelers, full trip)</span></div>
             <div class="trip-budget-breakdown-block">
-                <div class="trip-budget-breakdown-title">Category Allocation <span>(Total for all travelers)</span></div>
                 <div class="trip-budget-breakdown-grid">
                     ${breakdownItems.map(item => `
                         <article class="budget-breakdown-card ${escapeHtml(item.modifier)}">
@@ -1273,12 +1294,15 @@ function renderBudgetPanel(budget) {
                                 <span class="budget-breakdown-percent">${escapeHtml(String(item.percent))}%</span>
                             </div>
                             <strong class="budget-breakdown-value">₹${formatRupees(item.value)}</strong>
+                            <div class="budget-breakdown-footer" style="font-size: 11px; color: #64748b; margin-top: 4px;">
+                                ₹${formatRupees(Math.round(item.value / Math.max(1, travellers) / Math.max(1, days)))}/person/day
+                            </div>
                             <div class="budget-breakdown-footer">${escapeHtml({
-        hotel: 'Comfortable stays',
-        food: 'Local & variety meals',
-        transport: 'Local travel & transfers',
-        activities: 'Experiences & entry'
-    }[item.label.toLowerCase()] || '')}</div>
+    hotel: 'Comfortable stays',
+    food: 'Local & variety meals',
+    transport: 'Local travel & transfers',
+    activities: 'Experiences & entry'
+}[item.label.toLowerCase()] || '')}</div>
                         </article>
                     `).join('')}
                 </div>

@@ -29,18 +29,24 @@ async function fetchItinerary(requestBody) {
             const errData = await response.json().catch(() => ({}));
             const errorMessage = errData.message || `Server error (${response.status})`;
             const city = requestBody.city || 'the destination';
-            
-            // Handle specific backend error cases for unknown cities
+
+            // Handle specific backend error cases for unknown/small cities
             if (response.status === 404) {
                 if (errorMessage.includes('AI generation is disabled')) {
-                    alert(`No places found for "${city}". AI itinerary generation is disabled on the server — please contact the administrator to set up OPENROUTER_API_KEY.`);
+                    // AI not configured — use client-side fallback with local guide data
+                    console.warn(`AI disabled for "${city}" — using local guide fallback`);
+                    const fallbackData = buildFallbackItinerary(requestBody);
+                    openTripDetailPage(fallbackData, requestBody);
                     return;
-                } else if (errorMessage.includes('AI generation failed')) {
-                    alert(`No places found for "${city}" and the AI service is temporarily unavailable. Please try again later.`);
+                } else if (errorMessage.includes('AI generation failed') || errorMessage.includes('No places found')) {
+                    // AI failed or city has no DB data — use client-side fallback
+                    console.warn(`No backend data for "${city}" — using local guide fallback`);
+                    const fallbackData = buildFallbackItinerary(requestBody);
+                    openTripDetailPage(fallbackData, requestBody);
                     return;
                 }
             }
-            
+
             throw new Error(errorMessage);
         }
 
@@ -49,7 +55,21 @@ async function fetchItinerary(requestBody) {
         if (result.success && result.data) {
             localStorage.setItem('plannerRequestData', JSON.stringify(requestBody));
             sessionStorage.setItem('plannerRequestData', JSON.stringify(requestBody));
-            openTripDetailPage(result.data, requestBody);
+
+            const isCustomize = new URLSearchParams(window.location.search).has('customize');
+            if (isCustomize) {
+                const currentUser = getCurrentUserAccount();
+                if (currentUser?.email) {
+                    try {
+                        await saveGeneratedTripToBackend(requestBody, result.data);
+                    } catch (saveErr) {
+                        console.error('Failed to auto-save customized trip:', saveErr);
+                    }
+                }
+                window.location.href = 'itinerary.html';
+            } else {
+                openTripDetailPage(result.data, requestBody);
+            }
         } else {
             throw new Error(result.message || 'Failed to generate itinerary');
         }
@@ -59,13 +79,33 @@ async function fetchItinerary(requestBody) {
         console.error('Error fetching itinerary:', error);
 
         if (error.name === 'AbortError') {
+            // Timeout — try client-side fallback instead of just showing error
+            console.warn('Backend timeout — using local guide fallback');
+            try {
+                const fallbackData = buildFallbackItinerary(requestBody);
+                openTripDetailPage(fallbackData, requestBody);
+                return;
+            } catch (fallbackErr) {
+                console.error('Fallback also failed:', fallbackErr);
+            }
             alert('The AI is taking longer than expected. Please try again — it usually completes within 60 seconds.');
             return;
+        }
+
+        // Network or other error — try client-side fallback for known destinations
+        try {
+            const fallbackData = buildFallbackItinerary(requestBody);
+            console.warn('Backend error — using local guide fallback:', error.message);
+            openTripDetailPage(fallbackData, requestBody);
+            return;
+        } catch (fallbackErr) {
+            console.error('Fallback also failed:', fallbackErr);
         }
 
         alert('Sorry, we could not generate your itinerary right now. Please try again in a moment.');
     }
 }
+
 
 /** Show a full-page loading overlay while generating the itinerary */
 function showPlannerLoading(destination) {

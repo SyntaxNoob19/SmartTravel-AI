@@ -742,33 +742,64 @@ public class PlannerService {
         return note.toString().trim();
     }
 
+    private boolean isBigCity(String city) {
+        if (city == null) {
+            return false;
+        }
+        String c = city.trim().toLowerCase(Locale.ROOT);
+        return c.equals("delhi") || c.equals("mumbai") || c.equals("bangalore")
+                || c.equals("kolkata") || c.equals("chennai") || c.equals("hyderabad")
+                || c.equals("ahmedabad") || c.equals("pune") || c.equals("jaipur")
+                || c.equals("ncr");
+    }
+
     private List<Place> expandCandidatesWhenSparse(List<Place> candidates, String normalizedCity, int requestedDays) {
-        if (candidates == null || candidates.isEmpty() || normalizedCity == null) {
-            return candidates;
+        if (normalizedCity == null) {
+            return candidates == null ? new ArrayList<>() : candidates;
         }
 
         int desiredPoolSize = Math.max(requestedDays * 3, 6);
-        if (candidates.size() >= desiredPoolSize) {
-            return candidates;
+        boolean isSmall = !isBigCity(normalizedCity);
+        
+        List<Place> expanded = candidates == null ? new ArrayList<>() : new ArrayList<>(candidates);
+        
+        if (expanded.size() >= desiredPoolSize && !isSmall) {
+            return expanded;
         }
 
-        String anchorState = candidates.stream()
-                .map(Place::getState)
-                .filter(state -> state != null && !state.isBlank())
-                .findFirst()
-                .orElse(null);
+        int targetPoolSize = isSmall ? desiredPoolSize + 8 : desiredPoolSize;
 
-        String anchorRegion = candidates.stream()
-                .map(Place::getRegion)
-                .filter(region -> region != null && !region.isBlank())
-                .findFirst()
-                .orElse(null);
+        String anchorState = null;
+        String anchorRegion = null;
 
-        List<Place> expanded = new ArrayList<>(candidates);
+        if (!expanded.isEmpty()) {
+            anchorState = expanded.stream()
+                    .map(Place::getState)
+                    .filter(state -> state != null && !state.isBlank())
+                    .findFirst()
+                    .orElse(null);
+
+            anchorRegion = expanded.stream()
+                    .map(Place::getRegion)
+                    .filter(region -> region != null && !region.isBlank())
+                    .findFirst()
+                    .orElse(null);
+        } else {
+            List<Place> cityMatches = repository.findByCityContainingIgnoreCase(normalizedCity);
+            if (!cityMatches.isEmpty()) {
+                anchorState = cityMatches.get(0).getState();
+                anchorRegion = cityMatches.get(0).getRegion();
+            }
+        }
+
+        if (anchorState == null && anchorRegion == null) {
+            return expanded;
+        }
+
         List<Place> allPlaces = repository.findAll();
 
         for (Place place : allPlaces) {
-            if (expanded.size() >= desiredPoolSize) {
+            if (expanded.size() >= targetPoolSize) {
                 break;
             }
             if (place == null || place.getPlaceId() == null

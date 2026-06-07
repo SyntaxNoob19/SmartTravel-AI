@@ -54,7 +54,10 @@ function buildFallbackItinerary(requestBody) {
     const city = requestBody.city || requestBody.placeName || requestBody.destinationCity || requestBody.region || 'Destination';
     const guide = getDestinationGuide(city);
     const tripLength = Number(requestBody.days) || 3;
-    const totalDays = Math.max(2, Math.min(5, tripLength || 3));
+    const totalDays = Math.max(1, Math.min(14, tripLength));
+    const travellerType = String(requestBody.travellerType || '').toLowerCase();
+    const budgetLevel = requestBody.budgetLevel || 'midrange';
+
     const mustDos = Array.isArray(guide.mustDo) && guide.mustDo.length ? guide.mustDo.slice() : [
         'Main sightseeing area',
         'Local food stop',
@@ -66,7 +69,8 @@ function buildFallbackItinerary(requestBody) {
         'Nearby cultural stop'
     ];
 
-    const prefSource = (requestBody.travelStyle || requestBody.preferences || requestBody.interests || requestBody.theme || '');
+    // Preference-based scoring
+    const prefSource = (requestBody.travelStyle || requestBody.preferences || requestBody.interests || requestBody.category || requestBody.mood || '');
     const prefText = Array.isArray(prefSource) ? prefSource.join(' ') : String(prefSource || '');
     const prefs = prefText.toLowerCase().split(/[,;\s]+/).filter(Boolean);
 
@@ -92,34 +96,48 @@ function buildFallbackItinerary(requestBody) {
         nearby.sort((a, b) => activityScore(b) - activityScore(a));
     }
 
-    const itinerary = [];
+    // Travellertype-based pacing
     const paceText = String(requestBody.pace || requestBody.travelPace || '').toLowerCase();
-    const relaxed = /relax|slow|leisure|relaxed/.test(paceText) || prefs.includes('relaxed') || prefs.includes('leisure');
+    const relaxed = /relax|slow|leisure|relaxed/.test(paceText) || prefs.includes('relaxed') || prefs.includes('leisure')
+        || travellerType === 'family';
     const stopsPerDay = relaxed ? 2 : 3;
 
+    // For small cities: allow up to 2 days in the main city, then expand to nearby cities
+    // This mirrors PlannerService.expandCandidatesWhenSparse
+    const bigCities = ['delhi', 'mumbai', 'bangalore', 'kolkata', 'chennai', 'hyderabad',
+        'ahmedabad', 'pune', 'jaipur', 'ncr', 'goa', 'agra', 'amritsar', 'varanasi'];
+    const isBigCity = bigCities.some(bc => city.toLowerCase().includes(bc));
+    const mainCityDays = isBigCity ? Math.min(totalDays, 4) : Math.min(totalDays, 2);
+    const nearbyCityDays = totalDays - mainCityDays;
+
+    const itinerary = [];
     let mustIdx = 0;
     let nearIdx = 0;
-    for (let day = 0; day < totalDays; day += 1) {
+
+    // === MAIN CITY DAYS ===
+    for (let day = 0; day < mainCityDays; day++) {
         const primary = mustDos[mustIdx % mustDos.length];
-        mustIdx += 1;
+        mustIdx++;
         const dayPlaces = [];
 
         dayPlaces.push({
             placeName: primary,
             plannedVisitTimeSlot: 'Morning',
-            description: `Start with ${String(primary).toLowerCase()} and keep the pace relaxed.`,
-            recommendedDurationHours: 2,
+            description: day === 0
+                ? `Arrive in ${city}, orient yourself, and start with ${String(primary).toLowerCase()}.`
+                : `Continue exploring ${city} with a visit to ${String(primary).toLowerCase()}.`,
+            recommendedDurationHours: 2.5,
             localTips: 'Carry water and start early.',
             safetyAdvice: 'Check local timings before visiting.'
         });
 
         if (stopsPerDay >= 2) {
             const secondary = nearby[nearIdx % nearby.length];
-            nearIdx += 1;
+            nearIdx++;
             dayPlaces.push({
                 placeName: secondary,
                 plannedVisitTimeSlot: 'Afternoon',
-                description: `Continue with a nearby stop such as ${secondary}.`,
+                description: `Head to ${secondary} for a change of scenery and local flavors.`,
                 recommendedDurationHours: 2,
                 localTips: 'Use local transport for shorter hops.',
                 safetyAdvice: 'Stay aware of crowd levels.'
@@ -128,46 +146,95 @@ function buildFallbackItinerary(requestBody) {
 
         if (stopsPerDay >= 3) {
             dayPlaces.push({
-                placeName: day === totalDays - 1 ? 'Sunset / food stop' : 'Evening stroll',
+                placeName: day === mainCityDays - 1 ? 'Local dining & sunset spot' : 'Evening stroll',
                 plannedVisitTimeSlot: 'Evening',
-                description: day === totalDays - 1
-                    ? `Wrap up with a scenic sunset or a food walk in ${city}.`
-                    : `Finish the day with a calm walk and dinner in ${city}.`,
+                description: day === mainCityDays - 1
+                    ? `Wrap up ${city} with local food and a scenic sunset.`
+                    : `Unwind with an evening walk through ${city}'s local areas.`,
                 recommendedDurationHours: 1.5,
                 localTips: 'Keep plans flexible for weather or traffic.',
-                safetyAdvice: 'Return before it gets too late if you are in an unfamiliar area.'
+                safetyAdvice: 'Return before it gets too late if unfamiliar area.'
             });
         }
 
+        const travellerHint = travellerType === 'family'
+            ? 'Plan kid breaks and meal stops near each attraction.'
+            : travellerType === 'couple'
+                ? 'Add a relaxed café stop between attractions.'
+                : travellerType === 'friends'
+                    ? 'Include flexible social breaks between spots.'
+                    : 'Start early for popular sights and keep a buffer.';
+
         itinerary.push({
             dayNumber: day + 1,
-            location: { city },
+            location: { city, state: guide.state || city },
             daySummary: day === 0
-                ? `Arrive in ${city}, settle in, and get oriented.`
-                : `Spend the day exploring the best of ${city}.`,
-            travelNotes: 'Keep the day light, leave some buffer, and start early for popular sights.',
+                ? `Arrive in ${city}, settle in, and explore key highlights.`
+                : `Spend the day discovering more of ${city}'s attractions.`,
+            travelNotes: travellerHint,
             places: dayPlaces
         });
     }
 
-    const totalBudgetVal = requestBody.budgetLevel
-        ? (mapBudgetLevelToDaily(requestBody.budgetLevel) || 0) * totalDays
-        : parseBudgetRange(guide.budget || '') || 0;
+    // === NEARBY CITY EXPANSION DAYS ===
+    // Pull guides for nearby cities to give each day meaningful content
+    const nearbyNames = nearby.slice(); // Kasol's nearby = ['Manikaran', 'Tosh', 'Kheerganga']
+    for (let nd = 0; nd < nearbyCityDays; nd++) {
+        const nearbyCity = nearbyNames[nd % nearbyNames.length];
+        const nearbyGuide = getDestinationGuide(nearbyCity);
+        const nearbyActivities = Array.isArray(nearbyGuide.mustDo) && nearbyGuide.mustDo.length
+            ? nearbyGuide.mustDo.slice(0, stopsPerDay)
+            : [`Explore ${nearbyCity}`, `Local food in ${nearbyCity}`, `Scenic walk in ${nearbyCity}`].slice(0, stopsPerDay);
+
+        const slots = ['Morning', 'Afternoon', 'Evening'];
+        const dayPlaces = nearbyActivities.map((activity, i) => ({
+            placeName: activity,
+            plannedVisitTimeSlot: slots[i] || 'Afternoon',
+            description: i === 0
+                ? `Day trip to ${nearbyCity} from ${city} — start with ${String(activity).toLowerCase()}.`
+                : `Continue in ${nearbyCity}: ${String(activity).toLowerCase()}.`,
+            recommendedDurationHours: i === nearbyActivities.length - 1 ? 1.5 : 2,
+            localTips: nearbyGuide.tips?.[0] || `Start early for ${nearbyCity}.`,
+            safetyAdvice: `Stay on marked routes around ${nearbyCity}.`
+        }));
+
+        itinerary.push({
+            dayNumber: mainCityDays + nd + 1,
+            location: { city: nearbyCity, state: nearbyGuide.state || guide.state || nearbyCity },
+            daySummary: `Day trip to ${nearbyCity} — a perfect complement to your ${city} visit.`,
+            travelNotes: `Travel from ${city} to ${nearbyCity} takes roughly 1-2 hours depending on the route. Return to ${city} by evening.`,
+            places: dayPlaces
+        });
+    }
+
+    const perPersonPerDay = mapBudgetLevelToDaily(budgetLevel, city) || 2500;
+    const groupSize = Number(requestBody.groupSize) || (
+        travellerType === 'solo' ? 1
+        : travellerType === 'couple' ? 2
+        : travellerType === 'family' ? 4
+        : travellerType === 'friends' ? 5
+        : 1
+    );
+    const totalBudgetVal = perPersonPerDay * groupSize * totalDays;
 
     return {
         success: true,
         city,
-        region: requestBody.region || '',
-        generatedDays: totalDays,
-        totalPlaces: totalDays * 3,
+        region: requestBody.region || guide.state || '',
+        generatedDays: itinerary.length,
+        requestedDays: totalDays,
+        totalPlaces: itinerary.reduce((sum, d) => sum + d.places.length, 0),
         totalBudget: totalBudgetVal,
         dataSource: 'LOCAL_FALLBACK',
         summary: guide.vibe || `A practical travel plan for ${city}.`,
-        aiSummary: `This is a local fallback itinerary for ${city}. The AI service was unavailable, so the plan uses destination guide data and nearby highlights.`,
-        tips: getExtendedTips(city, guide),
+        aiSummary: nearbyCityDays > 0
+            ? `This itinerary covers ${city} for ${mainCityDays} day${mainCityDays > 1 ? 's' : ''} and adds day trips to nearby destinations (${nearbyNames.slice(0, nearbyCityDays).join(', ')}) to fill your ${totalDays}-day trip.`
+            : `A local guide itinerary for ${city} based on destination data.`,
+        tips: getExtendedTips ? getExtendedTips(city, guide) : (guide.tips || []),
         itinerary
     };
 }
+
 
 // small utility to render nearby attractions list
 function renderNearbyAttractions(guide) {
@@ -381,7 +448,32 @@ function computeBudgetBreakdown(budgetLevelOrData, travelers, days, destinationN
         const data = budgetLevelOrData;
         const req  = data.plannerRequest || {};
         budgetLevel  = req.budgetLevel || data.budgetLevel || 'midrange';
-        numTravelers = Math.max(1, Number(req.travelers || req.groupSize || data.travelers || 1));
+
+        // Priority: explicit groupSize > travellerType inference
+        let travellersCount = null;
+
+        // 1. Try explicit groupSize from planner request (set by planner for family/friends)
+        if (req.groupSize && Number(req.groupSize) > 0) {
+            travellersCount = Number(req.groupSize);
+        }
+        // 2. Try travelers/groupSize fields directly on data or req
+        else if (req.travelers && Number(req.travelers) > 0) {
+            travellersCount = Number(req.travelers);
+        }
+        else if (data.travelers && Number(data.travelers) > 0) {
+            travellersCount = Number(data.travelers);
+        }
+        // 3. Infer from travellerType with clear defaults
+        else {
+            const tType = String(req.travellerType || data.travellerType || '').toLowerCase().trim();
+            if (tType === 'solo') travellersCount = 1;
+            else if (tType === 'couple' || tType === 'romantic') travellersCount = 2;
+            else if (tType === 'family') travellersCount = 4;
+            else if (tType === 'friends' || tType === 'group') travellersCount = 5;
+            else travellersCount = 1;
+        }
+
+        numTravelers = Math.max(1, Number(travellersCount) || 1);
         numDays      = Math.max(1, Number(req.days || data.generatedDays || data.days || 3));
         destName     = data.selectedDestination || req.city || data.city || '';
     } else {
@@ -400,6 +492,7 @@ function computeBudgetBreakdown(budgetLevelOrData, travelers, days, destinationN
 
     return {
         perPersonPerDay:  perPersonPerDay,
+        dailyPerTraveller: perPersonPerDay,
         totalPerDay:      perPersonPerDay * numTravelers,
         total:            breakdown.total,
         hotel:            breakdown.hotel,
@@ -408,6 +501,7 @@ function computeBudgetBreakdown(budgetLevelOrData, travelers, days, destinationN
         activities:       breakdown.activities,
         tierLabel:        getBudgetPreferenceRange(budgetLevel).label,
         travelers:        numTravelers,
+        travellers:       numTravelers,
         days:             numDays,
         destination:      destName
     };

@@ -81,8 +81,22 @@ const regionalPlaces = {
 
 document.addEventListener('DOMContentLoaded', initModernPlanner);
 
-function initModernPlanner() {
+async function initModernPlanner() {
     if (!document.querySelector('.planner-form')) return;
+
+    if (window.currentUserPromise) {
+        await window.currentUserPromise;
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('newTrip')) {
+        const currentUser = getCurrentUserAccount();
+        if (!currentUser?.email) {
+            alert('Please login to plan and generate custom itineraries.');
+            window.location.href = 'login.html';
+            return;
+        }
+    }
 
     wireDestinationChoices();
     wireBasicInputs();
@@ -556,6 +570,17 @@ function buildPlannerRequest() {
 }
 
 async function generatePlan() {
+    // Defense-in-depth auth check (primary check is in initModernPlanner)
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('newTrip')) {
+        const currentUser = typeof getCurrentUserAccount === 'function' ? getCurrentUserAccount() : null;
+        if (!currentUser?.email) {
+            alert('Please login to generate a custom itinerary.');
+            window.location.href = 'login.html';
+            return;
+        }
+    }
+
     let requestBody;
     try {
         requestBody = buildPlannerRequest();
@@ -580,6 +605,7 @@ async function generatePlan() {
         }
     }
 }
+
 
 function renderAiRecommendations(data) {
     const container = document.getElementById('aiRecommendationsResult');
