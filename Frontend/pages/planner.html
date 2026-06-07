@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartTravel | Plan Trip</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/design-tokens.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/planner.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <!-- Navbar will be injected by navbar.js -->
+    <nav class="navbar"></nav>
+    <script type="module" src="../js/navbar.js"></script>
+
+    <!-- Hero Section -->
+    <div class="planner-hero">
+        <div class="hero-content">
+            <h1><i class="fas fa-sparkles"></i> Design Your Perfect Trip</h1>
+            <p>Let AI create a personalized itinerary based on your interests, budget, and travel style. No more hours spent planning!</p>
+        </div>
+    </div>
+
+    <!-- Main Planner -->
+    <div class="planner-wrapper">
+        <!-- Progress Stepper -->
+        <div class="stepper-horizontal">
+            <div class="stepper-step active" data-step="1">
+                <div class="stepper-circle">1</div>
+                <div class="stepper-label">Destination</div>
+            </div>
+            <div class="stepper-line"></div>
+            <div class="stepper-step" data-step="2">
+                <div class="stepper-circle">2</div>
+                <div class="stepper-label">Basics</div>
+            </div>
+            <div class="stepper-line"></div>
+            <div class="stepper-step" data-step="3">
+                <div class="stepper-circle">3</div>
+                <div class="stepper-label">Traveler</div>
+            </div>
+            <div class="stepper-line"></div>
+            <div class="stepper-step" data-step="4">
+                <div class="stepper-circle">4</div>
+                <div class="stepper-label">Preferences</div>
+            </div>
+            <div class="stepper-line"></div>
+            <div class="stepper-step" data-step="5">
+                <div class="stepper-circle">5</div>
+                <div class="stepper-label">Details</div>
+            </div>
+        </div>
+
+        <div class="planner-layout">
+            <!-- Main Form -->
+            <div class="planner-form">
+                <!-- ========== STEP 1: DESTINATION ========== -->
+                <div class="step-content active" data-step="1">
+                    <div class="step-header">
+                        <h3 class="step-title">Where's Your Next Adventure?</h3>
+                        <p class="step-subtitle">Tell us your destination or let us inspire you with regional treasures</p>
+                    </div>
+
+                    <div class="choice-section">
+                        <label class="choice-btn" data-choice="known">
+                            <div class="choice-icon"><i class="fas fa-location-dot"></i></div>
+                            <div class="choice-text">
+                                <div class="choice-title">I Have a Destination in Mind</div>
+                                <div class="choice-desc">Search for a specific city or landmark</div>
+                            </div>
+                        </label>
+                        <label class="choice-btn" data-choice="unknown">
+                            <div class="choice-icon"><i class="fas fa-magnifying-glass"></i></div>
+                            <div class="choice-text">
+                                <div class="choice-title">Explore by Region</div>
+                                <div class="choice-desc">Discover top destinations by area</div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- BRANCH A: Known Destination -->
+                    <div id="branchKnown" class="branch-section" style="display: none;">
+                        <div class="field">
+                            <label for="destinationCity" class="field-label">Where are you headed?</label>
+                            <input type="text" id="destinationCity" placeholder="Try: Jaipur, Goa, Kerala..." class="input-modern">
+                        </div>
+                    </div>
+
+                    <!-- BRANCH B: Unknown Destination -->
+                    <div id="branchUnknown" class="branch-section" style="display: none;">
+                        <div class="field">
+                            <label class="field-label">Choose a Region to Explore</label>
+                            <div class="region-grid">
+                                <button type="button" class="region-card" data-region="North">
+                                    <div class="region-icon"><i class="fas fa-mountain"></i></div>
+                                    <div class="region-name">Northern India</div>
+                                </button>
+                                <button type="button" class="region-card" data-region="South">
+                                    <div class="region-icon"><i class="fas fa-umbrella-beach"></i></div>
+                                    <div class="region-name">Southern India</div>
+                                </button>
+                                <button type="button" class="region-card" data-region="East">
+                                    <div class="region-icon"><i class="fas fa-mountain-sun"></i></div>
+                                    <div class="region-name">Eastern India</div>
+                                </button>
+                                <button type="button" class="region-card" data-region="West">
+                                    <div class="region-icon"><i class="fas fa-water"></i></div>
+                                    <div class="region-name">Western India</div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Suggested Places Grid -->
+                        <div id="suggestedPlaces" class="suggested-section" style="display: none;">
+                            <div class="field">
+                                <label class="field-label">Must-Visit Destinations in This Region</label>
+                                <div id="placesContainer" class="places-grid"></div>
+                            </div>
+                            <button type="button" id="autoSuggestBtn" class="btn-suggest">Get AI Recommendations</button>
+                            <div id="aiRecommendationsResult" class="ai-recommendations-container" style="display: none;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation -->
+                    <div class="step-actions">
+                        <button type="button" id="nextStep1" class="btn-primary" disabled>Continue</button>
+                    </div>
+                </div>
+
+                <!-- ========== STEP 2: BASICS ========== -->
+                <div class="step-content" data-step="2">
+                    <div class="step-header">
+                        <h3 class="step-title">When and How Much?</h3>
+                        <p class="step-subtitle">Set your trip length and budget to find perfect accommodations and experiences</p>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="field">
+                            <label for="days" class="field-label">How long will you travel?</label>
+                            <select id="days" class="input-modern" required>
+                                <option value="">Select trip length</option>
+                                <option value="1to2">Long weekend (1-2 days)</option>
+                                <option value="3to4">Short getaway (3-4 days)</option>
+                                <option value="5to6">Week-long adventure (5-6 days)</option>
+                                <option value="7plus">Extended exploration (7+ days)</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label for="budgetLevel" class="field-label">What's your daily spending comfort level?</label>
+                            <select id="budgetLevel" class="input-modern" required>
+                                <option value="">Choose your budget</option>
+                                <option value="budget">Budget Traveler (&#8377;1k-2k/day)</option>
+                                <option value="midrange">Comfortable Explorer (&#8377;2k-3.5k/day)</option>
+                                <option value="premium">Premium Experience (&#8377;4k-8k/day)</option>
+                                <option value="luxury">Luxury Adventure (&#8377;10k+/day)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="step-actions">
+                        <button type="button" class="btn-secondary" onclick="goToStep(1)">Back</button>
+                        <button type="button" id="nextStep2" class="btn-primary">Continue</button>
+                    </div>
+                </div>
+
+                <!-- ========== STEP 3: TRAVELLER TYPE ========== -->
+                <div class="step-content" data-step="3">
+                    <div class="step-header">
+                        <h3 class="step-title">Who's Traveling?</h3>
+                        <p class="step-subtitle">Select your travel group type for tailored recommendations</p>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label">What describes your group best?</label>
+                        <div class="traveller-grid">
+                            <button type="button" class="traveller-card" data-traveller="solo">
+                                <div class="traveller-emoji"><i class="fas fa-user"></i></div>
+                                <div class="traveller-name">Solo Traveler</div>
+                                <div class="traveller-desc">Independent journey</div>
+                            </button>
+                            <button type="button" class="traveller-card" data-traveller="couple">
+                                <div class="traveller-emoji"><i class="fas fa-user-friends"></i></div>
+                                <div class="traveller-name">Couple</div>
+                                <div class="traveller-desc">Two travelers</div>
+                            </button>
+                            <button type="button" class="traveller-card" data-traveller="family">
+                                <div class="traveller-emoji"><i class="fas fa-users"></i></div>
+                                <div class="traveller-name">Family Trip</div>
+                                <div class="traveller-desc">With children/elders</div>
+                            </button>
+                            <button type="button" class="traveller-card" data-traveller="friends">
+                                <div class="traveller-emoji"><i class="fas fa-user-friends"></i></div>
+                                <div class="traveller-name">Friend Group</div>
+                                <div class="traveller-desc">Adventure squad</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Group Size (conditional) -->
+                    <div id="groupSizeSection" style="display: none;" class="field">
+                        <label for="groupSize" class="field-label">How many people are in your group?</label>
+                        <input type="number" id="groupSize" min="2" max="50" placeholder="Enter number" class="input-modern">
+                    </div>
+
+                    <div class="step-actions">
+                        <button type="button" class="btn-secondary" onclick="goToStep(2)">Back</button>
+                        <button type="button" id="nextStep3" class="btn-primary" disabled>Continue</button>
+                    </div>
+                </div>
+
+                <!-- ========== STEP 4: STYLE + MOOD ========== -->
+                <div class="step-content" data-step="4">
+                    <div class="step-header">
+                        <h3 class="step-title">What's Your Travel Vibe?</h3>
+                        <p class="step-subtitle">Pick your preferred experiences and travel atmosphere</p>
+                    </div>
+
+                    <!-- Travel Styles -->
+                    <div class="style-section">
+                        <h4 class="subsection-title">How do you like to explore?</h4>
+                        <div class="option-grid">
+                            <button type="button" class="option-card" data-type="style" data-value="beach">
+                                <div class="card-icon"><i class="fas fa-water"></i></div>
+                                <div class="card-label">Beach</div>
+                            </button>
+                            <button type="button" class="option-card" data-type="style" data-value="mountains">
+                                <div class="card-icon"><i class="fas fa-mountain"></i></div>
+                                <div class="card-label">Mountains</div>
+                            </button>
+                            <button type="button" class="option-card" data-type="style" data-value="city">
+                                <div class="card-icon"><i class="fas fa-city"></i></div>
+                                <div class="card-label">Urban</div>
+                            </button>
+                            <button type="button" class="option-card" data-type="style" data-value="adventure">
+                                <div class="card-icon"><i class="fas fa-bullseye"></i></div>
+                                <div class="card-label">Adventure</div>
+                            </button>
+                            <button type="button" class="option-card" data-type="style" data-value="spiritual">
+                                <div class="card-icon"><i class="fas fa-om"></i></div>
+                                <div class="card-label">Spiritual</div>
+                            </button>
+                            <button type="button" class="option-card" data-type="style" data-value="wildlife">
+                                <div class="card-icon"><i class="fas fa-leaf"></i></div>
+                                <div class="card-label">Wildlife</div>
+                            </button>
+                            <button type="button" class="option-card" data-type="style" data-value="food">
+                                <div class="card-icon"><i class="fas fa-utensils"></i></div>
+                                <div class="card-label">Culinary</div>
+                            </button>
+                            <button type="button" class="option-card" data-type="style" data-value="cultural">
+                                <div class="card-icon"><i class="fas fa-palette"></i></div>
+                                <div class="card-label">Cultural</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Mood -->
+                    <div class="mood-section">
+                        <h4 class="subsection-title">What energy level are you looking for?</h4>
+                        <div class="option-grid">
+                            <button type="button" class="option-card" data-type="mood" data-value="relaxed">
+                                <div class="card-icon"><i class="fas fa-spa"></i></div>
+                                <div class="card-label">Relaxed</div>
+                            </button>
+                            <button type="button" class="option-card" data-type="mood" data-value="explorative">
+                                <div class="card-icon"><i class="fas fa-magnifying-glass"></i></div>
+                                <div class="card-label">Exploratory</div>
+                            </button>
+                            <button type="button" class="option-card" data-type="mood" data-value="romantic">
+                                <div class="card-icon"><i class="fas fa-heart"></i></div>
+                                <div class="card-label">Romantic</div>
+                            </button>
+                            <button type="button" class="option-card" data-type="mood" data-value="adventure">
+                                <div class="card-icon"><i class="fas fa-bolt"></i></div>
+                                <div class="card-label">Thrilling</div>
+                            </button>
+                            <button type="button" class="option-card" data-type="mood" data-value="offbeat">
+                                <div class="card-icon"><i class="fas fa-theater-masks"></i></div>
+                                <div class="card-label">Unique</div>
+                            </button>
+                            <button type="button" class="option-card" data-type="mood" data-value="social">
+                                <div class="card-icon"><i class="fas fa-users"></i></div>
+                                <div class="card-label">Social</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Selected Chips -->
+                    <div id="selectedChips" class="chips-container"></div>
+
+                    <div class="step-actions">
+                        <button type="button" class="btn-secondary" onclick="goToStep(3)">Back</button>
+                        <button type="button" id="nextStep4" class="btn-primary">Continue</button>
+                    </div>
+                </div>
+
+                <!-- ========== STEP 5: WHEN & AI ========== -->
+                <div class="step-content" data-step="5">
+                    <div class="step-header">
+                        <h3 class="step-title">Fine-Tune Your Perfect Itinerary</h3>
+                        <p class="step-subtitle">Choose your ideal season and let AI add the magic touches</p>
+                    </div>
+
+                    <!-- Season / Festival Choice -->
+                    <div class="field">
+                        <label class="field-label">When would you like to visit?</label>
+                        <div class="choice-row">
+                            <label class="radio-label">
+                                <input type="radio" name="filterBy" value="season" checked> Choose by Season
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="filterBy" value="festival"> Choose by Festival
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Season Select -->
+                    <div id="seasonSection" class="field">
+                        <label for="season" class="field-label">Select your preferred travel season</label>
+                        <select id="season" class="input-modern">
+                            <option value="">Choose season</option>
+                            <option value="summer">Summer bliss (Mar-May)</option>
+                            <option value="monsoon">Monsoon magic (Jun-Sep)</option>
+                            <option value="winter">Winter charm (Oct-Feb)</option>
+                        </select>
+                    </div>
+
+                    <!-- Festival Select (hidden) -->
+                    <div id="festivalSection" class="field" style="display: none;">
+                        <label for="festival" class="field-label">Select your preferred festival</label>
+                        <select id="festival" class="input-modern">
+                            <option value="">Choose festival</option>
+                            <option value="diwali">Diwali - Festival of Lights (Oct-Nov)</option>
+                            <option value="holi">Holi - Colors of Joy (Mar)</option>
+                            <option value="navratri">Navratri - Divine Celebration (Sep-Oct)</option>
+                            <option value="Christmas">Christmas in India (Dec)</option>
+                            <option value="pongal">Pongal - Harvest Festival (Jan)</option>
+                        </select>
+                    </div>
+
+                    <!-- AI Enhancements -->
+                    <div class="ai-section">
+                        <h4 class="subsection-title">Personalization Options</h4>
+                        <div class="enhancement-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="aiEnhance" value="hiddenGems"> Uncover Hidden Treasures
+                                <span class="label-desc">Lesser-known but amazing spots</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="aiEnhance" value="avoidCrowds"> Skip the Tourist Crowds
+                                <span class="label-desc">Peaceful and authentic experiences</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="aiEnhance" value="localExp"> Connect with Locals
+                                <span class="label-desc">Authentic cultural immersion</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="aiEnhance" value="instaWorthy"> Capture Stunning Views
+                                <span class="label-desc">Breathtaking photo opportunities</span>
+                            </label>
+                            <label class="checkbox-label special">
+                                <input type="checkbox" name="aiEnhance" value="decideAll"> Full AI Customization
+                                <span class="label-desc">Let AI craft everything perfectly</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="step-actions">
+                        <button type="button" class="btn-secondary" onclick="goToStep(4)">Back</button>
+                        <button type="button" id="submitBtn" class="btn-generate" onclick="generatePlan()">Create My Perfect Itinerary</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar Summary -->
+            <div class="summary-panel">
+                <div class="summary-header">Your Trip Overview</div>
+                <div id="summaryContent" class="summary-content">
+                    <p style="color: #999; text-align: center;">Fill in the details to build your custom itinerary...</p>
+                </div>
+                <div class="summary-footer">
+                    <div class="summary-stat">
+                        <div class="stat-label">Budget</div>
+                        <div id="summaryBudget" class="stat-value">Not set</div>
+                    </div>
+                    <div class="summary-stat">
+                        <div class="stat-label">Duration</div>
+                        <div id="summaryDays" class="stat-value">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Smart Travel Planner. All rights reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/utils.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/planner.js"></script>
+</body>
+</html>
+

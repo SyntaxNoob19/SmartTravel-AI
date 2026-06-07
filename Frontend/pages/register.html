@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartTravel | Register</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/design-tokens.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/auth.css">
+</head>
+<body>
+
+    <!-- Navbar will be injected by navbar.js -->
+    <nav class="navbar"></nav>
+    <script type="module" src="../js/navbar.js"></script>
+
+<section class="auth-page">
+    <div class="auth-layout auth-layout-reverse">
+        <div class="auth-copy">
+            <p class="auth-eyebrow"><i class="fas fa-user-plus"></i> New account</p>
+            <h1>Create your account</h1>
+            <p>Set up your profile once, then use the same login to manage itineraries, budgets, and future trips.</p>
+            <div class="auth-highlights">
+                <div class="auth-highlight"><i class="fas fa-clipboard-check"></i> Simple local signup</div>
+                <div class="auth-highlight"><i class="fas fa-shield-heart"></i> Easy validation</div>
+                <div class="auth-highlight"><i class="fas fa-right-to-bracket"></i> Login after registration</div>
+            </div>
+        </div>
+
+        <div class="planner-form auth-card">
+            <h2 class="auth-title">Register</h2>
+            <p class="auth-subtitle">Create your account in under a minute.</p>
+
+            <div class="field">
+                <label for="registerName" class="field-label">Full name</label>
+                <input id="registerName" type="text" placeholder="Enter your name" class="input-modern" autocomplete="name">
+            </div>
+
+            <div class="field">
+                <label for="registerEmail" class="field-label">Email</label>
+                <input id="registerEmail" type="email" placeholder="name@example.com" class="input-modern" autocomplete="email">
+            </div>
+
+            <div class="field">
+                <label for="registerPassword" class="field-label">Password</label>
+                <input id="registerPassword" type="password" placeholder="Create a password" class="input-modern" autocomplete="new-password">
+            </div>
+
+            <div class="field">
+                <label for="registerConfirmPassword" class="field-label">Confirm password</label>
+                <input id="registerConfirmPassword" type="password" placeholder="Repeat your password" class="input-modern" autocomplete="new-password">
+            </div>
+
+            <div class="auth-actions">
+                <button type="button" class="btn btn-primary auth-btn" onclick="register()">Create account</button>
+                <a href="login.html" class="auth-link">Already have an account?</a>
+            </div>
+
+            <p class="auth-note">
+                Your account is securely saved on the database.
+            </p>
+        </div>
+    </div>
+</section>
+
+<script src="../js/utils.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html>

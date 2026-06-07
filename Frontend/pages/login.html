@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartTravel | Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/design-tokens.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/auth.css">
+</head>
+<body>
+
+    <!-- Navbar will be injected by navbar.js -->
+    <nav class="navbar"></nav>
+    <script type="module" src="../js/navbar.js"></script>
+
+<section class="auth-page">
+    <div class="auth-layout">
+        <div class="auth-copy">
+            <p class="auth-eyebrow"><i class="fas fa-lock"></i> Account access</p>
+            <h1>Welcome back</h1>
+            <p>Sign in to continue planning, revisit saved details, and keep your trip tools in one place.</p>
+            <div class="auth-highlights">
+                <div class="auth-highlight"><i class="fas fa-route"></i> Access your itinerary flow</div>
+                <div class="auth-highlight"><i class="fas fa-wallet"></i> Keep group budgets synced</div>
+                <div class="auth-highlight"><i class="fas fa-user-shield"></i> Demo login works offline</div>
+            </div>
+        </div>
+
+        <div class="planner-form auth-card">
+            <h2 class="auth-title">Login</h2>
+            <p class="auth-subtitle">Use your registered email and password to continue.</p>
+
+            <div class="field">
+                <label for="loginEmail" class="field-label">Email</label>
+                <input id="loginEmail" type="email" placeholder="name@example.com" class="input-modern" autocomplete="email">
+            </div>
+
+            <div class="field">
+                <label for="loginPassword" class="field-label">Password</label>
+                <input id="loginPassword" type="password" placeholder="Enter password" class="input-modern" autocomplete="current-password">
+            </div>
+
+            <div class="auth-actions">
+                <button type="button" class="btn btn-primary auth-btn" onclick="login()">Login</button>
+                <a href="register.html" class="auth-link">Create account</a>
+            </div>
+
+            <p class="auth-note">
+                Demo login: <strong>demo@smarttravel.com</strong> / <strong>Demo@1234</strong>
+            </p>
+        </div>
+    </div>
+</section>
+
+<script src="../js/utils.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html>

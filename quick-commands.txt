@@ -1,0 +1,10 @@
+BACKEND START
+
+cd D:\travel-planner\Backend
+
+Get-NetTCPConnection -LocalPort 9090 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }
+
+.\mvnw.cmd clean spring-boot:run
+
+Open:
+http://localhost:9090/

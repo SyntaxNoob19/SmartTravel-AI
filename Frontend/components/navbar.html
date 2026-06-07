@@ -1,0 +1,67 @@
+<nav class="navbar">
+  <div class="navbar-content">
+    <div class="logo-section">
+      <a href="index.html" class="logo"><i class="fas fa-plane"></i> SmartTravel</a>
+    </div>
+
+    <button class="hamburger" aria-label="Menu" aria-expanded="false">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+
+    <div class="nav-menu">
+      <ul class="nav-links">
+        <li><a href="index.html"            class="nav-link" data-page="home">Home</a></li>
+        <li><a href="pages/destinations.html" class="nav-link" data-page="explore">Explore</a></li>
+        <li><a href="pages/itinerary.html"  class="nav-link" data-page="trips">My Trips</a></li>
+        <li><a href="pages/group.html"      class="nav-link" data-page="budget">Split Budget</a></li>
+        <li><a href="pages/about.html"      class="nav-link" data-page="about">About</a></li>
+      </ul>
+
+      <div class="account-wrap">
+        <button class="account-btn" id="account-btn" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-user-circle"></i>
+          <span>Account</span>
+          <i class="fas fa-chevron-down account-chevron"></i>
+        </button>
+
+        <div class="account-panel" id="account-panel" aria-hidden="true">
+          <!-- Dropdown Header -->
+          <div class="dropdown-header">
+            <div class="dropdown-header-icon">
+              <i class="far fa-user"></i>
+            </div>
+            <span class="dropdown-header-title">Account</span>
+          </div>
+          
+          <hr class="dropdown-divider-line">
+
+          <!-- NOT LOGGED IN -->
+          <div id="panel-guest" class="dropdown-menu-list">
+            <a href="pages/login.html" class="dropdown-item">
+              <i class="fas fa-right-to-bracket dropdown-item-icon"></i>
+              <span>Login</span>
+            </a>
+            <a href="pages/register.html" class="dropdown-item">
+              <i class="fas fa-user-plus dropdown-item-icon"></i>
+              <span>Register</span>
+            </a>
+          </div>
+
+          <!-- LOGGED IN -->
+          <div id="panel-user" class="dropdown-menu-list is-hidden">
+            <a href="pages/profile.html" class="dropdown-item">
+              <i class="fas fa-circle-user dropdown-item-icon"></i>
+              <span>Profile</span>
+            </a>
+            <button class="dropdown-item logout-btn-item" onclick="logout()">
+              <i class="fas fa-right-from-bracket dropdown-item-icon"></i>
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

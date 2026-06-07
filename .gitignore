@@ -1,0 +1,19 @@
+.env
+.env.*
+!.env.example
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Backend build output
+Backend/target/
+**/target/
+
+# Frontend migration backups and temp artifacts
+migrations/backup/
+*.orig
+*.bak
+*.tmp

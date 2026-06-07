@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartTravel | Explore</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/design-tokens.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/home.css">
+</head>
+
+<body>
+
+    <!-- Navbar will be injected by navbar.js -->
+    <nav class="navbar"></nav>
+    <script type="module" src="../js/navbar.js"></script>
+
+    <section class="page-hero explore-page-hero">
+        <div class="page-hero-content">
+            <p class="page-eyebrow"><i class="fas fa-map-location-dot"></i> Explore India</p>
+            <h1>Plan Your Perfect Indian Getaway</h1>
+            <p>Explore beaches, mountains, heritage cities, and spiritual escapes with curated itineraries, live
+                weather, maps, and travel insights.</p>
+        </div>
+    </section>
+
+    <!-- Destinations Section -->
+    <section class="destinations">
+        <div class="explore-section-header">
+            <p class="page-eyebrow"><i class="fas fa-compass"></i> Destination guide</p>
+            <h2>Explore by Interest</h2>
+            <p class="explore-helper">Explore places that match your vibe</p>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">All Destinations</button>
+            <button class="filter-btn" data-filter="beach"><i class="fas fa-water"></i> Beaches</button>
+            <button class="filter-btn" data-filter="mountain"><i class="fas fa-mountain"></i> Mountains</button>
+            <button class="filter-btn" data-filter="city"><i class="fas fa-city"></i> Cities</button>
+            <button class="filter-btn" data-filter="adventure"><i class="fas fa-mountain-sun"></i> Adventure</button>
+            <button class="filter-btn" data-filter="spiritual"><i class="fas fa-om"></i> Spiritual</button>
+            <button class="filter-btn" data-filter="nationalpark"><i class="fas fa-leaf"></i> WildLife</button>
+        </div>
+
+
+        <div class="destination-grid">
+            <!-- BEACH DESTINATIONS -->
+            <div class="destination-card" data-type="beach">
+                <img src="../assets/images/goa.jpg" alt="Goa - Beach paradise">
+                <h3>Goa</h3>
+                <p><i class="fas fa-water"></i> Beaches &bull; Nightlife &bull; Relax</p>
+                <span class="price">&#8377;15,000 &ndash; &#8377;25,000</span>
+            </div>
+            <div class="destination-card" data-type="beach">
+                <img src="../assets/images/gokarna.jpg" alt="Gokarna - Peaceful beach town">
+                <h3>Gokarna</h3>
+                <p><i class="fas fa-water"></i> Beaches &bull; Spiritual &bull; Calm</p>
+                <span class="price">&#8377;10,000 &ndash; &#8377;18,000</span>
+            </div>
+            <div class="destination-card" data-type="beach">
+                <img src="../assets/images/varkala.jpg" alt="Varkala - Cliff beaches">
+                <h3>Varkala</h3>
+                <p><i class="fas fa-water"></i> Cliffs &bull; Beaches &bull; Peaceful</p>
+                <span class="price">&#8377;15,000 &ndash; &#8377;18,000</span>
+            </div>
+            <div class="destination-card" data-type="beach">
+                <img src="../assets/images/marina.jpg" alt="Marina Beach - Chennai">
+                <h3>Marina Beach</h3>
+                <p><i class="fas fa-water"></i> City &bull; Beach &bull; Fun</p>
+                <span class="price">&#8377;10,000 &ndash; &#8377;16,000</span>
+            </div>
+            <div class="destination-card" data-type="beach">
+                <img src="../assets/images/kovalam.jpg" alt="Kovalam - Sunset beaches">
+                <h3>Kovalam</h3>
+                <p><i class="fas fa-water"></i> Beaches &bull; Sunset &bull; Relax</p>
+                <span class="price">&#8377;12,000 &ndash; &#8377;20,000</span>
+            </div>
+            <div class="destination-card" data-type="beach">
+                <img src="../assets/images/rameswaram.jpg" alt="Rameswaram - Pilgrimage beaches">
+                <h3>Rameswaram</h3>
+                <p><i class="fas fa-water"></i> Beaches &bull; Pilgrimage &bull; Calm</p>
+                <span class="price">&#8377;9,000 &ndash; &#8377;15,000</span>
+            </div>
+
+            <!-- MOUNTAIN DESTINATIONS -->
+            <div class="destination-card" data-type="mountain">
+                <img src="../assets/images/manali.jpg" alt="Manali - Snow mountains">
+                <h3>Manali</h3>
+                <p><i class="fas fa-mountain"></i> Mountains &bull; Snow &bull; Adventure</p>
+                <span class="price">&#8377;18,000 &ndash; &#8377;30,000</span>
+            </div>
+            <div class="destination-card" data-type="mountain">
+                <img src="../assets/images/shimla.jpg" alt="Shimla - Colonial hill station">
+                <h3>Shimla</h3>
+                <p><i class="fas fa-mountain"></i> Hills &bull; Colonial &bull; Leisure</p>
+                <span class="price">&#8377;15,000 &ndash; &#8377;25,000</span>
+            </div>
+            <div class="destination-card" data-type="mountain">
+                <img src="../assets/images/mussoorie.jpg" alt="Mussoorie - Mountain views">
+                <h3>Mussoorie</h3>
+                <p><i class="fas fa-mountain"></i> Hills &bull; Views &bull; Relax</p>
+                <span class="price">&#8377;14,000 &ndash; &#8377;22,000</span>
+            </div>
+            <div class="destination-card" data-type="mountain">
+                <img src="../assets/images/darjeeling.jpg" alt="Darjeeling - Tea gardens">
+                <h3>Darjeeling</h3>
+                <p><i class="fas fa-mountain"></i> Tea Gardens &bull; Hills &bull; Calm</p>
+                <span class="price">&#8377;16,000 &ndash; &#8377;25,000</span>
+            </div>
+            <div class="destination-card" data-type="mountain">
+                <img src="../assets/images/nainital.jpg" alt="Nainital - Lake & hills">
+                <h3>Nainital</h3>
+                <p><i class="fas fa-mountain"></i> Lake &bull; Hills &bull; Peaceful</p>
+                <span class="price">&#8377;13,000 &ndash; &#8377;22,000</span>
+            </div>
+            <div class="destination-card" data-type="mountain">
+                <img src="../assets/images/mcleodganj.jpg" alt="Mcleodganj - Tibet vibes">
+                <h3>Mcleodganj</h3>
+                <p><i class="fas fa-mountain"></i> Hills &bull; Monasteries &bull; Trekking</p>
+                <span class="price">&#8377;12,000 &ndash; &#8377;20,000</span>
+            </div>
+            <div class="destination-card" data-type="mountain">
+                <img src="../assets/images/coorg.jpg" alt="Coorg - Coffee hills and waterfalls">
+                <h3>Coorg</h3>
+                <p><i class="fas fa-mountain"></i> Coffee &bull; Hills &bull; Waterfalls</p>
+                <span class="price">&#8377;12,000 &ndash; &#8377;20,000</span>
+            </div>
+
+            <!-- CITY DESTINATIONS -->
+            <div class="destination-card" data-type="city">
+                <img src="../assets/images/jaipur.jpg" alt="Jaipur - Pink city">
+                <h3>Jaipur</h3>
+                <p><i class="fas fa-city"></i> City &bull; Heritage &bull; Culture</p>
+                <span class="price">&#8377;12,000 &ndash; &#8377;20,000</span>
+            </div>
+            <div class="destination-card" data-type="city">
+                <img src="../assets/images/delhi.jpg" alt="Delhi - Capital city">
+                <h3>Delhi</h3>
+                <p><i class="fas fa-city"></i> History &bull; Markets &bull; Food</p>
+                <span class="price">&#8377;10,000 &ndash; &#8377;18,000</span>
+            </div>
+            <div class="destination-card" data-type="city">
+                <img src="../assets/images/mumbai.jpg" alt="Mumbai - Financial hub">
+                <h3>Mumbai</h3>
+                <p><i class="fas fa-city"></i> City Life &bull; Beaches &bull; Nightlife</p>
+                <span class="price">&#8377;12,000 &ndash; &#8377;22,000</span>
+            </div>
+            <div class="destination-card" data-type="city">
+                <img src="../assets/images/bangalore.jpg" alt="Bangalore - Tech city">
+                <h3>Bangalore</h3>
+                <p><i class="fas fa-city"></i> IT Hub &bull; Cafes &bull; Weather</p>
+                <span class="price">&#8377;10,000 &ndash; &#8377;18,000</span>
+            </div>
+            <div class="destination-card" data-type="city">
+                <img src="../assets/images/kolkata.jpg" alt="Kolkata - Cultural city">
+                <h3>Kolkata</h3>
+                <p><i class="fas fa-city"></i> Heritage &bull; Food &bull; Culture</p>
+                <span class="price">&#8377;11,000 &ndash; &#8377;19,000</span>
+            </div>
+            <div class="destination-card" data-type="city">
+                <img src="../assets/images/chennai.jpg" alt="Chennai - Coastal city">
+                <h3>Chennai</h3>
+                <p><i class="fas fa-city"></i> Coast &bull; Temples &bull; Food</p>
+                <span class="price">&#8377;10,000 &ndash; &#8377;18,000</span>
+            </div>
+            <div class="destination-card" data-type="city">
+                <img src="../assets/images/agra.jpg" alt="Agra - Taj Mahal city">
+                <h3>Agra</h3>
+                <p><i class="fas fa-city"></i> Heritage &bull; Monument &bull; History</p>
+                <span class="price">&#8377;9,000 &ndash; &#8377;16,000</span>
+            </div>
+            <div class="destination-card" data-type="city">
+                <img src="../assets/images/indore.jpg" alt="Indore - Food city">
+                <h3>Indore</h3>
+                <p><i class="fas fa-city"></i> Food &bull; Markets &bull; Clean streets</p>
+                <span class="price">&#8377;9,000 &ndash; &#8377;16,000</span>
+            </div>
+            <div class="destination-card" data-type="city">
+                <img src="../assets/images/ahmedabad.jpg" alt="Ahmedabad - Heritage city">
+                <h3>Ahmedabad</h3>
+                <p><i class="fas fa-city"></i> Heritage &bull; Textile &bull; Riverfront</p>
+                <span class="price">&#8377;10,000 &ndash; &#8377;17,000</span>
+            </div>
+            <div class="destination-card" data-type="city">
+                <img src="../assets/images/hampi.jpg" alt="Hampi - Ancient temple ruins">
+                <h3>Hampi</h3>
+                <p><i class="fas fa-landmark"></i> Ruins &bull; Heritage &bull; Sunsets</p>
+                <span class="price">&#8377;10,000 &ndash; &#8377;18,000</span>
+            </div>
+            <div class="destination-card" data-type="city">
+                <img src="../assets/images/mysuru.jpg" alt="Mysuru - Royal palace city">
+                <h3>Mysuru</h3>
+                <p><i class="fas fa-landmark"></i> Palace &bull; Markets &bull; Culture</p>
+                <span class="price">&#8377;9,000 &ndash; &#8377;16,000</span>
+            </div>
+
+            <!-- ADVENTURE DESTINATIONS -->
+            <div class="destination-card" data-type="adventure">
+                <img src="../assets/images/kasol.jpg" alt="Kasol - Trekking hub">
+                <h3>Kasol</h3>
+                <p><i class="fas fa-bullseye"></i> Trekking &bull; Nature &bull; Chill</p>
+                <span class="price">&#8377;10,000 &ndash; &#8377;18,000</span>
+            </div>
+            <div class="destination-card" data-type="adventure">
+                <img src="../assets/images/rishikesh.jpg" alt="Rishikesh - Adventure capital">
+                <h3>Rishikesh</h3>
+                <p><i class="fas fa-bullseye"></i> Rafting &bull; Adventure &bull; Spiritual</p>
+                <span class="price">&#8377;12,000 &ndash; &#8377;20,000</span>
+            </div>
+            <div class="destination-card" data-type="adventure">
+                <img src="../assets/images/ladakh.jpg" alt="Ladakh - Extreme biking">
+                <h3>Ladakh</h3>
+                <p><i class="fas fa-bullseye"></i> Biking &bull; Mountains &bull; Extreme</p>
+                <span class="price">&#8377;30,000 &ndash; &#8377;45,000</span>
+            </div>
+            <div class="destination-card" data-type="adventure">
+                <img src="../assets/images/andaman.jpg" alt="Andaman - Island scuba">
+                <h3>Andaman</h3>
+                <p><i class="fas fa-bullseye"></i> Scuba &bull; Islands &bull; Adventure</p>
+                <span class="price">&#8377;25,000 &ndash; &#8377;40,000</span>
+            </div>
+            <div class="destination-card" data-type="adventure">
+                <img src="../assets/images/panchmarhi.jpg" alt="Panchmarhi - Hill station and nature">
+                <h3>Panchmarhi</h3>
+                <p><i class="fas fa-bullseye"></i> Nature &bull; Waterfalls &bull; Trails</p>
+                <span class="price">&#8377;11,000 &ndash; &#8377;19,000</span>
+            </div>
+            <div class="destination-card" data-type="adventure">
+                <img src="../assets/images/cherrapunji.jpg" alt="Cherrapunji - Root bridges and waterfalls">
+                <h3>Cherrapunji</h3>
+                <p><i class="fas fa-person-hiking"></i> Bridges &bull; Falls &bull; Rainforest</p>
+                <span class="price">&#8377;14,000 &ndash; &#8377;24,000</span>
+            </div>
+
+            <!-- MOUNTAIN / HILL DESTINATIONS -->
+            <div class="destination-card" data-type="mountain">
+                <img src="../assets/images/gangtok.jpg" alt="Gangtok - Himalayan city">
+                <h3>Gangtok</h3>
+                <p><i class="fas fa-mountain"></i> Views &bull; Monasteries &bull; Calm</p>
+                <span class="price">&#8377;14,000 &ndash; &#8377;24,000</span>
+            </div>
+            <div class="destination-card" data-type="mountain">
+                <img src="../assets/images/srinagar.jpg" alt="Srinagar - Lakes and mountains">
+                <h3>Srinagar</h3>
+                <p><i class="fas fa-mountain"></i> Lakes &bull; Gardens &bull; Houseboats</p>
+                <span class="price">&#8377;16,000 &ndash; &#8377;28,000</span>
+            </div>
+
+            <!-- SPIRITUAL DESTINATIONS -->
+            <div class="destination-card" data-type="spiritual">
+                <img src="../assets/images/varanasi.jpg" alt="Varanasi - Sacred city">
+                <h3>Varanasi</h3>
+                <p><i class="fas fa-om"></i> Ghats &bull; Temples &bull; Spiritual</p>
+                <span class="price">&#8377;8,000 &ndash; &#8377;15,000</span>
+            </div>
+            <div class="destination-card" data-type="spiritual">
+                <img src="../assets/images/haridwar.jpg" alt="Haridwar - Ganga aarti">
+                <h3>Haridwar</h3>
+                <p><i class="fas fa-om"></i> Ganga &bull; Aarti &bull; Pilgrimage</p>
+                <span class="price">&#8377;7,000 &ndash; &#8377;14,000</span>
+            </div>
+            <div class="destination-card" data-type="spiritual">
+                <img src="../assets/images/bodhgaya.jpg" alt="Bodh Gaya - Buddha's enlightenment">
+                <h3>Bodh Gaya</h3>
+                <p><i class="fas fa-om"></i> Buddhism &bull; Meditation &bull; Calm</p>
+                <span class="price">&#8377;9,000 &ndash; &#8377;16,000</span>
+            </div>
+            <div class="destination-card" data-type="spiritual">
+                <img src="../assets/images/amritsar.jpg" alt="Amritsar - Golden temple">
+                <h3>Amritsar</h3>
+                <p><i class="fas fa-om"></i> Golden Temple &bull; Peace &bull; Culture</p>
+                <span class="price">&#8377;10,000 &ndash; &#8377;18,000</span>
+            </div>
+            <div class="destination-card" data-type="spiritual">
+                <img src="../assets/images/mathura.jpg" alt="Mathura - Sacred heritage town">
+                <h3>Mathura</h3>
+                <p><i class="fas fa-om"></i> Temples &bull; Heritage &bull; Devotion</p>
+                <span class="price">&#8377;8,000 &ndash; &#8377;14,000</span>
+            </div>
+            <div class="destination-card" data-type="spiritual">
+                <img src="../assets/images/pushkar.jpg" alt="Pushkar - Holy lake town">
+                <h3>Pushkar</h3>
+                <p><i class="fas fa-om"></i> Lake &bull; Temples &bull; Culture</p>
+                <span class="price">&#8377;8,000 &ndash; &#8377;15,000</span>
+            </div>
+
+            <!-- WildLife -->
+            <div class="destination-card" data-type="nationalpark">
+                <img src="../assets/images/jimcorbett.jpg" alt="Jim Corbett - Tiger reserve">
+                <h3>Jim Corbett</h3>
+                <p><i class="fas fa-leaf"></i> Tiger Reserve &bull; Safari &bull; Forest</p>
+                <span class="price">&#8377;15,000 &ndash; &#8377;25,000</span>
+            </div>
+            <div class="destination-card" data-type="nationalpark">
+                <img src="../assets/images/kaziranga.jpg" alt="Kaziranga - Rhino sanctuary">
+                <h3>Kaziranga</h3>
+                <p><i class="fas fa-leaf"></i> Rhinos &bull; Grasslands &bull; Wildlife</p>
+                <span class="price">&#8377;18,000 &ndash; &#8377;30,000</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Smart Travel Planner. Making travel planning smarter, one trip at a time.</p>
+    </footer>
+
+    <script src="../js/utils.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+
+    <script src="../js/home.js"></script>
+    <div id="details-modal" class="modal" aria-hidden="true" role="dialog">
+        <div class="modal-content">
+            <span class="close" aria-label="Close">&times;</span>
+            <div class="modal-body">
+                <!-- Dynamic content inserted via JS -->
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

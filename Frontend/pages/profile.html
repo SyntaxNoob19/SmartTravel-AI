@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartTravel | Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/design-tokens.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/profile.css">
+</head>
+<body>
+    <!-- Navigation (same as index) -->
+    <!-- Navbar will be injected by navbar.js -->
+    <nav class="navbar"></nav>
+    <script type="module" src="../js/navbar.js"></script>
+
+    <main class="profile-page-wrapper">
+        <section class="profile-container">
+            <div class="profile-card-new">
+                
+                <!-- Avatar and Header -->
+                <div class="profile-header-new">
+                    <div class="profile-avatar-new">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="profile-title-new">
+                        <h2>My Profile</h2>
+                        <div class="title-underline"></div>
+                    </div>
+                </div>
+
+                <!-- Info List -->
+                <div class="profile-info-list">
+                    <div class="profile-info-row">
+                        <div class="profile-info-left">
+                            <div class="info-icon-badge badge-teal">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <span class="info-label">Name:</span>
+                        </div>
+                        <span class="info-value" id="profile-username">Loading…</span>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-left">
+                            <div class="info-icon-badge badge-blue">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <span class="info-label">Email:</span>
+                        </div>
+                        <span class="info-value" id="profile-email">Loading…</span>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-left">
+                            <div class="info-icon-badge badge-green">
+                                <i class="fas fa-calendar-days"></i>
+                            </div>
+                            <span class="info-label">Member Since:</span>
+                        </div>
+                        <span class="info-value" id="profile-created">Loading…</span>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-left">
+                            <div class="info-icon-badge badge-grey">
+                                <i class="fas fa-suitcase"></i>
+                            </div>
+                            <span class="info-label">Trips Created:</span>
+                        </div>
+                        <span class="info-value" id="profile-trips-count">Loading…</span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="profile-actions-new">
+                    <a href="itinerary.html" class="btn btn-view-trips">
+                        <i class="fas fa-suitcase"></i> View My Trips
+                    </a>
+                    <button class="btn btn-logout-action" onclick="logout()">
+                        <i class="fas fa-right-from-bracket"></i> Logout
+                    </button>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer" style="margin-top:40px; text-align:center; color:var(--text-muted);">
+        <p>&copy; 2025 Smart Travel Planner. Making travel planning smarter, one trip at a time.</p>
+    </footer>
+
+    <script src="../js/utils.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/profile.js"></script>
+</body>
+</html>

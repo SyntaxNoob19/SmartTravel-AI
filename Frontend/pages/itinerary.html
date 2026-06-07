@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartTravel – My Trips</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/design-tokens.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/itinerary.css">
+    <meta name="description" content="SmartTravel – Manage your saved travel itineraries in one place.">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar"></nav>
+    <script type="module" src="../js/navbar.js"></script>
+
+    <!-- Hero Banner -->
+    <section class="itinerary-hero itinerary-hero-compact">
+        <div class="hero-content itinerary-hero-content">
+            <div class="itinerary-hero-copy">
+                <p class="itinerary-eyebrow"><i class="fas fa-folder-open"></i> SAVED TRIPS</p>
+                <h1 class="place-title">My Trips</h1>
+                <p class="hero-description">Your generated itineraries are stored in the backend per user. Open any saved trip to see the full day‑by‑day plan, AI recommendations, maps, and export options.</p>
+            </div>
+            <div class="itinerary-hero-actions">
+                <a href="planner.html?newTrip=1" class="btn itinerary-hero-btn"><i class="fas fa-wand-magic-sparkles"></i> Create New Trip</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Saved Itineraries Section -->
+    <section class="saved-itineraries container" style="margin-top: 40px; margin-bottom: 60px;">
+        <div class="itinerary-section-header">
+            <h2 class="section-heading">Your Saved Itineraries</h2>
+            <div class="itinerary-controls">
+                <div class="search-box-wrapper">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-box" id="trip-search-input" placeholder="Search your trips..." oninput="filterSavedTrips()" />
+                </div>
+                <div class="view-toggle">
+                    <button class="toggle-btn grid-active" id="grid-view"><i class="fas fa-th-large"></i></button>
+                    <button class="toggle-btn" id="list-view"><i class="fas fa-list"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Output Grid for Saved Trips -->
+        <div class="itinerary-grid" id="saved-trips-output"></div>
+
+        <!-- Centered Empty State -->
+        <div class="itinerary-empty-container hidden" id="empty-state">
+            <div class="itinerary-empty-icon-wrap">
+                <i class="fas fa-suitcase"></i>
+            </div>
+            <h3>No trips yet?</h3>
+            <p>Start exploring amazing destinations and create your first itinerary.</p>
+            <div class="itinerary-empty-actions">
+                <a href="planner.html?newTrip=1" class="btn btn-primary"><i class="fas fa-plus"></i> Create New Trip</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Smart Travel Planner. Making travel planning smarter, one trip at a time.</p>
+    </footer>
+
+    <script src="../js/utils.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/itinerary.js"></script>
+</body>
+</html>

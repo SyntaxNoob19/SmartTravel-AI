@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartTravel | Contact</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/design-tokens.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/navbar.css">
+</head>
+<body>
+    <!-- Navbar will be injected by navbar.js -->
+    <nav class="navbar"></nav>
+    <script type="module" src="../js/navbar.js"></script>
+
+    <section class="page-hero contact-page-hero">
+        <div class="page-hero-content">
+            <p class="page-eyebrow"><i class="fas fa-message"></i> Contact</p>
+            <h1>Tell us what would make your trip easier</h1>
+            <p>Send feedback, report issues, or ask for help with planning. We keep support simple and human.</p>
+        </div>
+    </section>
+
+    <main class="content-page contact-page">
+        <section class="contact-layout">
+            <form id="contactForm" class="content-card contact-form" onsubmit="submitContactForm(event)">
+                <div class="section-heading">
+                    <h2><i class="fas fa-paper-plane"></i> Send Message</h2>
+                    <p>All fields marked with * are required.</p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="firstName" class="field-label">First Name *</label>
+                        <input type="text" id="firstName" placeholder="John" required class="input-modern">
+                    </div>
+                    <div class="field">
+                        <label for="lastName" class="field-label">Last Name *</label>
+                        <input type="text" id="lastName" placeholder="Doe" required class="input-modern">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="contactEmail" class="field-label">Email Address *</label>
+                    <input type="email" id="contactEmail" placeholder="john@example.com" required class="input-modern">
+                </div>
+
+                <div class="field">
+                    <label for="contactPhone" class="field-label">Phone</label>
+                    <input type="tel" id="contactPhone" placeholder="+91 9876543210" class="input-modern">
+                </div>
+
+                <div class="field">
+                    <label for="contactSubject" class="field-label">Subject *</label>
+                    <select id="contactSubject" required class="input-modern">
+                        <option value="">Select a subject</option>
+                        <option value="support">Technical Support</option>
+                        <option value="feedback">Feedback</option>
+                        <option value="feature">Feature Request</option>
+                        <option value="bug">Report a Bug</option>
+                        <option value="partnership">Partnership</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="contactMessage" class="field-label">Message *</label>
+                    <textarea id="contactMessage" placeholder="Tell us how we can help..." required rows="6" class="input-modern"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-solid"><i class="fas fa-paper-plane"></i> Send Message</button>
+                <div id="contactFormStatus" class="form-status"></div>
+            </form>
+
+            <aside class="contact-sidebar">
+                <article class="content-card">
+                    <span class="feature-icon"><i class="fas fa-envelope"></i></span>
+                    <h3>Email</h3>
+                    <p>support@smarttravel.com<br>info@smarttravel.com</p>
+                </article>
+                <article class="content-card">
+                    <span class="feature-icon"><i class="fas fa-phone"></i></span>
+                    <h3>Phone</h3>
+                    <p>+91 9876543210<br>+91 8765432109</p>
+                </article>
+                <article class="content-card">
+                    <span class="feature-icon"><i class="fas fa-clock"></i></span>
+                    <h3>Support Hours</h3>
+                    <p>Monday to Friday<br>9 AM - 6 PM IST</p>
+                </article>
+            </aside>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Smart Travel Planner. Making travel planning smarter, one trip at a time.</p>
+    </footer>
+
+    <script src="../js/utils.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html>

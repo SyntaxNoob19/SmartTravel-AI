@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartTravel | Destination Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/design-tokens.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/itinerary.css">
+    <link rel="stylesheet" href="../css/home.css">
+</head>
+<body>
+    <!-- Navbar will be injected by navbar.js -->
+    <nav class="navbar"></nav>
+    <script type="module" src="../js/navbar.js"></script>
+
+    <main class="place-detail-page">
+        <a href="destinations.html" class="place-return"><i class="fas fa-arrow-left"></i> Back to Explore</a>
+        <div id="place-live-insights" class="itinerary-insights-shell">
+            <div class="itinerary-empty card">
+                <h3>No destination selected</h3>
+                <p>Choose a place from Explore to see its photos and itinerary.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Smart Travel Planner. Making travel planning smarter, one trip at a time.</p>
+    </footer>
+
+    <script src="../js/utils.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    
+    <script src="../js/home.js"></script>
+</body>
+</html>

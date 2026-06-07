@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartTravel | Trip Detail</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/design-tokens.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+
+    <link rel="stylesheet" href="../css/itinerary.css">
+</head>
+
+<body>
+    <!-- Navbar will be injected by navbar.js -->
+    <nav class="navbar"></nav>
+    <script type="module" src="../js/navbar.js"></script>
+
+    <section class="itinerary-hero itinerary-hero-compact">
+        <div class="hero-content itinerary-hero-content">
+            <div class="itinerary-hero-copy">
+                <p class="itinerary-eyebrow"><i class="fas fa-route"></i> Saved trip detail</p>
+                <h1 id="tripDetailTitle">Trip Detail</h1>
+                <p id="tripDetailSubtitle">Loading the saved itinerary from your account.</p>
+                <div id="itinerary-weather-badge" style="margin-top: 12px;"></div>
+            </div>
+            <div class="itinerary-hero-actions">
+                <a href="destinations.html" class="btn btn-secondary itinerary-hero-btn"><i
+                        class="fas fa-arrow-left"></i> Explore Destinations</a>
+                <a href="planner.html?newTrip=1" class="btn itinerary-hero-btn"><i
+                        class="fas fa-wand-magic-sparkles"></i> Create New Trip</a>
+                <button id="exportPdfBtn" class="btn btn-secondary itinerary-hero-btn" onclick="exportItineraryPdf()"><i
+                        class="fas fa-file-pdf"></i> Export PDF</button>
+                <a href="itinerary.html" class="itinerary-ghost-link">Back to saved trips</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="planner-section itinerary-section-shell">
+        <!-- <div class="itinerary-output-header box itinerary-center">
+             <h3 class="itinerary-output-title"><i class="fas fa-route"></i> Final Trip Plan</h3>
+            <p class="itinerary-output-desc">Open the detailed itinerary below, including AI suggestions, travel notes, maps, and live insights.</p> 
+        </div> -->
+
+        <div id="itinerary-output" class="itinerary-output-shell">
+            <div class="itinerary-empty card">
+                <h3>Loading trip</h3>
+                <p>Please wait while we fetch your saved itinerary.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2025 Smart Travel Planner. Making travel planning smarter, one trip at a time.</p>
+    </footer>
+
+    <script src="../js/utils.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+
+    <script src="../js/itinerary.js"></script>
+</body>
+
+</html>

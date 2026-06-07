@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartTravel | Split Budget</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/design-tokens.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+    <link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/itinerary.css">
+    <link rel="stylesheet" href="../css/planner.css">
+</head>
+<body>
+
+    <!-- Navbar will be injected by navbar.js -->
+    <nav class="navbar"></nav>
+    <script type="module" src="../js/navbar.js"></script>
+
+<section class="group-hero">
+    <div class="group-hero-content">
+        <p class="group-eyebrow"><i class="fas fa-wallet"></i> Shared trip budgeting</p>
+        <h1>Split travel costs without spreadsheet chaos</h1>
+        <p class="group-hero-copy">Track the total budget, register your group size, and log shared expenses in one place so everyone stays aligned.</p>
+    </div>
+</section>
+
+<section class="group-page">
+    <div class="group-layout">
+        <div class="group-main">
+            <div class="group-panel">
+                <div class="section-heading">
+                    <h2><i class="fas fa-coins"></i> Budget Setup</h2>
+                    <p>Set the overall trip budget before you start adding costs.</p>
+                </div>
+                <div class="group-form-row">
+                    <div class="field field-inline">
+                        <label for="budgetInput" class="field-label">Total trip budget</label>
+                        <input type="number" id="budgetInput" placeholder="Enter total budget" class="input-modern" min="1" step="100">
+                    </div>
+                    <button class="btn group-btn group-primary-btn" onclick="setBudget()"><i class="fas fa-sparkles"></i> Save Budget</button>
+                </div>
+                <p class="group-help">Enter the total amount once, then add members and expenses below.</p>
+            </div>
+
+            <div class="group-panel">
+                <div class="section-heading">
+                    <h2><i class="fas fa-users"></i> Group Members</h2>
+                    <p>Choose the number of travelers and add names for faster cost sharing.</p>
+                </div>
+                <div class="field">
+                    <label for="memberCount" class="field-label">Number of people</label>
+                    <select id="memberCount" class="input-modern" onchange="generateMemberInputs()">
+                        <option value="">Select group size</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+                </div>
+                <div id="memberInputs" class="member-inputs"></div>
+            </div>
+
+            <div class="group-panel">
+                <div class="section-heading">
+                    <h2><i class="fas fa-receipt"></i> Add Expense</h2>
+                    <p>Record shared costs as you go. The summary updates automatically.</p>
+                </div>
+                <div class="group-form-grid">
+                    <div class="field">
+                        <label for="expenseName" class="field-label">Expense name</label>
+                        <input type="text" id="expenseName" placeholder="Hotel, taxi, food, tickets" class="input-modern" maxlength="60">
+                    </div>
+                    <div class="field">
+                        <label for="expenseAmount" class="field-label">Amount</label>
+                        <input type="number" id="expenseAmount" placeholder="Enter amount" class="input-modern" min="1" step="1">
+                    </div>
+                </div>
+                <button class="btn group-btn group-primary-btn" onclick="addExpense()"><i class="fas fa-plus"></i> Add Expense</button>
+            </div>
+        </div>
+
+        <aside class="group-sidebar">
+            <div class="group-summary-card">
+                <div class="section-heading compact">
+                    <h2><i class="fas fa-chart-pie"></i> Budget Summary</h2>
+                    <p>Live snapshot of your trip finances.</p>
+                </div>
+                <div class="group-chip-row">
+                    <span class="group-chip">Group size: <strong id="selectedGroupSize">1</strong></span>
+                    <span class="group-chip">Expenses: <strong id="expenseCount">0</strong></span>
+                </div>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <span>Total budget</span>
+                        <strong>&#8377; <span id="totalBudget">0</span></strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>Total spent</span>
+                        <strong>&#8377; <span id="totalSpent">0</span></strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>Remaining total</span>
+                        <strong>&#8377; <span id="remaining">0</span></strong>
+                    </div>
+                    <div class="summary-item highlight">
+                        <span>Budget per person</span>
+                        <strong>&#8377; <span id="perPersonBudget">0</span></strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>Remaining per person</span>
+                        <strong>&#8377; <span id="perPersonRemaining">0</span></strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>Spent per person</span>
+                        <strong>&#8377; <span id="perPersonSpent">0</span></strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group-tip-card expense-log-card">
+                <h3><i class="fas fa-list"></i> Recent Expenses</h3>
+                <div id="expenseList" class="expense-list empty-state">No expenses added yet.</div>
+            </div>
+
+            <div class="group-tip-card">
+                <h3><i class="fas fa-lightbulb"></i> Quick Tip</h3>
+                <p>Add members first, then record each shared cost. That keeps the per-person split accurate as your trip plan changes.</p>
+            </div>
+        </aside>
+    </div>
+</section>
+<footer class="footer">
+    <p>&copy; 2026 Smart Travel Planner. Making travel planning smarter, one trip at a time.</p>
+</footer>
+<script src="../js/utils.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+
+    <script src="../js/group.js"></script>
+</body>
+</html>
