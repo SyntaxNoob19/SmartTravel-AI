@@ -10,6 +10,14 @@ SmartTravel is a full-stack, AI-powered travel planning web application built sp
 
 ---
 
+## Application Interface Screenshot
+
+Below is the user interface of the SmartTravel platform homepage:
+
+![SmartTravel Frontend Homepage](docs/diagrams/frontend_home.png)
+
+---
+
 ## Key Features
 
 *   **Dual-Engine Travel Planner:** Generates multi-day travel plans using generative AI. If the external AI service is unavailable or key credentials are not provided, it seamlessly activates a deterministic, proximity-based fallback clustering algorithm that groups local destinations geographically.
@@ -21,6 +29,32 @@ SmartTravel is a full-stack, AI-powered travel planning web application built sp
 
 ---
 
+## Project Directory Tree
+
+Below is the repository directory structure showing the organization of both frontend, backend, dataset seeding tools, and system documentation:
+
+```text
+SmartTravel/
+├── Backend/                 # Spring Boot backend source code
+│   ├── src/                 # Java source packages and configuration properties
+│   └── pom.xml              # Maven dependencies configuration
+├── Frontend/                # Vanilla HTML5 / CSS3 / ES6 JavaScript client
+│   ├── css/                 # Styling components and custom design tokens
+│   ├── js/                  # Modular client-side page controllers and API wrappers
+│   ├── pages/               # Client sub-views (auth, planner, itinerary panels)
+│   └── index.html           # Application dashboard entry point
+├── datasets/                # Local dataset resources
+│   └── india_travel_dataset_cleaned_v2.csv
+├── docs/                    # Unified system documentation hub
+│   └── diagrams/            # Unified system diagrams, models, and screenshots
+│       └── svg/             # Rendered vector diagram assets
+└── scripts/                 # Importer utilities and compilation scripts
+    ├── generate_svgs.py     # Programmatic vector graphics renderer
+    └── import_csv.py        # Database loader utility
+```
+
+---
+
 ## System Architecture
 
 SmartTravel follows a standard 3-Tier Architecture that enforces clean separation of concerns between client views, logical controllers/services, and databases.
@@ -28,8 +62,23 @@ SmartTravel follows a standard 3-Tier Architecture that enforces clean separatio
 ### System Architecture Flow
 ![System Architecture Flow](docs/diagrams/svg/system_architecture.svg)
 
-### Repository Directory Layout
-![Repository Layout](docs/diagrams/svg/folder_structure.svg)
+---
+
+## Visual Workflows and System Specifications
+
+All diagram models are pre-rendered in clean default themes and placed directly under docs/diagrams/svg/ to document system operations:
+
+### SRS Use Case Model
+Represents the Traveler actor interaction options and access parameters inside the platform:
+![SRS Use Case Model](docs/diagrams/svg/use_case.svg)
+
+### Itinerary Planning Workflow
+Outlines the logic from user preferences selection down to RAG database candidate retrieval and AI generation fallback:
+![Itinerary Planning Activity Flow](docs/diagrams/svg/activity.svg)
+
+### Session Authentication Sequence
+Details the stateful credentials verification loop and session cookie validation checks:
+![Session Authentication Sequence](docs/diagrams/svg/authentication_flow.svg)
 
 ---
 
@@ -38,7 +87,7 @@ SmartTravel follows a standard 3-Tier Architecture that enforces clean separatio
 | Component | Technology | Description |
 |---|---|---|
 | **Frontend** | Vanilla HTML5 / CSS3 / ES6 Javascript | Clean, modern user interface utilizing HSL tailored colors, responsive CSS grids, and smooth micro-animations. |
-| **Backend** | Spring Boot 3.x, Java 17 | Core web controllers, REST APIs, JPA mapping, and internal service layers. |
+| **Backend** | Spring Boot 3.x, Java 17 | Core web controllers, REST APIs, JPA mapping, and service layers. |
 | **Database** | MySQL 8+ / Hibernate JPA | Relational tables mapping places, user sessions, saved trips, and group budgets. |
 | **AI Integration** | OpenRouter API / OkHttp client | Integrates with generative models (e.g. gpt-4o-mini) using structured JSON templates. |
 | **Data Processing** | Python, Commons CSV | Pre-processing scripts and loader tools to ingest dataset profiles. |
@@ -58,7 +107,7 @@ SmartTravel follows a standard 3-Tier Architecture that enforces clean separatio
     ```sql
     CREATE DATABASE smart_travel;
     ```
-2.  Copy the example environment file and fill in your values (or configure system environment variables):
+2.  Copy the example environment file and fill in your values:
     ```bash
     cp .env.example .env
     ```
@@ -100,17 +149,6 @@ Technical design documents and guides are structured inside the docs/ directory:
 *   **[System Architecture Specification](docs/ARCHITECTURE.md):** In-depth structural model, packages, database design schemas, and technical debt log.
 *   **[REST API Specification](docs/API.md):** Request/Response payloads, schemas, and authentication filters.
 *   **[Deployment & Setup Specification](docs/DEPLOYMENT.md):** Detailed environment configurations, database seeding methods, and deployment instructions.
-
----
-
-## Visual Workflows & Lifecycles
-All source diagrams and vector graphics are placed inside docs/diagrams/:
-
-*   [User Itinerary Lifecycle Activity](docs/diagrams/svg/activity.svg)
-*   [Session Authentication Sequence](docs/diagrams/svg/authentication_flow.svg)
-*   [AI RAG Generation Sequence](docs/diagrams/svg/api_flow.svg)
-*   [User Page Navigation Flow](docs/diagrams/svg/navigation_flow.svg)
-*   [Core JPA Entity Class Model](docs/diagrams/svg/class_diagram.svg)
 
 ---
 
