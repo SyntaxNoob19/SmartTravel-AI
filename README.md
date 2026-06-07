@@ -10,7 +10,48 @@ SmartTravel is a full-stack, AI-powered travel planning web application built sp
 
 ---
 
-## Application Interface Screenshots
+## Project Overview
+
+SmartTravel is designed to simplify the complex process of planning multi-day trips. By combining a curated offline dataset of Indian tourist attractions with real-time generative language models, the application constructs personalized itineraries customized to user budget comfort levels, timeline constraints, travel styles, and mood preferences. 
+
+The application architecture prioritizes reliability by utilizing a local database fallback engine that dynamically clusters nearby locations using geocoordinates if external services time out or are unconfigured. The platform also offers secure session authentication and companion budget tools, resolving all core aspects of trip organization in a single dashboard.
+
+---
+
+## Features
+
+*   **Dual-Engine Travel Planner:** Generates multi-day travel plans using generative AI. If the external AI service is unavailable or key credentials are not provided, it seamlessly activates a deterministic, proximity-based fallback clustering algorithm that groups local destinations geographically.
+*   **Secure Session Authentication:** Stateful, secure cookie-based login (JSESSIONID) with BCrypt password hashing.
+*   **My Trips Dashboard:** Saves and manages customized itineraries dynamically tied to user profiles.
+*   **Companion Split-Expense Calculator:** Built-in companion budgeting system to record expenses and dynamically compute split shares.
+*   **Live Weather & Destination Insights:** Integrated weather profiles, photography spots, local tips, and nearest connectivity nodes (airports, railways).
+*   **Interactive Maps Integration:** Renders map locations using destination coordinates.
+
+---
+
+## Tech Stack
+
+| Component | Technology | Description |
+|---|---|---|
+| **Frontend** | Vanilla HTML5 / CSS3 / ES6 JavaScript | Responsive user interface utilizing custom design tokens, CSS grids, and smooth micro-animations. |
+| **Backend** | Spring Boot 3.x, Java 17 | REST controller mappings, JPA transactions, security authorization filters, and core planner pipelines. |
+| **Database** | MySQL 8+ / Hibernate JPA | Transactional schemas for profiles, budget sheets, expense logs, and places. |
+| **AI Integration** | OpenRouter API / OkHttp client | Prompt engineering templates connecting to gpt-4o-mini for structured itinerary outputs. |
+| **Data Processing** | Python, Commons CSV | Importer loaders to parse and seed dataset values into database schemas. |
+
+---
+
+## Architecture
+
+SmartTravel follows a standard 3-Tier Architecture that enforces clean separation of concerns between client views, logical controllers/services, and databases.
+
+### 3-Tier System Architecture Flow
+Defines the connection paths between client presentation layer, Spring Boot logic layer, MySQL storage, and external OpenRouter API:
+![System Architecture Flow](docs/diagrams/svg/system_architecture.svg)
+
+---
+
+## Screenshots
 
 ### Homepage Dashboard
 Defines the landing dashboard where travelers can register, authenticate, and explore custom recommendations.
@@ -30,18 +71,7 @@ Displays the detailed daily schedule containing curated spots, tips, duration su
 
 ---
 
-## Key Features
-
-*   **Dual-Engine Travel Planner:** Generates multi-day travel plans using generative AI. If the external AI service is unavailable or key credentials are not provided, it seamlessly activates a deterministic, proximity-based fallback clustering algorithm that groups local destinations geographically.
-*   **Secure Session Authentication:** Stateful, secure cookie-based login (JSESSIONID) with BCrypt password hashing.
-*   **My Trips Dashboard:** Saves and manages customized itineraries dynamically tied to user profiles.
-*   **Companion Split-Expense Calculator:** Built-in companion budgeting system to record expenses and dynamically compute split shares.
-*   **Live Weather & Destination Insights:** Integrated weather profiles, photography spots, local tips, and nearest connectivity nodes (airports, railways).
-*   **Interactive Maps Integration:** Renders map locations using destination coordinates.
-
----
-
-## Project Directory Tree
+## Project Structure
 
 Below is the repository directory structure showing the organization of both frontend, backend, dataset seeding tools, and system documentation:
 
@@ -67,98 +97,70 @@ SmartTravel/
 
 ---
 
-## System Architecture
+## Setup Instructions
 
-SmartTravel follows a standard 3-Tier Architecture that enforces clean separation of concerns between client views, logical controllers/services, and databases.
+### 1. Configure MySQL Schema
+Start the local MySQL database instance, open your SQL client, and create the schema:
+```sql
+CREATE DATABASE smart_travel CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
 
-### 3-Tier System Architecture Flow
-Defines the connection paths between client presentation layer, Spring Boot logic layer, MySQL storage, and external OpenRouter API:
-![System Architecture Flow](docs/diagrams/svg/system_architecture.svg)
-
----
-
-## Visual Workflows and System Specifications
-
-All diagram models are pre-rendered in clean default themes and placed directly under docs/diagrams/svg/ to document system operations:
-
-### SRS Use Case Model
-Represents the Traveler actor interaction options and access parameters inside the platform:
-![SRS Use Case Model](docs/diagrams/svg/use_case.svg)
-
-### Itinerary Planning Workflow
-Outlines the logic from user preferences selection down to RAG database candidate retrieval and AI generation fallback:
-![Itinerary Planning Activity Flow](docs/diagrams/svg/activity.svg)
-
-### Session Authentication Sequence
-Details the stateful credentials verification loop and session cookie validation checks:
-![Session Authentication Sequence](docs/diagrams/svg/authentication_flow.svg)
-
-### RAG Itinerary Call Flow
-Details the client REST query, database filter steps, OpenRouter RAG context enrichment, and payload return sequence:
-![RAG Itinerary Sequence](docs/diagrams/svg/api_flow.svg)
-
-### Core JPA Entity Class Model
-Specifies database entities mappings, variables attributes, collection elements mapping, and relationships:
-![Core JPA Entity Class Model](docs/diagrams/svg/class_diagram.svg)
-
----
-
-## Technology Stack
-
-| Component | Technology | Description |
-|---|---|---|
-| **Frontend** | Vanilla HTML5 / CSS3 / ES6 Javascript | Clean, modern user interface utilizing HSL tailored colors, responsive CSS grids, and smooth micro-animations. |
-| **Backend** | Spring Boot 3.x, Java 17 | Core web controllers, REST APIs, JPA mapping, and service layers. |
-| **Database** | MySQL 8+ / Hibernate JPA | Relational tables mapping places, user sessions, saved trips, and group budgets. |
-| **AI Integration** | OpenRouter API / OkHttp client | Integrates with generative models (e.g. gpt-4o-mini) using structured JSON templates. |
-| **Data Processing** | Python, Commons CSV | Pre-processing scripts and loader tools to ingest dataset profiles. |
-
----
-
-## Quick Start Guide
-
-### 1. Prerequisites
-*   Java Development Kit (JDK) 17 or higher
-*   Maven 3.x (or use the included wrapper ./mvnw)
-*   MySQL Server 8.x
-*   Python 3.x (for database seeding)
-
-### 2. Configure Database & Environment
-1.  Log into your MySQL terminal and create the schema:
-    ```sql
-    CREATE DATABASE smart_travel;
-    ```
-2.  Copy the example environment file and fill in your values:
-    ```bash
-    cp .env.example .env
-    ```
-    Configure the following keys:
-    ```env
-    OPENROUTER_API_KEY=your_api_key
-    MYSQL_DATABASE=smart_travel
-    MYSQL_USERNAME=root
-    MYSQL_PASSWORD=your_password
-    ```
-
-### 3. Seed the Database
-Run the Python CSV importer script to populate the local destinations database with the curated Indian dataset containing tourist places:
+### 2. Configure Environment Variables
+Copy the example environment template file to create your active `.env` config file:
 ```bash
+cp .env.example .env
+```
+Fill in the parameters as detailed in the Environment Variables section below.
+
+### 3. Ingest Destinations Dataset
+Execute the CSV importer script to populate the local attractions tables:
+```bash
+# Ingest using Python
 python scripts/import_csv.py
 ```
-
-### 4. Build and Run the Backend Server
-Navigate into the Backend/ directory and spin up the spring-boot server:
-```powershell
+Alternatively, execute the database loader from the backend directory using Maven:
+```bash
 cd Backend
-.\mvnw.cmd clean spring-boot:run
+./mvnw.cmd exec:java -Dexec.mainClass="com.riya.smarttravel.util.CsvImportTool"
 ```
-The server will boot up and bind to port 9090.
 
-### 5. Access the Platform
-Open your browser and navigate to:
+### 4. Build and Launch Server
+Run the Maven wrapper task to compile classes, run validation tests, and bootstrap Tomcat:
+```bash
+cd Backend
+./mvnw.cmd clean spring-boot:run
+```
+The server binds to local port `9090`.
+
+### 5. Open Application
+Navigate your browser to the local URL:
 ```text
 http://localhost:9090/
 ```
+
+---
+
+## Environment Variables
+
+Configure the following variables in your `.env` file at the root of the project:
+
+*   **`DB_URL`** (Default: `jdbc:mysql://localhost:3306/smart_travel`): The JDBC MySQL connection string.
+*   **`DB_USERNAME`** (Default: `root`): Database authentication username.
+*   **`DB_PASSWORD`** (Default: `root`): Database authentication password.
+*   **`APP_CORS_ALLOWED_ORIGINS`**: Comma-separated list of origins permitted to call REST APIs.
+*   **`OPENROUTER_API_KEY`**: API credential key for the OpenRouter model.
+*   **`PLANNER_AI_MODEL`** (Default: `openai/gpt-4o-mini`): Generative AI model selection ID.
+*   **`PLANNER_AI_ENABLED`** (Default: `true`): Feature toggle to enable/disable generative AI planning.
+*   **`APP_FRONTEND_PATH`** (Default: `file:///d:/travel-planner/Frontend/`): Root file path mapping pointing to static frontend assets.
+
+---
+
+## Future Improvements
+
+*   **Distributed Cache Configuration:** Replace in-memory caching blocks with a centralized cache store like Redis to persist weather details and geocoding responses.
+*   **Stateless Authentication Protocols:** Migrate stateful Servlet session cookies (`HttpSession`) to stateless authorization protocols using JSON Web Tokens (JWT) for microservice scaling.
+*   **Asynchronous Processing Pipeline:** Refactor geocoding and weather REST requests to run on asynchronous, non-blocking HTTP threads.
+*   **Trip Collaboration Channels:** Extend budget calculators and itinerary modules to support real-time collaboration rooms for travel companion groups.
 
 ---
 
