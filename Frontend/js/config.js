@@ -1,10 +1,16 @@
 // ========== SMART TRAVEL - BACKEND CONFIG ==========
-// Change this ONE value if your backend port changes.
+
 window.SMARTTRAVEL_API_BASE = (() => {
-  const origin = ;
-  // If the page is served directly from the backend (port 9090 or 9090), use same-origin
-  if (origin.includes(':9090') || origin.includes(':9090')) return '/api';
-  // Otherwise point to the backend explicitly — change port here if needed
-  const host = window.location.hostname || 'localhost';
-  return `http://${host}:9090/api`;
+  const origin = window.location.origin;
+
+  // Local development
+  if (
+    origin.includes('localhost') ||
+    origin.includes('127.0.0.1')
+  ) {
+    return 'http://localhost:9090/api';
+  }
+
+  // Production (Render backend)
+  return 'https://smarttravel-ai.onrender.com/api';
 })();
