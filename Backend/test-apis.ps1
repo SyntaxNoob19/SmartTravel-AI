@@ -2,7 +2,7 @@
 # This script tests all the newly integrated external APIs
 # Run this after: mvn clean install && mvn spring-boot:run
 
-$BaseURL = "http://localhost:9090/api/v1/external"
+$BaseURL = "https://smarttravel-ai.onrender.com/api/v1/external"
 
 Write-Host "=====================================================" -ForegroundColor Cyan
 Write-Host "SmartTravel External APIs - Test Suite" -ForegroundColor Cyan

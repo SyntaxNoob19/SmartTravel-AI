@@ -1,10 +1,10 @@
 $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
 try {
-    $register = Invoke-RestMethod -Uri "http://localhost:9090/api/auth/register" -Method Post -Body '{"name":"Demo User","email":"demo@smarttravel.com","password":"Demo@1234"}' -ContentType "application/json" -WebSession $session
+    $register = Invoke-RestMethod -Uri "https://smarttravel-ai.onrender.com/api/auth/register" -Method Post -Body '{"name":"Demo User","email":"demo@smarttravel.com","password":"Demo@1234"}' -ContentType "application/json" -WebSession $session
     Write-Host "Register Response:" ($register | ConvertTo-Json -Depth 2)
 } catch {
     Write-Host "Registration failed or user already exists, attempting login..."
-    $login = Invoke-RestMethod -Uri "http://localhost:9090/api/auth/login" -Method Post -Body '{"email":"demo@smarttravel.com","password":"Demo@1234"}' -ContentType "application/json" -WebSession $session
+    $login = Invoke-RestMethod -Uri "https://smarttravel-ai.onrender.com/api/auth/login" -Method Post -Body '{"email":"demo@smarttravel.com","password":"Demo@1234"}' -ContentType "application/json" -WebSession $session
     Write-Host "Login Response:" ($login | ConvertTo-Json -Depth 2)
 }
 
@@ -41,7 +41,7 @@ $payload = @{
 }
 $jsonPayload = $payload | ConvertTo-Json -Depth 10
 try {
-    $res = Invoke-RestMethod -Uri "http://localhost:9090/api/trips/users/demo@smarttravel.com" -Method Post -Body $jsonPayload -ContentType "application/json" -WebSession $session
+    $res = Invoke-RestMethod -Uri "https://smarttravel-ai.onrender.com/api/trips/users/demo@smarttravel.com" -Method Post -Body $jsonPayload -ContentType "application/json" -WebSession $session
     Write-Host "Save Response:" ($res | ConvertTo-Json -Depth 2)
 } catch {
     Write-Error $_

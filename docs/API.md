@@ -2,7 +2,7 @@
 
 This document defines the REST API endpoints exposed by the SmartTravel backend server, including validation rules, request bodies, response formats, and session requirements.
 
-The base URL for local development is: `http://localhost:9090`
+The base URL for local development is: `https://smarttravel-ai.onrender.com`
 
 ---
 

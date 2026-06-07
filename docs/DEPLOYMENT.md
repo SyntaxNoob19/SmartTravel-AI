@@ -29,7 +29,7 @@ Verify that the target hosting server or local workspace meets the following sof
     DB_PASSWORD=your_mysql_password
 
     # CORS Settings
-    APP_CORS_ALLOWED_ORIGINS=http://localhost:5500,http://127.0.0.1:5500,http://localhost:9090
+    APP_CORS_ALLOWED_ORIGINS=https://smarttravel-ai.onrender.com:5500,http://127.0.0.1:5500,https://smarttravel-ai.onrender.com
 
     # OpenRouter API Integration
     OPENROUTER_API_KEY=your_openrouter_api_key
@@ -85,9 +85,9 @@ Verify that the target hosting server or local workspace meets the following sof
 The frontend consists of static client files. The application offers two deployment architectures for serving the static files:
 
 ### Unified Hosting (Recommended)
-The Spring Boot server is configured to serve the static frontend directories directly from the root path `http://localhost:9090/`.
+The Spring Boot server is configured to serve the static frontend directories directly from the root path `https://smarttravel-ai.onrender.com/`.
 *   Verify that the `app.frontend.path` property inside `application.properties` points to the correct location (defaulting to the local directory reference `file:///d:/travel-planner/Frontend/`).
-*   Open `http://localhost:9090/` to navigate the system interface.
+*   Open `https://smarttravel-ai.onrender.com/` to navigate the system interface.
 
 ### Decoupled Hosting (Developer Mode)
 The static client can be hosted separately on a lightweight HTTP web server (e.g. Nginx, Python http.server, or VS Code Live Server):
@@ -96,5 +96,5 @@ The static client can be hosted separately on a lightweight HTTP web server (e.g
     cd Frontend
     python -m http.server 5500
     ```
-2.  Open `http://localhost:5500/index.html` in your web browser.
-3.  Ensure the origin `http://localhost:5500` is listed in the `APP_CORS_ALLOWED_ORIGINS` environment property.
+2.  Open `https://smarttravel-ai.onrender.com:5500/index.html` in your web browser.
+3.  Ensure the origin `https://smarttravel-ai.onrender.com:5500` is listed in the `APP_CORS_ALLOWED_ORIGINS` environment property.

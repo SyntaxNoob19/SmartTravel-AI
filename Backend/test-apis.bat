@@ -11,7 +11,7 @@ echo SmartTravel External APIs - Test Suite
 echo ====================================================
 echo.
 
-set BASE_URL=http://localhost:9090/api/v1/external
+set BASE_URL=https://smarttravel-ai.onrender.com/api/v1/external
 
 REM Color codes for output
 for /F %%A in ('copy /Z "%~f0" nul') do set "BS=%%A"
