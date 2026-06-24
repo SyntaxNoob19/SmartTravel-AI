@@ -755,7 +755,6 @@ function renderItinerary(data) {
                         ${day.estimatedTravelHours ? `<span>${escapeHtml(String(day.estimatedTravelHours))}h travel</span>` : ''}
                     </div>
                 </div>
-                ${renderDayImageStrip(day, tripCity)}
                 ${day.daySummary ? `<p class="itinerary-day-summary" style="margin-top: 8px; font-weight: 500; color: var(--primary);">${escapeHtml(String(day.daySummary))}</p>` : ''}
                 ${places && places.length > 0 ? `
                     <div style="display: grid; gap: 16px; margin-top: 12px;">
@@ -888,6 +887,11 @@ function renderItinerary(data) {
             <!-- Row 3: Day-by-Day Itinerary (Full width, Detailed Planner day cards) -->
             <section class="place-panel trip-detail-panel trip-detail-panel-wide">
                 <h2><i class="fas fa-calendar-days"></i> Day-by-Day Travel Itinerary</h2>
+                <div class="itinerary-top-gallery" style="margin-top: 16px; margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+                    ${getUnsplashDestinationImages(tripCity, 3, getTripPlaceNames(data)).map((imgUrl, index) => `
+                        <img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(tripCity)} ${index + 1}" style="width: 100%; height: 260px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);" onerror="this.src='${resolveImagePath('images/placeholder.jpg')}'">
+                    `).join('')}
+                </div>
                 <div class="itinerary-days-grid trip-day-list" style="display:grid; gap:20px; margin-top:16px;">
                     ${dayPlannerCards}
                 </div>
@@ -904,8 +908,8 @@ function renderItinerary(data) {
                 </div>` : ''}
             </section>
 
-            <!-- Row 5: Live Destination Insights (Left 50%) -->
-            <section class="place-panel trip-detail-panel">
+            <!-- Row 5: Live Destination Insights (Full width) -->
+            <section class="place-panel trip-detail-panel trip-detail-panel-wide">
                 <h2><i class="fas fa-cloud-sun"></i> Live Insights</h2>
                 <p style="font-size: 13px; color: var(--text-light); margin-bottom: 12px; line-height: 1.5;">Real-time weather parameters and travel safety alerts for ${escapeHtml(tripCity)}.</p>
                 <div id="live-insights-grid" class="insight-small-grid" style="margin-top:12px;">
@@ -915,8 +919,8 @@ function renderItinerary(data) {
                 </div>
             </section>
 
-            <!-- Row 5: Map & Local Attractions (Right 50%) -->
-            <section class="place-panel trip-detail-panel">
+            <!-- Row 6: Map & Local Attractions (Full width) -->
+            <section class="place-panel trip-detail-panel trip-detail-panel-wide">
                 <h2><i class="fas fa-map-location-dot"></i> Map & Attractions</h2>
                 <div class="itinerary-map-overview trip-detail-map-grid" style="display:grid; grid-template-columns:1fr; gap:16px;">
                     <div class="itinerary-map-box box" style="padding:0; margin:0; border:none; box-shadow:none; background:transparent;">
@@ -1298,11 +1302,11 @@ function renderBudgetPanel(budget) {
                                 ₹${formatRupees(Math.round(item.value / Math.max(1, travellers) / Math.max(1, days)))}/person/day
                             </div>
                             <div class="budget-breakdown-footer">${escapeHtml({
-    hotel: 'Comfortable stays',
-    food: 'Local & variety meals',
-    transport: 'Local travel & transfers',
-    activities: 'Experiences & entry'
-}[item.label.toLowerCase()] || '')}</div>
+        hotel: 'Comfortable stays',
+        food: 'Local & variety meals',
+        transport: 'Local travel & transfers',
+        activities: 'Experiences & entry'
+    }[item.label.toLowerCase()] || '')}</div>
                         </article>
                     `).join('')}
                 </div>
@@ -1341,34 +1345,70 @@ function resolveItineraryImage(place, fallbackCity) {
     const explicit = place?.imageUrl || place?.image || guide.image || null;
     if (explicit) return resolveImagePath(explicit);
 
-    // Fallback to a curated image from Unsplash (no API key required)
-    // Use the place name to get a representative photo. This provides
-    // a good visual for generated itineraries when backend doesn't supply images.
+    // Fallback to a curated image from Unsplash/Flickr via LoremFlickr
     try {
-        // Prefer querying by destination first to get images related to the city
-        const city = encodeURIComponent((fallbackCity || placeName || 'travel').split(',')[0]);
-        const term = encodeURIComponent(placeName.split(',')[0]);
-        // Query string aims to bias to destination and place type (landmark, skyline, street food)
-        const query = `${city},${term},landmark`;
-        return `https://source.unsplash.com/collection/190727/${query}`.replace(/\s+/g, '+') || `https://source.unsplash.com/featured/?${city},${term}`;
+        const city = (fallbackCity || placeName || 'travel').split(',')[0].trim();
+        const term = placeName.split(',')[0].trim();
+        //  return `https://loremflickr.com/640/480/${encodeURIComponent(city)},${encodeURIComponent(term)}`;
     } catch (e) {
         return resolveImagePath('assets/images/placeholder.jpg');
     }
 }
 
+function getUnsplashDestinationImages(destination, count = 3, placeNames = []) {
+    const city = String(destination || 'travel').split(',')[0].trim();
+    if (!city) {
+        return [resolveImagePath('assets/images/placeholder.jpg')];
+    }
+
+    const urls = [];
+
+    if (Array.isArray(placeNames) && placeNames.length > 0) {
+        const uniquePlaces = [...new Set(placeNames)];
+        for (const place of uniquePlaces) {
+            if (urls.length >= count) break;
+            const placeKey = String(place).trim();
+            urls.push(`https://loremflickr.com/1600/900/${encodeURIComponent(city)},${encodeURIComponent(placeKey)}`);
+        }
+    }
+
+    while (urls.length < count) {
+        const index = urls.length + 1;
+        urls.push(`https://loremflickr.com/1600/900/${encodeURIComponent(city)}?lock=${index * 13}`);
+    }
+
+    return urls;
+}
+
+function getUnsplashDestinationImage(destination) {
+    return getUnsplashDestinationImages(destination, 1)[0];
+}
+
 function renderDayImageStrip(day, tripCity) {
     const places = Array.isArray(day?.places) ? day.places : [];
+    const destinationImage = getUnsplashDestinationImage(tripCity);
+
     // Reduce visual clutter: only show up to 2 images per day, prioritized by places with images
     const images = places
         .map(place => ({ place, image: resolveItineraryImage(place, tripCity) }))
         .filter(item => Boolean(item.image));
 
+    // Always lead with the selected destination image from Unsplash.
+    images.unshift({
+        place: { placeName: tripCity },
+        image: destinationImage
+    });
+
+    const deduped = images.filter((item, index, list) => {
+        return list.findIndex(entry => entry.image === item.image) === index;
+    });
+
     // If no place-specific images, fall back to a city image
-    if (!images.length) {
-        images.push({ place: { placeName: tripCity }, image: resolveItineraryImage(null, tripCity) });
+    if (!deduped.length) {
+        deduped.push({ place: { placeName: tripCity }, image: resolveItineraryImage(null, tripCity) });
     }
 
-    const selected = images.slice(0, 2);
+    const selected = deduped.slice(0, 2);
 
     if (selected.length === 1) {
         return `<div class="trip-day-images single-image"><img src="${escapeHtml(selected[0].image)}" alt="${escapeHtml(String(selected[0].place?.placeName || tripCity))}"></div>`;

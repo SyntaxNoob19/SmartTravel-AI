@@ -171,11 +171,13 @@ class PlannerServiceTest {
 
         Place indore = place("IND777", "Indore", 4.5, 2.0, "Recommended");
         lenient().when(repository.findAll()).thenReturn(List.of(indore, place("IND999", "Mumbai", 4.9, 2.0, "Must Visit")));
-        lenient().when(repository.findByCityContainingIgnoreCase(eq("indore"))).thenReturn(List.of(indore));
+        lenient().when(repository.findByCityContainingIgnoreCase(eq("Indore"))).thenReturn(List.of(indore));
 
-        // With the fix, for an unknown city with 0 DB places and AI not configured,
-        // we throw an exception rather than returning rule-based fallback
-        assertThrows(ResourceNotFoundException.class, () -> service.generate(request));
+        PlannerResponseDto response = service.generate(request);
+        assertEquals(1, response.getItinerary().size());
+        assertEquals("Indore", response.getItinerary().get(0).getLocation().getCity());
+        assertEquals(1, response.getItinerary().get(0).getPlaces().size());
+        assertEquals("Place IND777", response.getItinerary().get(0).getPlaces().get(0).getPlaceName());
     }
 
     @Test

@@ -151,21 +151,21 @@ public class ImageService {
         List<ImageDto> images = new ArrayList<>();
 
         images.add(createFallbackImage(normalized + "_travel_fallback_1",
-                "https://source.unsplash.com/featured/400x300/?" + normalized,
-                "https://source.unsplash.com/featured/800x600/?" + normalized,
-                "https://source.unsplash.com/featured/1200x900/?" + normalized,
+                "https://loremflickr.com/400/300/" + normalized,
+                "https://loremflickr.com/800/600/" + normalized,
+                "https://loremflickr.com/1200/900/" + normalized,
                 capitalize(normalized) + " travel at golden hour"));
 
         images.add(createFallbackImage(normalized + "_travel_fallback_2",
-                "https://source.unsplash.com/featured/400x300/?" + normalized + ",landmark",
-                "https://source.unsplash.com/featured/800x600/?" + normalized + ",landmark",
-                "https://source.unsplash.com/featured/1200x900/?" + normalized + ",landmark",
+                "https://loremflickr.com/400/300/" + normalized + ",landmark",
+                "https://loremflickr.com/800/600/" + normalized + ",landmark",
+                "https://loremflickr.com/1200/900/" + normalized + ",landmark",
                 "Street-level view of " + capitalize(normalized) + " travel"));
 
         images.add(createFallbackImage(normalized + "_travel_fallback_3",
-                "https://source.unsplash.com/featured/400x300/?" + normalized + ",architecture",
-                "https://source.unsplash.com/featured/800x600/?" + normalized + ",architecture",
-                "https://source.unsplash.com/featured/1200x900/?" + normalized + ",architecture",
+                "https://loremflickr.com/400/300/" + normalized + ",architecture",
+                "https://loremflickr.com/800/600/" + normalized + ",architecture",
+                "https://loremflickr.com/1200/900/" + normalized + ",architecture",
                 capitalize(normalized) + " travel skyline and architecture"));
 
         return images;

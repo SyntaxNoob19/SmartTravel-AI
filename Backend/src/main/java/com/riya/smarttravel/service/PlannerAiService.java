@@ -71,7 +71,7 @@ public class PlannerAiService {
     @Value("${planner.ai.api.url:https://openrouter.ai/api/v1/chat/completions}")
     private String aiApiUrl;
 
-    @Value("${planner.ai.api.key:${OPENROUTER_API_KEY:}}")
+    @Value("${planner.ai.api.key}")
     private String aiApiKey;
 
     @Value("${planner.ai.model:openai/gpt-4o-mini}")
@@ -451,7 +451,7 @@ public class PlannerAiService {
                 1. Return ONLY JSON.
                 2. Every day MUST have dataSource, dayNumber, daySummary, location (city, state), places[] with 2-4 items, totalPlannedHours, estimatedTravelHours, travelNotes.
                 3. Every place MUST have: placeId, placeName, category, significance, description, localTips, safetyAdvice, rating, recommendedDurationHours, bestTimeToVisit, idealVisitTime, plannedVisitTimeSlot.
-                4. Use REAL and correct places in %s, India (or nearby within 3 hours). Ensure they are famous, accurate tourist landmarks and spots.
+                4. Use REAL and correct places ONLY within the city limits of %s, India. Strictly do NOT include places from neighboring cities, different states, or any place outside this city (for example, if Kolkata is requested, do not include Puri or Konark or other cities in Odisha; keep all places strictly within the requested city's borders). Every single place in the itinerary MUST be physically located inside this city. Ensure they are famous, accurate tourist landmarks and spots of this city.
                 5. Ensure plannedVisitTimeSlot and idealVisitTime follow formats like "9:00 AM - 11:30 AM", "12:00 PM - 2:30 PM", etc.
                 6. Sum of place duration hours + travel hours must not exceed %.1f per day.
                 7. Distribute %d days across %s locations.

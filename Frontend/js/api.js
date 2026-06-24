@@ -175,6 +175,8 @@ function openTripDetailPage(tripPayload, requestBody = {}) {
     const tripId = tripPayload?.id || tripPayload?.tripId || '';
     if (!payload) return;
 
+    localStorage.setItem('plannerRequestData', JSON.stringify(requestBody));
+    sessionStorage.setItem('plannerRequestData', JSON.stringify(requestBody));
     localStorage.setItem('itineraryData', JSON.stringify(payload));
     sessionStorage.setItem('itineraryData', JSON.stringify(payload));
     localStorage.setItem('itineraryCity', requestBody.city || requestBody.placeName || (requestBody.region ? `${requestBody.region} region` : payload.city || 'Destination'));

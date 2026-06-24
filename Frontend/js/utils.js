@@ -49,10 +49,232 @@ const DESTINATION_FAMOUS_FOR = {
 // Destination overrides — kept empty intentionally. Budget is calculated purely from tier + travelers + days.
 const DESTINATION_OVERRIDES = {};
 
+const DESTINATION_ITINERARY_STOPS = {
+    Goa: {
+        morning: ['Basilica of Bom Jesus', 'Fort Aguada', 'Dudhsagar Falls'],
+        afternoon: ['Calangute Beach', 'Candolim Beach', 'Fontainhas'],
+        evening: ['Baga Beach', 'Chapora Fort', 'Anjuna Beach']
+    },
+    Gokarna: {
+        morning: ['Mahabaleshwar Temple', 'Om Beach Viewpoint', 'Half Moon Beach'],
+        afternoon: ['Kudle Beach', 'Gokarna Main Beach', 'Paradise Beach'],
+        evening: ['Sunset Point Gokarna', 'Beachside cafes in Kudle', 'Temple street market']
+    },
+    Varkala: {
+        morning: ['Varkala Cliff', 'Janardanaswamy Temple', 'Papanasam Beach'],
+        afternoon: ['Kappil Beach', 'Jatayu Earth Center', 'Black Sand Beach'],
+        evening: ['Varkala Cliff cafes', 'Edava Beach', 'North Cliff promenade']
+    },
+    'Marina Beach': {
+        morning: ['Marina Beach', 'Kapaleeshwarar Temple', 'San Thome Basilica'],
+        afternoon: ['Government Museum Chennai', 'Mylapore', 'Besant Nagar Beach'],
+        evening: ['Marina Beach promenade', 'Elliot’s Beach', 'Mylapore food streets']
+    },
+    Kovalam: {
+        morning: ['Lighthouse Beach', 'Vizhinjam Rock Cut Cave Temple', 'Hawa Beach'],
+        afternoon: ['Samudra Beach', 'Poovar Backwaters', 'Vizhinjam Harbour'],
+        evening: ['Kovalam beach promenade', 'Lighthouse sunset point', 'Ayurveda spa strip']
+    },
+    Rameswaram: {
+        morning: ['Ramanathaswamy Temple', 'Pamban Bridge', 'APJ Abdul Kalam Memorial'],
+        afternoon: ['Dhanushkodi Beach', 'Ariyaman Beach', 'Agni Theertham'],
+        evening: ['Pamban sunset point', 'Temple streets of Rameswaram', 'Seashore walk near Agni Theertham']
+    },
+    Manali: {
+        morning: ['Hadimba Devi Temple', 'Solang Valley', 'Vashisht Temple'],
+        afternoon: ['Old Manali', 'Naggar Castle', 'Van Vihar'],
+        evening: ['Mall Road Manali', 'Old Manali cafes', 'Club House riverside']
+    },
+    Shimla: {
+        morning: ['Jakhoo Temple', 'Christ Church Shimla', 'The Ridge'],
+        afternoon: ['Kufri', 'Viceregal Lodge', 'Mall Road Shimla'],
+        evening: ['Scandal Point', 'Mall Road evening walk', 'Lakkar Bazaar']
+    },
+    Mussoorie: {
+        morning: ['Gun Hill', 'Camel Back Road', 'George Everest Peak'],
+        afternoon: ['Kempty Falls', 'Company Garden', 'Landour'],
+        evening: ['Mall Road Mussoorie', 'Landour Bakehouse area', 'Library Chowk']
+    },
+    Darjeeling: {
+        morning: ['Tiger Hill', 'Batasia Loop', 'Ghoom Monastery'],
+        afternoon: ['Happy Valley Tea Estate', 'Padmaja Naidu Himalayan Zoo', 'Darjeeling Ropeway'],
+        evening: ['Mall Road Darjeeling', 'Chowrasta', 'Observatory Hill']
+    },
+    Nainital: {
+        morning: ['Naini Lake', 'Naina Devi Temple', 'Snow View Point'],
+        afternoon: ['Tiffin Top', 'Eco Cave Gardens', 'Mallital'],
+        evening: ['Mall Road Nainital', 'Naina Lake promenade', 'Boat House Club area']
+    },
+    Mcleodganj: {
+        morning: ['Tsuglagkhang Complex', 'Bhagsu Falls', 'St. John in the Wilderness'],
+        afternoon: ['Dharamkot', 'Dalai Lama Temple', 'Namgyal Monastery'],
+        evening: ['Mcleodganj Market', 'Temple Road cafes', 'Sunset Point Naddi']
+    },
+    Coorg: {
+        morning: ['Abbey Falls', 'Raja’s Seat', 'Talacauvery'],
+        afternoon: ['Dubare Elephant Camp', 'Coffee plantation trail', 'Madikeri Fort'],
+        evening: ['Madikeri town market', 'Raja’s Seat sunset', 'Plantation stay trails']
+    },
+    Gangtok: {
+        morning: ['Rumtek Monastery', 'Tsomgo Lake', 'Ganesh Tok'],
+        afternoon: ['MG Marg', 'Hanuman Tok', 'Namgyal Institute of Tibetology'],
+        evening: ['MG Marg promenade', 'Ridge Park', 'Lal Bazaar']
+    },
+    Srinagar: {
+        morning: ['Dal Lake', 'Shalimar Bagh', 'Nishat Bagh'],
+        afternoon: ['Pari Mahal', 'Shankaracharya Temple', 'Hazratbal Shrine'],
+        evening: ['Boulevard Road', 'Shikara ghat area', 'Old Srinagar market']
+    },
+    Jaipur: {
+        morning: ['Amber Fort', 'Hawa Mahal', 'Jantar Mantar'],
+        afternoon: ['City Palace', 'Albert Hall Museum', 'Jaigarh Fort'],
+        evening: ['Nahargarh Fort', 'Bapu Bazaar', 'Jal Mahal viewpoint']
+    },
+    Delhi: {
+        morning: [
+            'Red Fort',
+            'Jama Masjid',
+            'Humayun Tomb',
+            'Qutub Minar',
+            'Raj Ghat'
+        ],
+        afternoon: [
+            'Chandni Chowk',
+            'National Museum',
+            'Lodhi Garden',
+            'Connaught Place',
+            'Dilli Haat'
+        ],
+        evening: [
+            'India Gate',
+            'Bangla Sahib',
+            'Hauz Khas Village',
+            'Akshardham Temple',
+            'Khan Market'
+        ]
+    },
+    Mumbai: {
+        morning: ['Gateway of India', 'Chhatrapati Shivaji Maharaj Terminus', 'Elephanta Caves'],
+        afternoon: ['Kala Ghoda', 'Colaba Causeway', 'Haji Ali Dargah'],
+        evening: ['Marine Drive', 'Bandra Bandstand', 'Juhu Beach']
+    },
+    Bangalore: {
+        morning: ['Lalbagh Botanical Garden', 'Cubbon Park', 'Bangalore Palace'],
+        afternoon: ['Visvesvaraya Museum', 'Tipu Sultan’s Summer Palace', 'Commercial Street'],
+        evening: ['Church Street', 'MG Road', 'UB City']
+    },
+    Kolkata: {
+        morning: ['Victoria Memorial', 'Dakshineswar Kali Temple', 'Indian Museum'],
+        afternoon: ['College Street', 'Kumartuli', 'Howrah Bridge riverside'],
+        evening: ['Prinsep Ghat', 'Park Street', 'Hooghly riverfront']
+    },
+    Chennai: {
+        morning: ['Marina Beach', 'Kapaleeshwarar Temple', 'Fort St. George'],
+        afternoon: ['Government Museum Chennai', 'San Thome Basilica', 'Mylapore'],
+        evening: ['Besant Nagar Beach', 'Marina promenade', 'T Nagar']
+    },
+    Agra: {
+        morning: ['Taj Mahal', 'Agra Fort', 'Mehtab Bagh'],
+        afternoon: ['Itmad-ud-Daulah', 'Sadar Bazaar', 'Fatehpur Sikri'],
+        evening: ['Mehtab Bagh sunset', 'Taj Nature Walk', 'Kinari Bazaar']
+    },
+    Indore: {
+        morning: ['Rajwada Palace', 'Lal Bagh Palace', 'Kanch Mandir'],
+        afternoon: ['Chappan Dukan', 'Central Museum Indore', 'Annapurna Temple'],
+        evening: ['Sarafa Bazaar', 'Rajwada market streets', 'Meghdoot Garden']
+    },
+    Ahmedabad: {
+        morning: ['Sabarmati Ashram', 'Adalaj Stepwell', 'Jama Masjid Ahmedabad'],
+        afternoon: ['Sidi Saiyyed Mosque', 'Kankaria Lake', 'Calico Museum area'],
+        evening: ['Sabarmati Riverfront', 'Law Garden Night Market', 'Manek Chowk']
+    },
+    Hampi: {
+        morning: ['Virupaksha Temple', 'Vittala Temple', 'Hemakuta Hill'],
+        afternoon: ['Lotus Mahal', 'Elephant Stables', 'Achyutaraya Temple'],
+        evening: ['Matanga Hill', 'Tungabhadra riverside', 'Hampi Bazaar']
+    },
+    Mysuru: {
+        morning: ['Mysore Palace', 'Chamundi Hill', 'St. Philomena’s Church'],
+        afternoon: ['Jaganmohan Palace', 'Devaraja Market', 'Mysore Zoo'],
+        evening: ['Brindavan Gardens', 'Palace illumination area', 'Mall of Mysore district']
+    },
+    Kasol: {
+        morning: ['Parvati River trail', 'Chalal village', 'Manikaran Sahib'],
+        afternoon: ['Kasol Market', 'Tosh village', 'Nature Park Kasol'],
+        evening: ['Kasol cafes', 'Riverside sunset point', 'Old Kasol lanes']
+    },
+    Rishikesh: {
+        morning: ['Lakshman Jhula', 'Ram Jhula', 'Parmarth Niketan'],
+        afternoon: ['Neer Garh Waterfall', 'Beatles Ashram', 'Triveni Ghat'],
+        evening: ['Ganga Aarti at Parmarth Niketan', 'Tapovan cafes', 'Riverfront promenade']
+    },
+    Ladakh: {
+        morning: ['Shanti Stupa', 'Thiksey Monastery', 'Leh Palace'],
+        afternoon: ['Magnetic Hill', 'Hall of Fame Museum', 'Sangam Point'],
+        evening: ['Leh Market', 'Shanti Stupa sunset', 'Old Leh streets']
+    },
+    Andaman: {
+        morning: ['Radhanagar Beach', 'Cellular Jail', 'Ross Island'],
+        afternoon: ['Corbyn’s Cove', 'North Bay Island', 'Neil Island jetty area'],
+        evening: ['Cellular Jail light and sound show', 'Beachside promenade in Port Blair', 'Sunset at Chidiya Tapu']
+    },
+    Panchmarhi: {
+        morning: ['Bee Falls', 'Pandav Caves', 'Jatashankar Cave'],
+        afternoon: ['Handi Khoh', 'Priyadarshini Point', 'Reechgarh'],
+        evening: ['Dhoopgarh sunset', 'Panchmarhi market', 'Lakeside walk']
+    },
+    Cherrapunji: {
+        morning: ['Nohkalikai Falls', 'Mawsmai Cave', 'Seven Sisters Falls'],
+        afternoon: ['Eco Park Cherrapunji', 'Wakaba Falls', 'Arwah Cave'],
+        evening: ['Sunset viewpoint Sohra', 'Local market area', 'Cliffside walk']
+    },
+    Varanasi: {
+        morning: ['Dashashwamedh Ghat', 'Kashi Vishwanath Temple', 'Assi Ghat'],
+        afternoon: ['Sarnath', 'Manikarnika Ghat viewpoint', 'Banaras Hindu University'],
+        evening: ['Ganga Aarti', 'Godowlia market', 'Riverside promenade']
+    },
+    Haridwar: {
+        morning: ['Har Ki Pauri', 'Mansa Devi Temple', 'Chandi Devi Temple'],
+        afternoon: ['Bharat Mata Mandir', 'Shantikunj', 'Rajaji National Park gate area'],
+        evening: ['Har Ki Pauri aarti', 'Local bazaar near ghats', 'Ganga canal walk']
+    },
+    'Bodh Gaya': {
+        morning: ['Mahabodhi Temple', 'Great Buddha Statue', 'Bodhi Tree'],
+        afternoon: ['Thai Monastery', 'Japanese Temple', 'Archaeological Museum Bodh Gaya'],
+        evening: ['Monastery circuit walk', 'Meditation park area', 'Temple street cafes']
+    },
+    Amritsar: {
+        morning: ['Golden Temple', 'Jallianwala Bagh', 'Durgiana Temple'],
+        afternoon: ['Partition Museum', 'Gobindgarh Fort', 'Hall Bazaar'],
+        evening: ['Wagah Border', 'Golden Temple night view', 'Lawrence Road food street']
+    },
+    Mathura: {
+        morning: ['Shri Krishna Janmabhoomi', 'Dwarkadhish Temple', 'Vishram Ghat'],
+        afternoon: ['Vrindavan Banke Bihari Temple', 'Prem Mandir', 'Govardhan route viewpoint'],
+        evening: ['Yamuna aarti', 'Vrindavan market', 'Temple lights at Prem Mandir']
+    },
+    Pushkar: {
+        morning: ['Pushkar Lake', 'Brahma Temple', 'Varaha Temple'],
+        afternoon: ['Savitri Temple', 'Pushkar Bazaar', 'Rangji Temple'],
+        evening: ['Pushkar ghats', 'Sunset at Savitri viewpoint', 'Cafe strip in Pushkar']
+    },
+    'Jim Corbett': {
+        morning: ['Corbett Jeep Safari Zone', 'Garjiya Devi Temple', 'Kosi River bank'],
+        afternoon: ['Corbett Museum', 'Sitabani forest edge', 'Ramnagar market'],
+        evening: ['Riverside resort trail', 'Sunset near Kosi', 'Bonfire area at stay']
+    },
+    Kaziranga: {
+        morning: ['Kaziranga Central Range Safari', 'Kaziranga Orchid Park', 'Western Range viewpoint'],
+        afternoon: ['Elephant safari zone', 'Tea garden trail nearby', 'Local Assamese craft center'],
+        evening: ['Cultural performance venue', 'Resort nature walk', 'Sunset point near grasslands']
+    }
+};
+
 // ========== FALLBACK ITINERARY BUILDER ==========
 function buildFallbackItinerary(requestBody) {
     const city = requestBody.city || requestBody.placeName || requestBody.destinationCity || requestBody.region || 'Destination';
     const guide = getDestinationGuide(city);
+    const cityStops = DESTINATION_ITINERARY_STOPS[city] || null;
     const tripLength = Number(requestBody.days) || 3;
     const totalDays = Math.max(1, Math.min(14, tripLength));
     const travellerType = String(requestBody.travellerType || '').toLowerCase();
@@ -70,8 +292,18 @@ function buildFallbackItinerary(requestBody) {
     ];
 
     // Preference-based scoring
-    const prefSource = (requestBody.travelStyle || requestBody.preferences || requestBody.interests || requestBody.category || requestBody.mood || '');
-    const prefText = Array.isArray(prefSource) ? prefSource.join(' ') : String(prefSource || '');
+    const prefSource = [
+        requestBody.travelStyle,
+        requestBody.preferences,
+        requestBody.interests,
+        requestBody.category,
+        requestBody.mood
+    ];
+    const prefText = prefSource
+        .flatMap(value => Array.isArray(value) ? value : String(value || '').split(','))
+        .map(value => String(value || '').trim())
+        .filter(Boolean)
+        .join(' ');
     const prefs = prefText.toLowerCase().split(/[,;\s]+/).filter(Boolean);
 
     function activityScore(text) {
@@ -102,23 +334,80 @@ function buildFallbackItinerary(requestBody) {
         || travellerType === 'family';
     const stopsPerDay = relaxed ? 2 : 3;
 
-    // For small cities: allow up to 2 days in the main city, then expand to nearby cities
-    // This mirrors PlannerService.expandCandidatesWhenSparse
-    const bigCities = ['delhi', 'mumbai', 'bangalore', 'kolkata', 'chennai', 'hyderabad',
-        'ahmedabad', 'pune', 'jaipur', 'ncr', 'goa', 'agra', 'amritsar', 'varanasi'];
-    const isBigCity = bigCities.some(bc => city.toLowerCase().includes(bc));
-    const mainCityDays = isBigCity ? Math.min(totalDays, 4) : Math.min(totalDays, 2);
-    const nearbyCityDays = totalDays - mainCityDays;
+    const mainCityDays = totalDays;
+    const nearbyCityDays = 0;
 
     const itinerary = [];
-    let mustIdx = 0;
-    let nearIdx = 0;
+    const famousSnippet = String(getFamousFor(city) || '')
+        .split(/[.;]/)[0]
+        .trim();
+    const addUnique = (list, value) => {
+        const normalized = String(value || '').trim();
+        if (!normalized) return;
+        if (!list.some(item => item.toLowerCase() === normalized.toLowerCase())) {
+            list.push(normalized);
+        }
+    };
+
+    const morningPool = [];
+    const afternoonPool = [];
+    const eveningPool = [];
+
+    if (cityStops) {
+        cityStops.morning.forEach(item => addUnique(morningPool, item));
+        cityStops.afternoon.forEach(item => addUnique(afternoonPool, item));
+        cityStops.evening.forEach(item => addUnique(eveningPool, item));
+    } else {
+        mustDos.forEach((activity, index) => {
+            if (index % 3 === 0) addUnique(morningPool, activity);
+            else if (index % 3 === 1) addUnique(afternoonPool, activity);
+            else addUnique(eveningPool, activity);
+        });
+
+        [
+            `${city} heritage walk`,
+            `${city} landmark circuit`,
+            famousSnippet ? `${city} highlights around ${famousSnippet.toLowerCase()}` : `${city} old quarter walk`
+        ].forEach(item => addUnique(morningPool, item));
+
+        [
+            `${city} museum and culture stop`,
+            `${city} local market walk`,
+            `${city} food trail`
+        ].forEach(item => addUnique(afternoonPool, item));
+
+        [
+            `${city} sunset viewpoint`,
+            `${city} cafe and street food evening`,
+            `${city} neighborhood walk`
+        ].forEach(item => addUnique(eveningPool, item));
+    }
+
+    if (!morningPool.length) addUnique(morningPool, `${city} highlights walk`);
+    if (!afternoonPool.length) addUnique(afternoonPool, `${city} local discovery trail`);
+    if (!eveningPool.length) addUnique(eveningPool, `${city} evening stroll`);
+
+    const pickFromPool = (pool, index, usedToday) => {
+        for (let offset = 0; offset < pool.length; offset++) {
+            const candidate = pool[(index + offset) % pool.length];
+            if (!usedToday.has(candidate.toLowerCase())) {
+                usedToday.add(candidate.toLowerCase());
+                return candidate;
+            }
+        }
+
+        const fallback = pool[index % pool.length];
+        usedToday.add(String(fallback).toLowerCase());
+        return fallback;
+    };
 
     // === MAIN CITY DAYS ===
     for (let day = 0; day < mainCityDays; day++) {
-        const primary = mustDos[mustIdx % mustDos.length];
-        mustIdx++;
         const dayPlaces = [];
+        const usedToday = new Set();
+        const primary = pickFromPool(morningPool, day, usedToday);
+        const secondary = pickFromPool(afternoonPool, day, usedToday);
+        const eveningStop = pickFromPool(eveningPool, day, usedToday);
 
         dayPlaces.push({
             placeName: primary,
@@ -132,12 +421,10 @@ function buildFallbackItinerary(requestBody) {
         });
 
         if (stopsPerDay >= 2) {
-            const secondary = nearby[nearIdx % nearby.length];
-            nearIdx++;
             dayPlaces.push({
                 placeName: secondary,
                 plannedVisitTimeSlot: 'Afternoon',
-                description: `Head to ${secondary} for a change of scenery and local flavors.`,
+                description: `Continue through ${city} with an afternoon around ${secondary.toLowerCase()}.`,
                 recommendedDurationHours: 2,
                 localTips: 'Use local transport for shorter hops.',
                 safetyAdvice: 'Stay aware of crowd levels.'
@@ -146,11 +433,11 @@ function buildFallbackItinerary(requestBody) {
 
         if (stopsPerDay >= 3) {
             dayPlaces.push({
-                placeName: day === mainCityDays - 1 ? 'Local dining & sunset spot' : 'Evening stroll',
+                placeName: eveningStop,
                 plannedVisitTimeSlot: 'Evening',
                 description: day === mainCityDays - 1
-                    ? `Wrap up ${city} with local food and a scenic sunset.`
-                    : `Unwind with an evening walk through ${city}'s local areas.`,
+                    ? `Wrap up the day in ${city} with ${String(eveningStop).toLowerCase()} and an easy evening pace.`
+                    : `Wind down in ${city} with ${String(eveningStop).toLowerCase()}.`,
                 recommendedDurationHours: 1.5,
                 localTips: 'Keep plans flexible for weather or traffic.',
                 safetyAdvice: 'Return before it gets too late if unfamiliar area.'
@@ -169,8 +456,8 @@ function buildFallbackItinerary(requestBody) {
             dayNumber: day + 1,
             location: { city, state: guide.state || city },
             daySummary: day === 0
-                ? `Arrive in ${city}, settle in, and explore key highlights.`
-                : `Spend the day discovering more of ${city}'s attractions.`,
+                ? `Arrive in ${city}, settle in, and begin with a balanced first look at its main highlights.`
+                : `Spend day ${day + 1} exploring a different side of ${city}, mixing landmarks, local flavor, and easier evening time.`,
             travelNotes: travellerHint,
             places: dayPlaces
         });
@@ -887,12 +1174,26 @@ function getPlaceTagline(placeName) {
         'Mussoorie': 'Queen of Hills',
         'Manali': 'Gateway to the Himalayas',
         'Darjeeling': 'Land of Tea Gardens',
+        'Delhi': 'Capital City of India',
         'Goa': 'Coastal Beaches & Nightlife',
         'Varkala': 'Cliffs & Wellness',
         'Ladakh': 'High-altitude deserts & lakes'
     };
 
     if (overrides[key]) return overrides[key];
+
+    const famous = String(getFamousFor(placeName) || '').trim();
+    if (famous) {
+        const shortFamous = famous.split(/[.;]/)[0].trim();
+        if (shortFamous) return shortFamous;
+    }
+
+    const guide = getDestinationGuide(placeName);
+    if (guide?.vibe) {
+        const shortVibe = String(guide.vibe).split(/[.;]/)[0].trim();
+        if (shortVibe) return shortVibe;
+    }
+
     return getPlaceSubtitle(placeName);
 }
 
@@ -921,7 +1222,7 @@ function buildGalleryImages(placeName, placeInfo) {
             `${placeName} skyline`,
             `${placeName} landmark`
         ];
-        const unsplashUrls = queries.map(q => `https://source.unsplash.com/1600x900/?${encodeURIComponent(q)}`);
+        const unsplashUrls = queries.map(q => `https://loremflickr.com/1600/900/${encodeURIComponent(q)}`);
         unsplashUrls.forEach(u => {
             if (!combined.includes(u)) combined.push(u);
         });
@@ -1208,13 +1509,13 @@ function exportMyTrip() {
 }
 
 function getStoredTripPayload() {
-    const raw = localStorage.getItem('itineraryData') || sessionStorage.getItem('itineraryData');
+    const raw = sessionStorage.getItem('itineraryData') || localStorage.getItem('itineraryData');
     if (!raw) return null;
     try {
         const data = JSON.parse(raw);
         if (!data || Object.keys(data).length === 0) return null;
         return {
-            plannerRequest: JSON.parse(localStorage.getItem('plannerRequestData') || sessionStorage.getItem('plannerRequestData') || 'null'),
+            plannerRequest: JSON.parse(sessionStorage.getItem('plannerRequestData') || localStorage.getItem('plannerRequestData') || 'null'),
             plannerResponse: data
         };
     } catch {

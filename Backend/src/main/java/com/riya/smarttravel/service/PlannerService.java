@@ -763,41 +763,16 @@ public class PlannerService {
         
         List<Place> expanded = candidates == null ? new ArrayList<>() : new ArrayList<>(candidates);
         
-        if (expanded.size() >= desiredPoolSize && !isSmall) {
+        // If we already have enough candidates for the requested days, don't force expansion for small cities
+        if (expanded.size() >= desiredPoolSize || (isSmall && expanded.size() >= requestedDays * 2)) {
             return expanded;
         }
 
-        int targetPoolSize = isSmall ? desiredPoolSize + 8 : desiredPoolSize;
-
-        String anchorState = null;
-        String anchorRegion = null;
-
-        if (!expanded.isEmpty()) {
-            anchorState = expanded.stream()
-                    .map(Place::getState)
-                    .filter(state -> state != null && !state.isBlank())
-                    .findFirst()
-                    .orElse(null);
-
-            anchorRegion = expanded.stream()
-                    .map(Place::getRegion)
-                    .filter(region -> region != null && !region.isBlank())
-                    .findFirst()
-                    .orElse(null);
-        } else {
-            List<Place> cityMatches = repository.findByCityContainingIgnoreCase(normalizedCity);
-            if (!cityMatches.isEmpty()) {
-                anchorState = cityMatches.get(0).getState();
-                anchorRegion = cityMatches.get(0).getRegion();
-            }
-        }
-
-        if (anchorState == null && anchorRegion == null) {
-            return expanded;
-        }
+        int targetPoolSize = isSmall ? requestedDays * 2 : desiredPoolSize;
 
         List<Place> allPlaces = repository.findAll();
 
+        // Step 1: Prioritize other places in the exact same city first
         for (Place place : allPlaces) {
             if (expanded.size() >= targetPoolSize) {
                 break;
@@ -807,12 +782,61 @@ public class PlannerService {
                 continue;
             }
 
-            boolean sameState = anchorState != null && place.getState() != null
-                    && anchorState.equalsIgnoreCase(place.getState());
-            boolean sameRegion = anchorRegion != null && place.getRegion() != null
-                    && anchorRegion.equalsIgnoreCase(place.getRegion());
-            if (sameState || sameRegion) {
+            String placeCity = place.getCity();
+            if (placeCity != null && placeCity.trim().equalsIgnoreCase(normalizedCity.trim())) {
                 expanded.add(place);
+            }
+        }
+
+        // Step 2: Only expand to same state if we have fewer than requestedDays places,
+        // to avoid multi-city/multi-state itineraries.
+        if (expanded.size() < requestedDays) {
+            String anchorState = null;
+            String anchorRegion = null;
+
+            if (!expanded.isEmpty()) {
+                anchorState = expanded.stream()
+                        .map(Place::getState)
+                        .filter(state -> state != null && !state.isBlank())
+                        .findFirst()
+                        .orElse(null);
+
+                anchorRegion = expanded.stream()
+                        .map(Place::getRegion)
+                        .filter(region -> region != null && !region.isBlank())
+                        .findFirst()
+                        .orElse(null);
+            } else {
+                List<Place> cityMatches = repository.findByCityContainingIgnoreCase(normalizedCity);
+                if (!cityMatches.isEmpty()) {
+                    anchorState = cityMatches.get(0).getState();
+                    anchorRegion = cityMatches.get(0).getRegion();
+                }
+            }
+
+            if (anchorState != null || anchorRegion != null) {
+                for (Place place : allPlaces) {
+                    if (expanded.size() >= requestedDays) {
+                        break;
+                    }
+                    if (place == null || place.getPlaceId() == null
+                            || expanded.stream().anyMatch(existing -> place.getPlaceId().equals(existing.getPlaceId()))) {
+                        continue;
+                    }
+
+                    boolean sameState = anchorState != null && place.getState() != null
+                            && anchorState.equalsIgnoreCase(place.getState());
+                    
+                    if (sameState) {
+                        expanded.add(place);
+                    } else if (normalizedCity == null) {
+                        boolean sameRegion = anchorRegion != null && place.getRegion() != null
+                                && anchorRegion.equalsIgnoreCase(place.getRegion());
+                        if (sameRegion) {
+                            expanded.add(place);
+                        }
+                    }
+                }
             }
         }
 

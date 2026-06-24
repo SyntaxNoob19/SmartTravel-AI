@@ -1158,8 +1158,8 @@
 /* Compact live insights grid */
 .insight-small-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
 }
 
 .insight-small-card {
@@ -1201,6 +1201,13 @@
     color: var(--primary);
     display: block;
     margin-bottom: 2px;
+}
+
+.insight-small-card > div:not(.insight-small-icon) {
+    min-width: 0;
+    flex: 1;
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 /* Custom modifiers for Live Insight Cards */
@@ -1270,9 +1277,7 @@
     border-color: rgba(107, 114, 128, 0.3) !important;
 }
 
-@media (max-width:1024px) {
-    .insight-small-grid { grid-template-columns: 1fr; }
-}
+/* Stacks vertically inside smaller parents naturally via auto-fit minmax */
 
 /* Day strip grid to match compact mock layout */
 .day-strip-grid {
