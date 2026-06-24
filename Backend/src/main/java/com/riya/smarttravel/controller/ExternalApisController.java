@@ -22,17 +22,20 @@ public class ExternalApisController {
     private final GeocodeService geocodeService;
     private final ImageService imageService;
     private final AlertService alertService;
+    private final PlannerAiService plannerAiService;
 
     public ExternalApisController(WeatherService weatherService,
                                   HolidayService holidayService,
                                   GeocodeService geocodeService,
                                   ImageService imageService,
-                                  AlertService alertService) {
+                                  AlertService alertService,
+                                  PlannerAiService plannerAiService) {
         this.weatherService = weatherService;
         this.holidayService = holidayService;
         this.geocodeService = geocodeService;
         this.imageService = imageService;
         this.alertService = alertService;
+        this.plannerAiService = plannerAiService;
     }
 
     // =========================== WEATHER ENDPOINTS ===========================
@@ -99,6 +102,8 @@ public class ExternalApisController {
         List<HolidayDto> holidays = holidayService.getHolidaysByYear(year, countryCode);
         return ResponseEntity.ok(holidays);
     }
+
+
 
     /**
      * Get long weekends for a specific month and country

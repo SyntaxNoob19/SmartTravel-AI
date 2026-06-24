@@ -19,9 +19,11 @@ public class PlaceService {
 
     private static final int MAX_RESULTS = 20;
     private final PlaceRepository repository;
+    private final PlannerAiService plannerAiService;
 
-    public PlaceService(PlaceRepository repository) {
+    public PlaceService(PlaceRepository repository, PlannerAiService plannerAiService) {
         this.repository = repository;
+        this.plannerAiService = plannerAiService;
     }
 
     public List<CitySummaryDto> getCitiesByRegion(String region) {
@@ -64,6 +66,12 @@ public class PlaceService {
     public List<PlaceResponseDto> getPlacesByCity(String city) {
         String normalized = validateTextInput(city, "City");
         List<Place> places = repository.findByCityContainingIgnoreCase(normalized);
+        if (places == null || places.isEmpty()) {
+            List<PlaceResponseDto> aiPlaces = plannerAiService.generatePlacesForCity(normalized);
+            if (aiPlaces != null && !aiPlaces.isEmpty()) {
+                return aiPlaces;
+            }
+        }
         return mapPlaces(places, "No places found for city: " + normalized);
     }
 
@@ -72,6 +80,12 @@ public class PlaceService {
         List<Place> places = repository.searchPlaces(normalized).stream()
                 .limit(MAX_RESULTS)
                 .toList();
+        if (places == null || places.isEmpty()) {
+            List<PlaceResponseDto> aiPlaces = plannerAiService.generatePlacesForCity(normalized);
+            if (aiPlaces != null && !aiPlaces.isEmpty()) {
+                return aiPlaces;
+            }
+        }
         return mapPlaces(places, "No places found for query: " + normalized);
     }
 

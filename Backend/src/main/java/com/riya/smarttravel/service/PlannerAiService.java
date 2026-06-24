@@ -10,6 +10,7 @@ import com.riya.smarttravel.dto.PlannerLocationDto;
 import com.riya.smarttravel.dto.PlannerPlaceDto;
 import com.riya.smarttravel.dto.PlannerRequest;
 import com.riya.smarttravel.dto.PlannerResponseDto;
+import com.riya.smarttravel.dto.PlaceResponseDto;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.MediaType;
@@ -431,8 +432,10 @@ public class PlannerAiService {
         return trimmed;
     }
 
-    private boolean isAiConfigured() {
-        return aiEnabled && aiApiKey != null && !aiApiKey.isBlank();
+    public boolean isAiConfigured() {
+        return aiApiUrl != null && !aiApiUrl.trim().isEmpty() &&
+                aiApiKey != null && !aiApiKey.trim().isEmpty() &&
+                !"your-api-key".equals(aiApiKey);
     }
 
     private String buildFallbackPrompt(String city,
@@ -696,5 +699,90 @@ public class PlannerAiService {
 
     private double round2(double value) {
         return Math.round(value * 100.0) / 100.0;
+    }
+
+    public List<PlaceResponseDto> generatePlacesForCity(String query) {
+        if (!isAiConfigured()) {
+            return Collections.emptyList();
+        }
+        try {
+            String prompt = buildPlaceGenerationPrompt(query);
+            log.info("Generating places for query: {}", query);
+            JsonNode aiJson = callModelForJson(prompt);
+            if (aiJson == null || !aiJson.has("places") || !aiJson.get("places").isArray()) {
+                return Collections.emptyList();
+            }
+            JsonNode placesArray = aiJson.get("places");
+            List<PlaceResponseDto> places = new ArrayList<>();
+            for (JsonNode node : placesArray) {
+                places.add(mapToPlaceResponseDto(node, query));
+            }
+            log.info("Successfully generated {} places for query: {}", places.size(), query);
+            return places;
+        } catch (Exception e) {
+            log.error("Failed to generate places for query: {}", query, e);
+            return Collections.emptyList();
+        }
+    }
+
+    private String buildPlaceGenerationPrompt(String query) {
+        return """
+            You are an expert Indian travel planner. The user has searched for "%s".
+            Generate a list of 5-8 famous tourist places, landmarks, or attractions for this destination.
+            CRITICAL REQUIREMENT: ONLY return places located within INDIA. If the requested destination is outside India or invalid, return an empty array for places.
+            Return ONLY a valid JSON object with a single key "places" containing an array of objects. No markdown, no explanations.
+            
+            Each object MUST have the following properties:
+            "placeId": a unique string identifier starting with "ai-"
+            "placeName": name of the place
+            "city": city name
+            "state": state name
+            "region": region name (North, South, East, West, Central, North East)
+            "placeType": type of place (e.g. Monument, Beach, Temple, Park, Museum)
+            "category": general category (heritage, nature, spiritual, beach, adventure, city)
+            "moodTags": comma separated moods (e.g. peaceful, historic)
+            "significance": why it's important
+            "description": a 2-3 sentence description
+            "bestTimeToVisit": e.g. "October to March"
+            "idealVisitTime": e.g. "Morning"
+            "recommendedDurationHours": number (e.g. 2.5)
+            "entryFee": number (e.g. 50, use 0 if free)
+            "rating": number between 3.0 and 5.0
+            "crowdLevel": "LOW", "MODERATE", "HIGH", or "VERY_HIGH"
+            "familyFriendly": boolean
+            "budgetLevel": "Low", "Medium", or "High"
+            "localTips": 1 sentence local tip
+            "safetyScore": number between 1.0 and 10.0
+            "cleanlinessScore": number between 1.0 and 10.0
+            "priority": "Must Visit", "Recommended", or "Optional"
+            """
+            .formatted(query);
+    }
+
+    private PlaceResponseDto mapToPlaceResponseDto(JsonNode node, String query) {
+        return PlaceResponseDto.builder()
+                .placeId(node.path("placeId").asText("ai-" + java.util.UUID.randomUUID().toString().substring(0, 8)))
+                .placeName(node.path("placeName").asText(query))
+                .city(node.path("city").asText(query))
+                .state(node.path("state").asText("Unknown"))
+                .region(node.path("region").asText("Unknown"))
+                .placeType(node.path("placeType").asText("Attraction"))
+                .category(node.path("category").asText("city"))
+                .moodTags(node.path("moodTags").asText(""))
+                .significance(node.path("significance").asText(""))
+                .description(node.path("description").asText("A popular destination."))
+                .bestTimeToVisit(node.path("bestTimeToVisit").asText(""))
+                .idealVisitTime(node.path("idealVisitTime").asText(""))
+                .recommendedDurationHours(node.path("recommendedDurationHours").isNumber() ? node.path("recommendedDurationHours").asDouble() : 2.0)
+                .entryFee(node.path("entryFee").isNumber() ? node.path("entryFee").asDouble() : 0.0)
+                .rating(node.path("rating").isNumber() ? node.path("rating").asDouble() : 4.0)
+                .crowdLevel(node.path("crowdLevel").asText("MODERATE"))
+                .familyFriendly(node.path("familyFriendly").isBoolean() ? node.path("familyFriendly").asBoolean() : true)
+                .budgetLevel(node.path("budgetLevel").asText("Medium"))
+                .localTips(node.path("localTips").asText(""))
+                .safetyScore(node.path("safetyScore").isNumber() ? node.path("safetyScore").asDouble() : 8.0)
+                .cleanlinessScore(node.path("cleanlinessScore").isNumber() ? node.path("cleanlinessScore").asDouble() : 8.0)
+                .priority(node.path("priority").asText("Recommended"))
+                .build();
     }
 }
